@@ -167,7 +167,7 @@ export interface IQuery {
     findUserByQty(quantity: number): User[] | Promise<User[]>;
     totalSumPrice(): number | Promise<number>;
     getAllCourses(): User[] | Promise<User[]>;
-    findoneUser(id: string): User | Promise<User>;
+    findOne(email: string): User | Promise<User>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
 }

@@ -129,7 +129,7 @@ type Query {
   findUserByQty(quantity: Float!): [User!]!
   totalSumPrice: Float!
   getAllCourses: [User!]!
-  findoneUser(id: String!): User!
+  findOne(email: String!): User!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
 }
