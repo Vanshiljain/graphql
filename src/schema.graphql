@@ -1,0 +1,175 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Courses {
+  courseName: String
+  courseStatus: String
+  publication: String
+  year: Int
+}
+
+type Address {
+  mainAddress: String
+  city: String
+  pincode: Float
+}
+
+type Unit {
+  quantity: Float
+  pricePerUnit: Float
+  totalPrice: Float
+}
+
+type Description {
+  label: String
+  unit: Unit
+}
+
+type Product {
+  name: String
+  description: Description
+  ingridients: [String!]
+  manufacturer: String
+}
+
+type User {
+  _id: ID
+  name: String
+  username: String
+  email: String
+  password: String
+  gender: Gender
+  role: Role
+  address: Address
+  courses: [Courses!]!
+  age: Float!
+  lastCourse: Courses
+  completedCourses: [Courses!]
+  product: [Product!]!
+  filterProducts: [Product!]!
+  totalSumPrice: Float
+  OveralltotalSumPrice: Float
+  allCourses: [Courses!]
+}
+
+"""This denote user gender"""
+enum Gender {
+  Male
+  Female
+}
+
+"""This denote user role"""
+enum Role {
+  admin
+  user
+  superadmin
+}
+
+type Author {
+  firstName: ID
+  lastName: String
+  age: Int
+}
+
+type Book {
+  _id: ID
+  title: String
+  price: Int
+  year: Int
+  author: [Author!]
+  userId: ID
+  userCollection: User
+  authorCollection: Author
+  authorId: ID
+}
+
+input InputCourses {
+  courseName: String
+  courseStatus: String
+  publication: String
+  year: Int
+}
+
+input InputAddress {
+  mainAddress: String
+  city: String
+  pincode: Float
+}
+
+input Units {
+  quantity: Float
+  pricePerUnit: Float
+  totalPrice: Float
+}
+
+input Descriptions {
+  label: String
+  unit: Units
+}
+
+input InputProduct {
+  name: String
+  description: Descriptions
+  ingridients: [String!]
+  manufacturer: String
+}
+
+input InputBook {
+  firstName: ID
+  lastName: String
+  age: Int
+}
+
+type Query {
+  index: String!
+  findAllUser(role: String!, minAge: Float!, maxAge: Float!): [User!]!
+  findUserAll: [User!]!
+  findUserByMatch(role: String!): [User!]!
+  findUserByQty(quantity: Float!): [User!]!
+  totalSumPrice: Float!
+  getAllCourses: [User!]!
+  findoneUser(id: String!): User!
+  findAllBookUser: [Book!]!
+  findAllAuhtor: [Book!]!
+}
+
+type Mutation {
+  createUser(payload: UserInput!): User!
+  createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
+  updateBook(bookInput: BookInput!, _id: String!): Book!
+}
+
+input UserInput {
+  name: String
+  username: String
+  email: String
+  password: String
+  gender: Gender
+  role: Role
+  address: InputAddress
+  courses: [InputCourses!]
+  age: Int
+  lastCourse: InputCourses
+  completedCourses: [InputCourses!]
+  product: [InputProduct!]
+}
+
+input BookInput {
+  _id: ID
+  title: String
+  price: Float
+  year: Float
+  author: [AuthorInput!]
+  userId: String
+  userCollection: UserInput
+  authorCollection: AuthorInput
+  authorId: ID
+}
+
+input AuthorInput {
+  _id: String
+  firstName: String
+  lastName: String
+  age: Int
+}
