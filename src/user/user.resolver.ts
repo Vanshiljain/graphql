@@ -52,9 +52,9 @@ export class UserResolver {
     const allCourses = await this.userService.getAllCourses();
     return allCourses;
   }
-
+  
   @Query(() => User)
-  async findoneUser(@Args('id') id: string): Promise<User> {
-    return await this.userService.findoneUser(id);
+  async findOne(@Args('email') email: String): Promise<User> {
+    return await this.userService.findOne(email);
   }
 }

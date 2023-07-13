@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { Address, User, Courses, Gender, Role, Product } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserModule } from './user.modul';
+import { Args } from '@nestjs/graphql';
 
 @Injectable()
 export class UserService {
@@ -174,8 +175,8 @@ export class UserService {
     ]).exec();
   }
 
-  async findoneUser(id: string){
-    return this.userModel.findById(id).exec();
+  async findOne(@Args('email') email: String): Promise<User> {
+    return this.userModel.findOne({ email: email });
   }
-  
+
 }
