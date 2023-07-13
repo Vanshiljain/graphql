@@ -11,6 +11,8 @@ import { UserModule } from './user/user.modul';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './user/user.schema';
 import { UserResolver } from './user/user.resolver';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,8 +29,9 @@ import { UserResolver } from './user/user.resolver';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     UserModule,
     BookModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AppResolver, UserResolver, UserService],
+  providers: [AppService, AppResolver, UserResolver, UserService, AuthService],
 })
 export class AppModule { }
