@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Address, User, Courses, Gender, Role, Product } from './user.schema';
+import { Address, User, Courses, Gender, Role, Product, UserInput } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserModule } from './user.modul';
-import { Args } from '@nestjs/graphql';
+import { Args, ID } from '@nestjs/graphql';
 
 @Injectable()
 export class UserService {
@@ -177,6 +177,10 @@ export class UserService {
 
   async findOne(@Args('email') email: String): Promise<User> {
     return this.userModel.findOne({ email: email });
+  }
+
+  async updateUser(email: string, userInput: UserInput): Promise<User> {
+    return this.userModel.findOneAndUpdate({ email: email }, userInput, { new: true });
   }
 
 }

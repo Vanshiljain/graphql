@@ -1,6 +1,8 @@
 import { Args, Float, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { Address, User, Courses, Role, Product, UserInput } from './user.schema';
+import { User, Courses, Role, Product, UserInput } from './user.schema';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Resolver()
 export class UserResolver {
@@ -47,6 +49,7 @@ export class UserResolver {
     return await this.userService.totalSumPrice();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Query(() => [User])
   async getAllCourses(): Promise<Courses[]> {
     const allCourses = await this.userService.getAllCourses();

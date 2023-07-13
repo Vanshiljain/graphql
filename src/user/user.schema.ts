@@ -172,6 +172,10 @@ export class User extends Document {
 
     @Field(() => [Courses], { nullable: true })
     public allCourses: Courses[];
+
+    @Field(()=> String, { nullable: true })
+    @Prop()
+    public token?: string;
 }
 
 @InputType()
@@ -212,5 +216,8 @@ export class UserInput {
 
     @Field(() => [Product], { nullable: true })
     product?: Product[];
+
+    @Field(()=> String, { nullable: true })
+    token?: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

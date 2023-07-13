@@ -51,6 +51,7 @@ type User {
   totalSumPrice: Float
   OveralltotalSumPrice: Float
   allCourses: [Courses!]
+  token: String
 }
 
 """This denote user gender"""
@@ -154,6 +155,7 @@ input UserInput {
   lastCourse: InputCourses
   completedCourses: [InputCourses!]
   product: [InputProduct!]
+  token: String
 }
 
 input BookInput {

@@ -69,6 +69,7 @@ export interface UserInput {
     lastCourse?: Nullable<InputCourses>;
     completedCourses?: Nullable<InputCourses[]>;
     product?: Nullable<InputProduct[]>;
+    token?: Nullable<string>;
 }
 
 export interface BookInput {
@@ -139,6 +140,7 @@ export interface User {
     totalSumPrice?: Nullable<number>;
     OveralltotalSumPrice?: Nullable<number>;
     allCourses?: Nullable<Courses[]>;
+    token?: Nullable<string>;
 }
 
 export interface Author {
