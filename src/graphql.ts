@@ -176,6 +176,7 @@ export interface IMutation {
     createUser(payload: UserInput): User | Promise<User>;
     createBook(title: string, author: InputBook[], price: number, year: number, userId: string): Book | Promise<Book>;
     updateBook(bookInput: BookInput, _id: string): Book | Promise<Book>;
+    login(email: string, password: string): string | Promise<string>;
 }
 
 type Nullable<T> = T | null;

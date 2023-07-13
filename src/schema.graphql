@@ -138,6 +138,7 @@ type Mutation {
   createUser(payload: UserInput!): User!
   createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
   updateBook(bookInput: BookInput!, _id: String!): Book!
+  login(email: String!, password: String!): String!
 }
 
 input UserInput {

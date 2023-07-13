@@ -13,6 +13,8 @@ import { User, UserSchema } from './user/user.schema';
 import { UserResolver } from './user/user.resolver';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
 
 @Module({
   imports: [
@@ -30,6 +32,10 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     BookModule,
     AuthModule,
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService],
