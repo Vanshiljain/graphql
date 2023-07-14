@@ -8,9 +8,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const ctx = GqlExecutionContext.create(context);
     const { req } = ctx.getContext();
 
-    // Extract the token from the Authorization header
     const token = req.headers.authorization?.replace('Bearer ', '');
-    // Pass the token to the request context
     req.token = token;
 
     return req;
