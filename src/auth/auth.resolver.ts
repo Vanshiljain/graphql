@@ -9,4 +9,9 @@ export class AuthResolver {
   async login(@Args('email') email: string, @Args('password') password: string) {
     return this.authService.login(email, password);
   }
+
+  @Mutation(() => String)
+  async logout(@Args('email') email: string) {
+    return this.authService.logout(email);
+  }
 }

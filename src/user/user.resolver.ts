@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { User, Courses, Role, Product, UserInput } from './user.schema';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import * as bcrypt from 'bcrypt';
 
 @Resolver()
 export class UserResolver {
@@ -12,8 +13,9 @@ export class UserResolver {
   async createUser(
     @Args('payload') payload: UserInput,
   ): Promise<User> {
-    const { name, username, email, password, role, gender, courses, address, age, product } = payload;
-    return await this.userService.createUser(name, username, email, password, role, gender, courses, address, age, product);
+    const salt = await bcrypt.genSalt(6);
+    payload.privateKey = salt;
+    return await this.userService.createUser(payload);
   }
 
   @Query(() => [User])

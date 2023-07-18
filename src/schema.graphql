@@ -52,6 +52,7 @@ type User {
   OveralltotalSumPrice: Float
   allCourses: [Courses!]
   token: String
+  privateKey: String
 }
 
 """This denote user gender"""
@@ -140,6 +141,7 @@ type Mutation {
   createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
   updateBook(bookInput: BookInput!, _id: String!): Book!
   login(email: String!, password: String!): String!
+  logout(email: String!): String!
 }
 
 input UserInput {
@@ -156,6 +158,7 @@ input UserInput {
   completedCourses: [InputCourses!]
   product: [InputProduct!]
   token: String
+  privateKey: String
 }
 
 input BookInput {

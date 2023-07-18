@@ -70,6 +70,7 @@ export interface UserInput {
     completedCourses?: Nullable<InputCourses[]>;
     product?: Nullable<InputProduct[]>;
     token?: Nullable<string>;
+    privateKey?: Nullable<string>;
 }
 
 export interface BookInput {
@@ -141,6 +142,7 @@ export interface User {
     OveralltotalSumPrice?: Nullable<number>;
     allCourses?: Nullable<Courses[]>;
     token?: Nullable<string>;
+    privateKey?: Nullable<string>;
 }
 
 export interface Author {
@@ -179,6 +181,7 @@ export interface IMutation {
     createBook(title: string, author: InputBook[], price: number, year: number, userId: string): Book | Promise<Book>;
     updateBook(bookInput: BookInput, _id: string): Book | Promise<Book>;
     login(email: string, password: string): string | Promise<string>;
+    logout(email: string): string | Promise<string>;
 }
 
 type Nullable<T> = T | null;

@@ -176,6 +176,10 @@ export class User extends Document {
     @Field(()=> String, { nullable: true })
     @Prop()
     public token?: string;
+
+    @Field(()=> String, { nullable: true })
+    @Prop()
+    public privateKey?: string;
 }
 
 @InputType()
@@ -219,5 +223,8 @@ export class UserInput {
 
     @Field(()=> String, { nullable: true })
     token?: string;
+
+    @Field(()=> String, { nullable: true })
+    privateKey?: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -12,8 +12,8 @@ export class UserService {
   }
   constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
 
-  async createUser(name: string, username: string, email: string, password: string, role: string, gender: string, courses: Courses[], address: Address, age: number, product: Product[]) {
-    const aggregation = new this.userModel({ name, username, email, password, role, gender, address, courses, age, product });
+  async createUser(userInput: UserInput): Promise<User> {
+    const aggregation = new this.userModel({ ...userInput });
     aggregation.product.map((p: Product) => {
       const totalPrice = p.description.unit.quantity * p.description.unit.pricePerUnit;
       p.description.unit.totalPrice = totalPrice;
