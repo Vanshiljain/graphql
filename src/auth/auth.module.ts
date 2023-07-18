@@ -6,6 +6,8 @@ import { jwtConstants } from './constants';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from 'src/user/user.modul';
+import { TokenService } from 'src/token/token.service';
+import { TokenModule } from 'src/token/token.module';
 
 @Module({
   imports: [
@@ -15,7 +17,9 @@ import { UserModule } from 'src/user/user.modul';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '1h' },
     }),
+    TokenModule
   ],
   providers: [AuthResolver, AuthService, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}
