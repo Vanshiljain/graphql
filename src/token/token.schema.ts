@@ -3,7 +3,8 @@ import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 @ObjectType()
-@Schema()
+// @index({ createdAt: 1 }, { expires: '2h' })
+@Schema( { timestamps: true } )
 export class Token extends Document {
 
     @Field(() => ID, { nullable: true })
@@ -21,9 +22,10 @@ export class Token extends Document {
     @Prop()
     refreshToken: string;
 
-    @Field(() => Date)
-    @Prop({ default: Date.now })
-    createdAt: Date;
+    // @Field(() => Date, { expires: '2h' })
+    // @Prop({ default: Date.now })
+    // createdAt: Date;
+
 }
 
 @InputType()
@@ -38,3 +40,4 @@ export class TokenInput {
     refreshToken: string;
 }
 export const TokenSchema = SchemaFactory.createForClass(Token);
+TokenSchema.index({ createdAt: 1 }, { expires: 20 });

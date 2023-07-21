@@ -39,7 +39,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       signOptions: { expiresIn: '1h' },
     }),
     TokenModule,
-    ScheduleModule.forRoot(),
+    ScheduleModule.forRoot(),   
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService],

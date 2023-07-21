@@ -7,13 +7,13 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 @Injectable()
 export class TokenService {
     constructor(@InjectModel('Token') private readonly tokenModel: Model<Token>
-    ) { }f
+    ) {}
 
-    @Cron(CronExpression.EVERY_MINUTE)
-    async deleteExpiredTokens() {
-        const Minute = new Date();
-        await this.tokenModel.deleteOne({ createdAt: { $lt: Minute } });
-    }
+    // @Cron(CronExpression.Ev)
+    // async autoDelete() {
+    //     const Minute = new Date();
+    //     await this.tokenModel.deleteOne({ createdAt: { $lt: Minute } });
+    // }
 
     async createToken(tokenInput: TokenInput): Promise<Token> {
         const aggregation = new this.tokenModel({ ...tokenInput });
