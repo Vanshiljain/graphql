@@ -4,10 +4,11 @@ import { User, Courses, Role, Product, UserInput } from './user.schema';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
+import { ID } from 'graphql-ws';
 
 @Resolver()
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Mutation(() => User)
   async createUser(
@@ -57,9 +58,22 @@ export class UserResolver {
     const allCourses = await this.userService.getAllCourses();
     return allCourses;
   }
-  
+
   @Query(() => User)
   async findOne(@Args('email') email: String): Promise<User> {
     return await this.userService.findOne(email);
+  }
+
+  @Mutation(() => User)
+  async updateUser(
+    @Args('email') email: string,
+    @Args('payload') payload: UserInput,
+  ): Promise<User> {
+    return await this.userService.updateUser(email, payload);
+  }
+
+  @Mutation(() => User)
+  async deleteUser(@Args('id') _id: ID): Promise<User> {
+    return await this.userService.deleteUser(_id);
   }
 }

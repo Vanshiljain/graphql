@@ -183,4 +183,8 @@ export class UserService {
     return this.userModel.findOneAndUpdate({ email: email }, userInput, { new: true });
   }
 
+  async deleteUser(_id: string): Promise<User> {
+    return this.userModel.findOneAndDelete({ _id: _id});
+  }
+
 }

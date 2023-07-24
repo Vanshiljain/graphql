@@ -138,6 +138,8 @@ type Query {
 
 type Mutation {
   createUser(payload: UserInput!): User!
+  updateUser(email: String!, payload: UserInput!): User!
+  deleteUser(id: String!): User!
   createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
   updateBook(bookInput: BookInput!, _id: String!): Book!
   login(email: String!, password: String!): String!
