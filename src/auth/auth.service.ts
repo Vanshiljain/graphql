@@ -16,17 +16,26 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<string> {
     const user = await this.userService.findOne(email);
-
-    if (!user || user.password !== password) {
+  
+    if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
+  
+    const isMatch = await bcrypt.compare(password, user.password);
+  
+    if (!isMatch) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+  
     const payload: JwtPayload = { email: user.email, privateKey: user.privateKey };
     const token = this.jwtService.sign(payload);
+  
     await this.userService.updateUser(user.email, { token });
     await this.tokenService.createToken({ email: user.email, token, refreshToken: "" });
+  
     return token;
   }
-
+  
    
   async logout(email: string): Promise<string> {
     const user = await this.userService.findOne(email);

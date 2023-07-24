@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { Address, User, Courses, Gender, Role, Product, UserInput } from './user.schema';
+import { User, Product, UserInput } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserModule } from './user.modul';
-import { Args, ID } from '@nestjs/graphql';
+import { Args } from '@nestjs/graphql';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -13,7 +13,7 @@ export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
 
   async createUser(userInput: UserInput): Promise<User> {
-    const aggregation = new this.userModel({ ...userInput });
+    const aggregation = new this.userModel({ ...userInput, password: await bcrypt.hash(userInput.password, 10)});
     aggregation.product.map((p: Product) => {
       const totalPrice = p.description.unit.quantity * p.description.unit.pricePerUnit;
       p.description.unit.totalPrice = totalPrice;
