@@ -180,6 +180,14 @@ export class User extends Document {
     @Field(()=> String, { nullable: true })
     @Prop()
     public privateKey?: string;
+
+    @Field(()=> String, { nullable: true })
+    @Prop()
+    public countryCode?: string;
+
+    @Field(()=> Number, { nullable: true })
+    @Prop()
+    public mobileNumber?: number;
 }
 
 @InputType()
@@ -226,5 +234,11 @@ export class UserInput {
 
     @Field(()=> String, { nullable: true })
     privateKey?: string;
+
+    @Field(()=> String, { nullable: true })
+    countryCode?: string;
+
+    @Field(()=> Number, { nullable: true })
+    mobileNumber?: number;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

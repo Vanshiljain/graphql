@@ -71,6 +71,8 @@ export interface UserInput {
     product?: Nullable<InputProduct[]>;
     token?: Nullable<string>;
     privateKey?: Nullable<string>;
+    countryCode?: Nullable<string>;
+    mobileNumber?: Nullable<number>;
 }
 
 export interface BookInput {
@@ -143,6 +145,8 @@ export interface User {
     allCourses?: Nullable<Courses[]>;
     token?: Nullable<string>;
     privateKey?: Nullable<string>;
+    countryCode?: Nullable<string>;
+    mobileNumber?: Nullable<number>;
 }
 
 export interface Author {

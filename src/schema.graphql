@@ -53,6 +53,8 @@ type User {
   allCourses: [Courses!]
   token: String
   privateKey: String
+  countryCode: String
+  mobileNumber: Float
 }
 
 """This denote user gender"""
@@ -161,6 +163,8 @@ input UserInput {
   product: [InputProduct!]
   token: String
   privateKey: String
+  countryCode: String
+  mobileNumber: Float
 }
 
 input BookInput {
