@@ -5,6 +5,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
 import { ID } from 'graphql-ws';
+import e from 'express';
 
 @Resolver()
 export class UserResolver {
@@ -75,5 +76,10 @@ export class UserResolver {
   @Mutation(() => User)
   async deleteUser(@Args('id') _id: ID): Promise<User> {
     return await this.userService.deleteUser(_id);
+  }
+
+  @Query(() => User)
+  async findEmail(@Args('email') email: string): Promise<User> {
+    return await this.userService.findOne(email);
   }
 }

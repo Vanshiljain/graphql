@@ -176,6 +176,7 @@ export interface IQuery {
     totalSumPrice(): number | Promise<number>;
     getAllCourses(): User[] | Promise<User[]>;
     findOne(email: string): User | Promise<User>;
+    findEmail(email: string): User | Promise<User>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
 }

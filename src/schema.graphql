@@ -134,6 +134,7 @@ type Query {
   totalSumPrice: Float!
   getAllCourses: [User!]!
   findOne(email: String!): User!
+  findEmail(email: String!): User!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
 }
