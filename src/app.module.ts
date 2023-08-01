@@ -17,6 +17,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
 import { TokenModule } from './token/token.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { IsoDateModule } from './iso-date/iso-date.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { ScheduleModule } from '@nestjs/schedule';
       signOptions: { expiresIn: '1h' },
     }),
     TokenModule,
-    ScheduleModule.forRoot(),   
+    ScheduleModule.forRoot(),
+    IsoDateModule,   
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService],

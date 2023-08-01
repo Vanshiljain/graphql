@@ -147,6 +147,7 @@ type Mutation {
   updateBook(bookInput: BookInput!, _id: String!): Book!
   login(email: String!, password: String!): String!
   logout(email: String!): String!
+  checkDate(date: String!): String!
 }
 
 input UserInput {

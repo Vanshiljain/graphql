@@ -189,6 +189,7 @@ export interface IMutation {
     updateBook(bookInput: BookInput, _id: string): Book | Promise<Book>;
     login(email: string, password: string): string | Promise<string>;
     logout(email: string): string | Promise<string>;
+    checkDate(date: string): string | Promise<string>;
 }
 
 type Nullable<T> = T | null;
