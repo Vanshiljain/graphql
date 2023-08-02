@@ -4,16 +4,32 @@ import { User, Product, UserInput } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Args } from '@nestjs/graphql';
 import * as bcrypt from 'bcryptjs';
+import { env } from 'process';
 
 @Injectable()
 export class UserService {
   findById(userId: string) {
     throw new Error('Method not implemented.');
   }
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
 
+  
+
+  constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
   async createUser(userInput: UserInput): Promise<User> {
-    const aggregation = new this.userModel({ ...userInput, password: await bcrypt.hash(userInput.password, 10)});
+    
+      const nodemailer = require("nodemailer");
+    
+      const transporter = nodemailer.createTransport({
+
+        service:'gmail',
+        auth: {
+          user: env.USER,
+          pass: env.PASS,
+        }
+      });
+
+
+    const aggregation = new this.userModel({ ...userInput, password: await bcrypt.hash(userInput.password, 10) });
     aggregation.product.map((p: Product) => {
       const totalPrice = p.description.unit.quantity * p.description.unit.pricePerUnit;
       p.description.unit.totalPrice = totalPrice;
@@ -22,7 +38,40 @@ export class UserService {
       return sum + p.description.unit.totalPrice;
     }, 0);
     aggregation.totalSumPrice = totalSumPrice;
+    const result = JSON.stringify(aggregation);
+    const info = await transporter.sendMail({
+      from: "niharkushwahcomputer@gmail.com", // sender address
+      to: "nihark@linkites.com", // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: "User registered successfully!",
+      html: `
+      <h1>User registered successfully!</h1>
+      <table border="1">
+        <tr>
+          <th>Name</th>
+          <th>email</th>
+          <th>Username</th>
+          <th>age</th>
+          <th>mobile number</th>
+          <th>Address</th>
+        
+        </tr>
+        <tr>
+          <td>${aggregation.name}</td>
+          <td>${aggregation.email}</td>
+          <td>${aggregation.username}</td>
+          <td>${aggregation.age}</td>
+          <td>${aggregation.mobileNumber}</td>
+          <td>${aggregation.address.mainAddress}, ${aggregation.address.city}, ${aggregation.address.pincode}</td>
+        </tr>
+      </table>
+
+      `,
+    });
+  
+    console.log("Message sent: %s", info.messageId);
     return aggregation.save();
+
   }
 
   async findAllUser() {
@@ -184,10 +233,10 @@ export class UserService {
   }
 
   async deleteUser(_id: string): Promise<User> {
-    return this.userModel.findOneAndDelete({ _id: _id});
+    return this.userModel.findOneAndDelete({ _id: _id });
   }
 
-  async findEmail(email: string): Promise<User>{
+  async findEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email: email });
   }
 }
