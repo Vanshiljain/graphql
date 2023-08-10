@@ -188,6 +188,11 @@ export class User extends Document {
     @Field(()=> Number, { nullable: true })
     @Prop()
     public mobileNumber?: number;
+
+    @Field(()=> String, { nullable: true })
+    @Prop()
+    githubId?: string;
+
 }
 
 @InputType()
@@ -240,5 +245,23 @@ export class UserInput {
 
     @Field(()=> Number, { nullable: true })
     mobileNumber?: number;
+
+    @Field(()=> String, { nullable: true })
+    githubId?: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);
+
+@ObjectType()
+export class AccessTokenResponse{
+    @Field(()=> String, { nullable: true })
+    access_token?: string;
+
+    @Field(()=> String, { nullable: true })
+    token_type?: string;
+}
+
+@ObjectType()
+export class GithubAuthResponse{
+    @Field(()=> String, { nullable: true })
+    githubAuthUrl?: string;
+}

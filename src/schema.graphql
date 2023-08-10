@@ -55,6 +55,7 @@ type User {
   privateKey: String
   countryCode: String
   mobileNumber: Float
+  githubId: String
 }
 
 """This denote user gender"""
@@ -68,6 +69,15 @@ enum Role {
   admin
   user
   superadmin
+}
+
+type AccessTokenResponse {
+  access_token: String
+  token_type: String
+}
+
+type GithubAuthResponse {
+  githubAuthUrl: String
 }
 
 type Author {
@@ -143,6 +153,8 @@ type Mutation {
   createUser(payload: UserInput!): User!
   updateUser(email: String!, payload: UserInput!): User!
   deleteUser(id: String!): User!
+  githubLogin: GithubAuthResponse!
+  githubCodeExchange(code: String!): AccessTokenResponse!
   createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
   updateBook(bookInput: BookInput!, _id: String!): Book!
   login(email: String!, password: String!): String!
@@ -167,6 +179,7 @@ input UserInput {
   privateKey: String
   countryCode: String
   mobileNumber: Float
+  githubId: String
 }
 
 input BookInput {

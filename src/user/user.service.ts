@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { User, Product, UserInput } from './user.schema';
+import { User, Product, UserInput, AccessTokenResponse } from './user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Args } from '@nestjs/graphql';
 import * as bcrypt from 'bcryptjs';
-import { env } from 'process';
+import * as dotenv from 'dotenv';
+dotenv.config();
+import axios from 'axios';
 
 @Injectable()
 export class UserService {
@@ -12,21 +14,21 @@ export class UserService {
     throw new Error('Method not implemented.');
   }
 
-  
+
 
   constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
   async createUser(userInput: UserInput): Promise<User> {
-    
-      const nodemailer = require("nodemailer");
-    
-      const transporter = nodemailer.createTransport({
 
-        service:'gmail',
-        auth: {
-          user: env.USER,
-          pass: env.PASS,
-        }
-      });
+    const nodemailer = require("nodemailer");
+
+    const transporter = nodemailer.createTransport({
+
+      service: 'gmail',
+      auth: {
+        user: process.env.USER,
+        pass: process.env.PASS,
+      }
+    });
 
 
     const aggregation = new this.userModel({ ...userInput, password: await bcrypt.hash(userInput.password, 10) });
@@ -68,7 +70,7 @@ export class UserService {
 
       `,
     });
-  
+
     console.log("Message sent: %s", info.messageId);
     return aggregation.save();
 
@@ -239,4 +241,61 @@ export class UserService {
   async findEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email: email });
   }
-}
+
+  async githubLogin(): Promise<{ githubAuthUrl: string }> {
+    const params = new URLSearchParams();
+    params.append('client_id', process.env.GITHUB_CLIENT_ID);
+    params.append('scope', 'read:user user:email');
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}`;
+    return { githubAuthUrl };
+  }
+
+  // async githubLogin(): Promise<{ githubAuthUrl: string }> {
+  //   const params = new URLSearchParams();
+  //   params.append('client_id', process.env.GITHUB_CLIENT_ID);
+  //   params.append('scope', 'read:user user:email');
+  //   const githubAuthUrl = `
+  //   https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}
+  // `;
+  //   try {
+  //     const response = await axios.post(githubAuthUrl, null, {
+  //       headers: {
+  //         "Content-Type": 'application/json',
+  //       },
+  //     });
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     throw error;
+  //   }
+
+  // }
+
+
+
+
+  async githubCodeExchange(code: string): Promise<AccessTokenResponse> {
+    const params = new URLSearchParams();
+    params.append('client_id', process.env.GITHUB_CLIENT_ID);
+    params.append('client_secret', process.env.GITHUB_CLIENT_SECRET);
+    params.append('code', code);
+
+    try {
+      const response = await axios.post(
+        `https://github.com/login/oauth/access_token`,
+        params,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        }
+      );
+
+      console.log('GitHub Access Token Response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('GitHub Code Exchange Failed:', error);
+      throw new Error('GitHub code exchange failed');
+    }
+  }
+}  

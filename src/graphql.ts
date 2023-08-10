@@ -73,6 +73,7 @@ export interface UserInput {
     privateKey?: Nullable<string>;
     countryCode?: Nullable<string>;
     mobileNumber?: Nullable<number>;
+    githubId?: Nullable<string>;
 }
 
 export interface BookInput {
@@ -147,6 +148,16 @@ export interface User {
     privateKey?: Nullable<string>;
     countryCode?: Nullable<string>;
     mobileNumber?: Nullable<number>;
+    githubId?: Nullable<string>;
+}
+
+export interface AccessTokenResponse {
+    access_token?: Nullable<string>;
+    token_type?: Nullable<string>;
+}
+
+export interface GithubAuthResponse {
+    githubAuthUrl?: Nullable<string>;
 }
 
 export interface Author {
@@ -185,6 +196,8 @@ export interface IMutation {
     createUser(payload: UserInput): User | Promise<User>;
     updateUser(email: string, payload: UserInput): User | Promise<User>;
     deleteUser(id: string): User | Promise<User>;
+    githubLogin(): GithubAuthResponse | Promise<GithubAuthResponse>;
+    githubCodeExchange(code: string): AccessTokenResponse | Promise<AccessTokenResponse>;
     createBook(title: string, author: InputBook[], price: number, year: number, userId: string): Book | Promise<Book>;
     updateBook(bookInput: BookInput, _id: string): Book | Promise<Book>;
     login(email: string, password: string): string | Promise<string>;

@@ -1,11 +1,11 @@
 import { Args, Float, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { User, Courses, Role, Product, UserInput } from './user.schema';
+import { User, Courses, Role, Product, UserInput, GithubAuthResponse, AccessTokenResponse } from './user.schema';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
 import { ID } from 'graphql-ws';
-import e from 'express';
+
 
 @Resolver()
 export class UserResolver {
@@ -81,5 +81,17 @@ export class UserResolver {
   @Query(() => User)
   async findEmail(@Args('email') email: string): Promise<User> {
     return await this.userService.findOne(email);
+  }
+
+  // mutation for github login
+  @Mutation(() => GithubAuthResponse)
+  async githubLogin(): Promise<{ githubAuthUrl: string }> {
+    return await this.userService.githubLogin();
+  }
+
+  @Mutation(() => AccessTokenResponse)
+  async githubCodeExchange(@Args('code') code: string): Promise<AccessTokenResponse> {
+    const accessTokenResponse = await this.userService.githubCodeExchange(code);
+    return accessTokenResponse;
   }
 }
