@@ -6,7 +6,12 @@ import { Args } from '@nestjs/graphql';
 import * as bcrypt from 'bcryptjs';
 import * as dotenv from 'dotenv';
 dotenv.config();
+import { Octokit } from '@octokit/rest';
+import { createAppAuth } from '@octokit/auth-app';
 import axios from 'axios';
+
+
+
 
 @Injectable()
 export class UserService {
@@ -49,14 +54,14 @@ export class UserService {
       html: `
       <h1>User registered successfully!</h1>
       <table border="1">
-        <tr>
+      <tr>
           <th>Name</th>
           <th>email</th>
           <th>Username</th>
           <th>age</th>
           <th>mobile number</th>
           <th>Address</th>
-        
+          
         </tr>
         <tr>
           <td>${aggregation.name}</td>
@@ -65,8 +70,8 @@ export class UserService {
           <td>${aggregation.age}</td>
           <td>${aggregation.mobileNumber}</td>
           <td>${aggregation.address.mainAddress}, ${aggregation.address.city}, ${aggregation.address.pincode}</td>
-        </tr>
-      </table>
+          </tr>
+          </table>
 
       `,
     });
@@ -104,7 +109,7 @@ export class UserService {
           username: 1,
           email: 1,
           password: 1,
-
+          
           completedCourses: {
             $filter: {
               input: "$courses",
@@ -191,7 +196,7 @@ export class UserService {
     return result[0].totalSumPrice;
   }
 
-
+  
   async getAllCourses() {
     return this.userModel.aggregate([
       {
@@ -246,7 +251,8 @@ export class UserService {
     const params = new URLSearchParams();
     params.append('client_id', process.env.GITHUB_CLIENT_ID);
     params.append('scope', 'read:user user:email');
-    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}`;
+    params.append('response_type', 'code');
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&${params.toString()}`;
     return { githubAuthUrl };
   }
 
@@ -272,30 +278,52 @@ export class UserService {
   // }
 
 
+  // async githubCodeExchange(code: string): Promise<AccessTokenResponse> {
+  //   const params = new URLSearchParams();
+  //   params.append('client_id', process.env.GITHUB_CLIENT_ID);
+  //   params.append('client_secret', process.env.GITHUB_CLIENT_SECRET);
+  //   params.append('code', code);
 
+  //   try {
+  //     const response = await axios.post(
+  //       `https://github.com/login/oauth/access_token`,
+  //       params,
+  //       {
+  //         headers: {
+  //           Accept: 'application/json',
+  //         },
+  //       }
+  //     );
+
+  //     console.log('GitHub Access Token Response:', response.data);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error('GitHub Code Exchange Failed:', error);
+  //     throw new Error('GitHub code exchange failed');
+  //   }
+  // }  
 
   async githubCodeExchange(code: string): Promise<AccessTokenResponse> {
-    const params = new URLSearchParams();
-    params.append('client_id', process.env.GITHUB_CLIENT_ID);
-    params.append('client_secret', process.env.GITHUB_CLIENT_SECRET);
-    params.append('code', code);
-
-    try {
-      const response = await axios.post(
-        `https://github.com/login/oauth/access_token`,
-        params,
-        {
-          headers: {
-            Accept: 'application/json',
-          },
-        }
-      );
-
+    try { 
+      const clientId = process.env.GITHUB_CLIENT_ID;
+      const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+      const redirectUri = process.env.REDIRECT_URI;
+  
+      const response = await axios.post(`https://github.com/login/oauth/access_token`, null, {
+        params: {
+          client_id: clientId,
+          client_secret: clientSecret,
+          code: code,
+          redirect_uri: redirectUri,
+        },
+        headers: {
+          Accept: 'application/json',
+        },
+      });
       console.log('GitHub Access Token Response:', response.data);
       return response.data;
     } catch (error) {
-      console.error('GitHub Code Exchange Failed:', error);
       throw new Error('GitHub code exchange failed');
     }
-  }
-}  
+  } 
+}

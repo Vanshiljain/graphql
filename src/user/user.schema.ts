@@ -258,6 +258,15 @@ export class AccessTokenResponse{
 
     @Field(()=> String, { nullable: true })
     token_type?: string;
+
+    @Field(()=> String, { nullable: true })
+    refresh_token?: string;
+
+    @Field(()=> String, { nullable: true })
+    scope?: string;
+
+    @Field(()=> String, { nullable: true })
+    expires_in?: string;
 }
 
 @ObjectType()

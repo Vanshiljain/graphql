@@ -154,6 +154,9 @@ export interface User {
 export interface AccessTokenResponse {
     access_token?: Nullable<string>;
     token_type?: Nullable<string>;
+    refresh_token?: Nullable<string>;
+    scope?: Nullable<string>;
+    expires_in?: Nullable<string>;
 }
 
 export interface GithubAuthResponse {

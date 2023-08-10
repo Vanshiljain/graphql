@@ -94,4 +94,5 @@ export class UserResolver {
     const accessTokenResponse = await this.userService.githubCodeExchange(code);
     return accessTokenResponse;
   }
+  
 }
