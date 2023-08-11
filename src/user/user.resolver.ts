@@ -83,16 +83,4 @@ export class UserResolver {
     return await this.userService.findOne(email);
   }
 
-  // mutation for github login
-  @Mutation(() => GithubAuthResponse)
-  async githubLogin(): Promise<{ githubAuthUrl: string }> {
-    return await this.userService.githubLogin();
-  }
-
-  @Mutation(() => AccessTokenResponse)
-  async githubCodeExchange(@Args('code') code: string): Promise<AccessTokenResponse> {
-    const accessTokenResponse = await this.userService.githubCodeExchange(code);
-    return accessTokenResponse;
-  }
-  
 }

@@ -155,7 +155,6 @@ export interface AccessTokenResponse {
     access_token?: Nullable<string>;
     token_type?: Nullable<string>;
     refresh_token?: Nullable<string>;
-    scope?: Nullable<string>;
     expires_in?: Nullable<string>;
 }
 
@@ -181,6 +180,18 @@ export interface Book {
     authorId?: Nullable<string>;
 }
 
+export interface GitHubUserDetails {
+    _id: string;
+    login?: Nullable<string>;
+    email?: Nullable<string>;
+    name?: Nullable<string>;
+    githubUserMetadata?: Nullable<JSONObject>;
+    access_token?: Nullable<string>;
+    token_type?: Nullable<string>;
+    refresh_token?: Nullable<string>;
+    expires_in?: Nullable<number>;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     findAllUser(role: string, minAge: number, maxAge: number): User[] | Promise<User[]>;
@@ -201,6 +212,7 @@ export interface IMutation {
     deleteUser(id: string): User | Promise<User>;
     githubLogin(): GithubAuthResponse | Promise<GithubAuthResponse>;
     githubCodeExchange(code: string): AccessTokenResponse | Promise<AccessTokenResponse>;
+    getGithubUser(accessToken: string): GitHubUserDetails | Promise<GitHubUserDetails>;
     createBook(title: string, author: InputBook[], price: number, year: number, userId: string): Book | Promise<Book>;
     updateBook(bookInput: BookInput, _id: string): Book | Promise<Book>;
     login(email: string, password: string): string | Promise<string>;
@@ -208,4 +220,5 @@ export interface IMutation {
     checkDate(date: string): string | Promise<string>;
 }
 
+export type JSONObject = any;
 type Nullable<T> = T | null;

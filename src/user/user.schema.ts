@@ -263,9 +263,6 @@ export class AccessTokenResponse{
     refresh_token?: string;
 
     @Field(()=> String, { nullable: true })
-    scope?: string;
-
-    @Field(()=> String, { nullable: true })
     expires_in?: string;
 }
 
@@ -274,3 +271,4 @@ export class GithubAuthResponse{
     @Field(()=> String, { nullable: true })
     githubAuthUrl?: string;
 }
+

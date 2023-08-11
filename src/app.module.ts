@@ -18,6 +18,10 @@ import { jwtConstants } from './auth/constants';
 import { TokenModule } from './token/token.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { IsoDateModule } from './iso-date/iso-date.module';
+import { GithubLoginService } from './github_login/github_login.service';
+import { GithubLoginResolver } from './github_login/github_login.resolver';
+import { GithubLoginModule } from './github_login/github_login.module';
+import { GitHubUserDetailsSchema } from './github_login/github_login.schema';
 
 @Module({
   imports: [
@@ -32,6 +36,7 @@ import { IsoDateModule } from './iso-date/iso-date.module';
     }),
     MongooseModule.forRoot('mongodb://localhost:27017/mydb'),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: 'GitHubUser', schema: GitHubUserDetailsSchema }]),
     UserModule,
     BookModule,
     AuthModule,
@@ -41,9 +46,10 @@ import { IsoDateModule } from './iso-date/iso-date.module';
     }),
     TokenModule,
     ScheduleModule.forRoot(),
-    IsoDateModule,   
+    IsoDateModule,
+    GithubLoginModule,   
   ],
   controllers: [AppController],
-  providers: [AppService, AppResolver, UserResolver, UserService, AuthService],
+  providers: [AppService, AppResolver, UserResolver, UserService, AuthService, GithubLoginService, GithubLoginResolver],
 })
 export class AppModule { }

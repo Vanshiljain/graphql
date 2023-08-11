@@ -75,7 +75,6 @@ type AccessTokenResponse {
   access_token: String
   token_type: String
   refresh_token: String
-  scope: String
   expires_in: String
 }
 
@@ -100,6 +99,23 @@ type Book {
   authorCollection: Author
   authorId: ID
 }
+
+type GitHubUserDetails {
+  _id: ID!
+  login: String
+  email: String
+  name: String
+  githubUserMetadata: JSONObject
+  access_token: String
+  token_type: String
+  refresh_token: String
+  expires_in: Float
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
 
 input InputCourses {
   courseName: String
@@ -158,6 +174,7 @@ type Mutation {
   deleteUser(id: String!): User!
   githubLogin: GithubAuthResponse!
   githubCodeExchange(code: String!): AccessTokenResponse!
+  getGithubUser(accessToken: String!): GitHubUserDetails!
   createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
   updateBook(bookInput: BookInput!, _id: String!): Book!
   login(email: String!, password: String!): String!
