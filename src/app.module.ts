@@ -22,6 +22,7 @@ import { GithubLoginService } from './github_login/github_login.service';
 import { GithubLoginResolver } from './github_login/github_login.resolver';
 import { GithubLoginModule } from './github_login/github_login.module';
 import { GitHubUserDetailsSchema } from './github_login/github_login.schema';
+import { GithubRepositoryModule } from './github_repository/github_repository.module';
 
 @Module({
   imports: [
@@ -47,7 +48,8 @@ import { GitHubUserDetailsSchema } from './github_login/github_login.schema';
     TokenModule,
     ScheduleModule.forRoot(),
     IsoDateModule,
-    GithubLoginModule,   
+    GithubLoginModule,
+    GithubRepositoryModule,   
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService, GithubLoginService, GithubLoginResolver],

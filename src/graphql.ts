@@ -192,6 +192,15 @@ export interface GitHubUserDetails {
     expires_in?: Nullable<number>;
 }
 
+export interface GitHubRepository {
+    user_id: string;
+    id?: Nullable<string>;
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    url?: Nullable<string>;
+    githubRepositoryMetadata?: Nullable<JSONObject>;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     findAllUser(role: string, minAge: number, maxAge: number): User[] | Promise<User[]>;
@@ -204,6 +213,7 @@ export interface IQuery {
     findEmail(email: string): User | Promise<User>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
+    githubRepositories(accessToken: string): GitHubRepository[] | Promise<GitHubRepository[]>;
 }
 
 export interface IMutation {
