@@ -1,14 +1,15 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { GraphQLJSONObject } from 'graphql-type-json';
-import { Document, ObjectId } from 'mongoose';
+import mongoose, { Document, ObjectId } from 'mongoose';
 
 @ObjectType()
 @Schema()
 export class GitHubRepository extends Document {
 
     @Field(() => ID)
-    user_id: ObjectId;
+    @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+    user_id: mongoose.Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop()

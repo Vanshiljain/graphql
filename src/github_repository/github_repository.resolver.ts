@@ -9,7 +9,7 @@ export class GithubRepositoryResolver {
     ) { }
 
     @Query(() => [GitHubRepository])
-    async githubRepositories(@Args('accessToken') accessToken: string): Promise<GitHubRepository[]> {
-        return this.githubRepositoryService.getUserRepositories(accessToken);
+    async githubRepositories(@Args('username') username: string): Promise<GitHubRepository[]> {
+        return this.githubRepositoryService.getUserRepositories(username);
     }
 }

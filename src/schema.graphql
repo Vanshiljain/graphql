@@ -176,7 +176,7 @@ type Query {
   getGithubUserDetails(username: String!): GitHubUserDetails!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
-  githubRepositories(accessToken: String!): [GitHubRepository!]!
+  githubRepositories(username: String!): [GitHubRepository!]!
 }
 
 type Mutation {

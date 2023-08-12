@@ -214,7 +214,7 @@ export interface IQuery {
     getGithubUserDetails(username: string): GitHubUserDetails | Promise<GitHubUserDetails>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
-    githubRepositories(accessToken: string): GitHubRepository[] | Promise<GitHubRepository[]>;
+    githubRepositories(username: string): GitHubRepository[] | Promise<GitHubRepository[]>;
 }
 
 export interface IMutation {

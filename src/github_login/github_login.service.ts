@@ -4,14 +4,10 @@ import { AccessTokenResponse } from 'src/user/user.schema';
 import { GitHubUserDetails } from './github_login.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { response } from 'express';
 
 
 @Injectable()
 export class GithubLoginService {
-
-
-
     constructor( @InjectModel('GitHubUser') private readonly GitHubUserDetails: Model<GitHubUserDetails> ) { }
     async githubLogin(): Promise<{ githubAuthUrl: string }> {
         const params = new URLSearchParams();
