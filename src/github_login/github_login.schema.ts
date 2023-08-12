@@ -10,8 +10,8 @@ export class GitHubUserDetails extends Document {
   _id: string;
 
   @Field(() => String, { nullable: true })
-  @Prop({ required: true })
-  login: string;
+  @Prop()
+  username: string;
 
   @Field(() => String, { nullable: true })
   @Prop()

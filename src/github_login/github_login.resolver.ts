@@ -2,6 +2,7 @@ import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { GithubLoginService } from './github_login.service';
 import { GithubAuthResponse, AccessTokenResponse } from 'src/user/user.schema';
 import { GitHubUserDetails } from './github_login.schema';
+import { Query } from '@nestjs/graphql';
 
 @Resolver()
 export class GithubLoginResolver {
@@ -23,4 +24,9 @@ export class GithubLoginResolver {
       const githubUser = await this.GithubLoginService.getGithubUser(accessToken);
       return githubUser;
     }
+
+    @Query(() => GitHubUserDetails)
+    async getGithubUserDetails(@Args('username') username: string): Promise<GitHubUserDetails> {
+        return this.GithubLoginService.getGithubUserDetails(username);
+    }  
 }

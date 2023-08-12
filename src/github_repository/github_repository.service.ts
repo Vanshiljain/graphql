@@ -21,7 +21,7 @@ export class GithubRepositoryService {
             console.log('GitHub User Repositories Response:', response.data);
 
             const repositories = response.data.map(repo => ({
-
+                id: repo.id,
                 name: repo.name,
                 description: repo.description,
                 url: repo.html_url,

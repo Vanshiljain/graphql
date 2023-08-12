@@ -182,7 +182,7 @@ export interface Book {
 
 export interface GitHubUserDetails {
     _id: string;
-    login?: Nullable<string>;
+    username?: Nullable<string>;
     email?: Nullable<string>;
     name?: Nullable<string>;
     githubUserMetadata?: Nullable<JSONObject>;
@@ -211,6 +211,7 @@ export interface IQuery {
     getAllCourses(): User[] | Promise<User[]>;
     findOne(email: string): User | Promise<User>;
     findEmail(email: string): User | Promise<User>;
+    getGithubUserDetails(username: string): GitHubUserDetails | Promise<GitHubUserDetails>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
     githubRepositories(accessToken: string): GitHubRepository[] | Promise<GitHubRepository[]>;

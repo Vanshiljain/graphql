@@ -120,7 +120,7 @@ export class GithubLoginService {
             },
         });
         const githubUser = new this.GitHubUserDetails({
-            login: userResponse.data.login,
+            username: userResponse.data.login,
             node_id: userResponse.data.node_id,
             email: userResponse.data.email,
             name: userResponse.data.name,
@@ -130,4 +130,10 @@ export class GithubLoginService {
         console.log('GitHub User Response:', userResponse.data);
         return await githubUser.save();
     }
+
+    async getGithubUserDetails(username: string): Promise<GitHubUserDetails> {
+        const githubUser = await this.GitHubUserDetails.findOne({ username: username });
+        return githubUser;
+    }
+
 }

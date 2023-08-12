@@ -102,7 +102,7 @@ type Book {
 
 type GitHubUserDetails {
   _id: ID!
-  login: String
+  username: String
   email: String
   name: String
   githubUserMetadata: JSONObject
@@ -173,6 +173,7 @@ type Query {
   getAllCourses: [User!]!
   findOne(email: String!): User!
   findEmail(email: String!): User!
+  getGithubUserDetails(username: String!): GitHubUserDetails!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
   githubRepositories(accessToken: String!): [GitHubRepository!]!
