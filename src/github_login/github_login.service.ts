@@ -95,6 +95,7 @@ export class GithubLoginService {
             });
             console.log('GitHub User Response:', userResponse.data);
             const githubUser = new this.GitHubUserDetails({
+                username: userResponse.data.login,
                 login: userResponse.data.login,
                 node_id: userResponse.data.node_id,
                 email: userResponse.data.email,
@@ -113,6 +114,7 @@ export class GithubLoginService {
     }
      
 
+    //also implement this method in above code exchange method
     async getGithubUser(accessToken: string): Promise<GitHubUserDetails> {
         const userResponse = await axios.get('https://api.github.com/user', {
             headers: {
@@ -135,5 +137,5 @@ export class GithubLoginService {
         const githubUser = await this.GitHubUserDetails.findOne({ username: username });
         return githubUser;
     }
-
+    
 }
