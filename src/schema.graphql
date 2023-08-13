@@ -126,6 +126,13 @@ type GitHubRepository {
   githubRepositoryMetadata: JSONObject
 }
 
+type GitHubUserOrganization {
+  id: Float
+  name: String
+  description: String
+  url: String
+}
+
 input InputCourses {
   courseName: String
   courseStatus: String
@@ -177,6 +184,7 @@ type Query {
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
   githubRepositories(username: String!): [GitHubRepository!]!
+  githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
 }
 
 type Mutation {

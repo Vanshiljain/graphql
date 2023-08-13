@@ -201,6 +201,13 @@ export interface GitHubRepository {
     githubRepositoryMetadata?: Nullable<JSONObject>;
 }
 
+export interface GitHubUserOrganization {
+    id?: Nullable<number>;
+    name?: Nullable<string>;
+    description?: Nullable<string>;
+    url?: Nullable<string>;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     findAllUser(role: string, minAge: number, maxAge: number): User[] | Promise<User[]>;
@@ -215,6 +222,7 @@ export interface IQuery {
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
     githubRepositories(username: string): GitHubRepository[] | Promise<GitHubRepository[]>;
+    githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
 }
 
 export interface IMutation {

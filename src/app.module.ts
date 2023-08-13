@@ -23,6 +23,8 @@ import { GithubLoginResolver } from './github_login/github_login.resolver';
 import { GithubLoginModule } from './github_login/github_login.module';
 import { GitHubUserDetailsSchema } from './github_login/github_login.schema';
 import { GithubRepositoryModule } from './github_repository/github_repository.module';
+import { GithubUserOrganizationModule } from './github_user_organization/github_user_organization.module';
+import { GitHubUserOrganization, GitHubUserOrganizationSchema } from './github_user_organization/github_user_organization.schema';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { GithubRepositoryModule } from './github_repository/github_repository.mo
     MongooseModule.forRoot('mongodb://localhost:27017/mydb'),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: 'GitHubUser', schema: GitHubUserDetailsSchema }]),
+    MongooseModule.forFeature([{ name: 'GitHubUserOrganization', schema: GitHubUserOrganizationSchema }]),
     UserModule,
     BookModule,
     AuthModule,
@@ -49,7 +52,8 @@ import { GithubRepositoryModule } from './github_repository/github_repository.mo
     ScheduleModule.forRoot(),
     IsoDateModule,
     GithubLoginModule,
-    GithubRepositoryModule,   
+    GithubRepositoryModule,
+    GithubUserOrganizationModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService, GithubLoginService, GithubLoginResolver],
