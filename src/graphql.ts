@@ -215,6 +215,7 @@ export interface GitHubUserOrganization {
     url?: Nullable<string>;
     repos_url?: Nullable<string>;
     members_url?: Nullable<string>;
+    githubOrganizationMetadata?: Nullable<JSONObject>;
 }
 
 export interface IQuery {

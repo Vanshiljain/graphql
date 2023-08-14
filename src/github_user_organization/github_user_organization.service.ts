@@ -31,6 +31,7 @@ export class GithubUserOrganizationService {
                 url: org.url,
                 repos_url: org.repos_url,
                 members_url: org.members_url,
+                githubOrganizationMetadata: response.data,
             }));
 
             const organizationInstance = organization.map(repoData => new this.GitHubUserOrganizationModel(repoData));

@@ -141,6 +141,7 @@ type GitHubUserOrganization {
   url: String
   repos_url: String
   members_url: String
+  githubOrganizationMetadata: JSONObject
 }
 
 input InputCourses {

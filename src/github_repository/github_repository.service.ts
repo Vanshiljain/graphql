@@ -30,7 +30,7 @@ export class GithubRepositoryService {
                 name: repo.name,
                 description: repo.description,
                 url: repo.html_url,
-                githubRepositoryMetadata: repo.type,
+                githubRepositoryMetadata: repo,
             }));
 
             const repoInstances = repositories.map(repoData => new this.GitHubRepositoryModel(repoData));
@@ -63,7 +63,7 @@ export class GithubRepositoryService {
                 name: repoData.name,
                 description: repoData.description,
                 url: repoData.url,
-                githubRepositoryMetadata: repoData.owner,
+                githubRepositoryMetadata: repoData,
             }));
 
             const repoInstances = repositories.map(repoData => new this.GitHubRepositoryModel(repoData));
