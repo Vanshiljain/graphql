@@ -203,9 +203,12 @@ export interface GitHubRepository {
 
 export interface GitHubUserOrganization {
     id?: Nullable<number>;
-    name?: Nullable<string>;
-    description?: Nullable<string>;
+    user_id: string;
+    org_name?: Nullable<string>;
+    node_id?: Nullable<string>;
     url?: Nullable<string>;
+    repos_url?: Nullable<string>;
+    members_url?: Nullable<string>;
 }
 
 export interface IQuery {

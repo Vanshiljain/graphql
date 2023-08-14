@@ -14,7 +14,7 @@ export class GithubUserOrganizationService {
     
     async getUserOrganization(username: string): Promise<GitHubUserOrganization[]> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        console.log('GitHub User:', user);
+        // console.log('GitHub User:', user);
     
         try {
             const response = await axios.get('https://api.github.com/user/orgs', {
@@ -22,14 +22,15 @@ export class GithubUserOrganizationService {
                     Authorization: `Bearer ${user.access_token}`,
                 },
             });
-            // console.log('GitHub User Repositories Response:', response.data);
 
             const organization = response.data.map(org => ({
                 user_id: user._id,
-                // id: org.id,
-                // name: org.name,
-                // description: org.description,
-                // url: org.html_url,
+                org_name: org.login,
+                id: org.id,
+                node_id: org.node_id,
+                url: org.url,
+                repos_url: org.repos_url,
+                members_url: org.members_url,
             }));
 
             const organizationInstance = organization.map(repoData => new this.GitHubUserOrganizationModel(repoData));

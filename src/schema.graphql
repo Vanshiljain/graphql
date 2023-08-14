@@ -128,9 +128,12 @@ type GitHubRepository {
 
 type GitHubUserOrganization {
   id: Float
-  name: String
-  description: String
+  user_id: ID!
+  org_name: String
+  node_id: String
   url: String
+  repos_url: String
+  members_url: String
 }
 
 input InputCourses {
