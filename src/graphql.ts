@@ -19,6 +19,11 @@ export enum Role {
     superadmin = "superadmin"
 }
 
+export enum RepositoryType {
+    UserRepo = "UserRepo",
+    OrganizationRepo = "OrganizationRepo"
+}
+
 export interface InputCourses {
     courseName?: Nullable<string>;
     courseStatus?: Nullable<string>;
@@ -194,6 +199,7 @@ export interface GitHubUserDetails {
 
 export interface GitHubRepository {
     user_id: string;
+    repository_type: RepositoryType;
     id?: Nullable<string>;
     name?: Nullable<string>;
     description?: Nullable<string>;
@@ -225,6 +231,7 @@ export interface IQuery {
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
     githubRepositories(username: string): GitHubRepository[] | Promise<GitHubRepository[]>;
+    githubOrganizationRepositories(username: string, org_name: string): GitHubRepository[] | Promise<GitHubRepository[]>;
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
 }
 

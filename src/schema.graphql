@@ -119,11 +119,18 @@ scalar JSONObject
 
 type GitHubRepository {
   user_id: ID!
+  repository_type: RepositoryType!
   id: String
   name: String
   description: String
   url: String
   githubRepositoryMetadata: JSONObject
+}
+
+"""This denote repository type"""
+enum RepositoryType {
+  UserRepo
+  OrganizationRepo
 }
 
 type GitHubUserOrganization {
@@ -187,6 +194,7 @@ type Query {
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
   githubRepositories(username: String!): [GitHubRepository!]!
+  githubOrganizationRepositories(username: String!, org_name: String!): [GitHubRepository!]!
   githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
 }
 

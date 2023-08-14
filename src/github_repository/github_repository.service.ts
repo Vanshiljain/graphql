@@ -1,7 +1,7 @@
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { GitHubRepository } from './github_repository.schema';
+import { GitHubRepository, RepositoryType } from './github_repository.schema';
 import axios from 'axios';
 import { GithubLoginService } from 'src/github_login/github_login.service';
 
@@ -15,7 +15,7 @@ export class GithubRepositoryService {
     async getUserRepositories(username: string): Promise<GitHubRepository[]> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
         console.log('GitHub User:', user);
-    
+
         try {
             const response = await axios.get('https://api.github.com/user/repos', {
                 headers: {
@@ -30,6 +30,7 @@ export class GithubRepositoryService {
                 name: repo.name,
                 description: repo.description,
                 url: repo.html_url,
+                githubRepositoryMetadata: repo.type,
             }));
 
             const repoInstances = repositories.map(repoData => new this.GitHubRepositoryModel(repoData));
@@ -41,4 +42,39 @@ export class GithubRepositoryService {
             throw new Error('Failed to fetch user repositories');
         }
     }
+
+
+    async getOrganizationRepositories(username: string, org_name:string): Promise<GitHubRepository[]> {
+        const user = await this.githubLoginService.getGithubUserDetails(username);
+
+        try {
+            const response = await axios.get(`https://api.github.com/orgs/${org_name}/repos`, {
+                headers: {
+                    Authorization: `Bearer ${user.access_token}`,
+                },
+            });
+            // console.log('GitHub User Organizations Repositories Response:', response.data);
+
+
+            const repositories: GitHubRepository[] = response.data.map(repoData => ({
+                user_id: user._id,
+                repository_type: RepositoryType.OrganizationRepo,
+                id: repoData.id.toString(),
+                name: repoData.name,
+                description: repoData.description,
+                url: repoData.url,
+                githubRepositoryMetadata: repoData.owner,
+            }));
+
+            const repoInstances = repositories.map(repoData => new this.GitHubRepositoryModel(repoData));
+            await this.GitHubRepositoryModel.insertMany(repoInstances);
+
+            console.log('GitHub User Organizations Repositories Response:', repositories);
+            return repositories;
+        } catch (error) {
+            console.error('GitHub API Request Error:', error);
+            throw new Error('Failed to fetch user organizations repositories');
+        }
+    }
+
 }
