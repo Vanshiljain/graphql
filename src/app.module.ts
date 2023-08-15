@@ -24,7 +24,9 @@ import { GithubLoginModule } from './github_login/github_login.module';
 import { GitHubUserDetailsSchema } from './github_login/github_login.schema';
 import { GithubRepositoryModule } from './github_repository/github_repository.module';
 import { GithubUserOrganizationModule } from './github_user_organization/github_user_organization.module';
-import { GitHubUserOrganization, GitHubUserOrganizationSchema } from './github_user_organization/github_user_organization.schema';
+import { GitHubUserOrganizationSchema } from './github_user_organization/github_user_organization.schema';
+import { GithubPullModule } from './github_pull/github_pull.module';
+import { GitHubPullSchema } from './github_pull/github_pull.schema';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { GitHubUserOrganization, GitHubUserOrganizationSchema } from './github_u
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     MongooseModule.forFeature([{ name: 'GitHubUser', schema: GitHubUserDetailsSchema }]),
     MongooseModule.forFeature([{ name: 'GitHubUserOrganization', schema: GitHubUserOrganizationSchema }]),
+    MongooseModule.forFeature([{ name: 'GitHubPull', schema: GitHubPullSchema }]),
     UserModule,
     BookModule,
     AuthModule,
@@ -54,6 +57,7 @@ import { GitHubUserOrganization, GitHubUserOrganizationSchema } from './github_u
     GithubLoginModule,
     GithubRepositoryModule,
     GithubUserOrganizationModule,
+    GithubPullModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService, GithubLoginService, GithubLoginResolver],

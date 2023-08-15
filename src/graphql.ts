@@ -218,6 +218,13 @@ export interface GitHubUserOrganization {
     githubOrganizationMetadata?: Nullable<JSONObject>;
 }
 
+export interface GitHubPull {
+    github_pull_metadata?: Nullable<JSONObject>;
+    title: string;
+    url: string;
+    occurredAt: DateTime;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     findAllUser(role: string, minAge: number, maxAge: number): User[] | Promise<User[]>;
@@ -234,6 +241,7 @@ export interface IQuery {
     githubRepositories(username: string): GitHubRepository[] | Promise<GitHubRepository[]>;
     githubOrganizationRepositories(username: string, org_name: string): GitHubRepository[] | Promise<GitHubRepository[]>;
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
+    getPullRequests(username: string, repo_name: string): GitHubPull[] | Promise<GitHubPull[]>;
 }
 
 export interface IMutation {
@@ -251,4 +259,5 @@ export interface IMutation {
 }
 
 export type JSONObject = any;
+export type DateTime = any;
 type Nullable<T> = T | null;
