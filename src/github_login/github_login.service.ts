@@ -103,7 +103,12 @@ export class GithubLoginService {
                 expires_in: Date.now() + (response.data.expires_in * 1000)
             });
             await githubUser.save();
-            return response.data;
+            const responseDataWithUsername = {
+                ...response.data,
+                username: userResponse.data.login,
+              };
+          
+              return responseDataWithUsername;
         } catch (error) {
             throw new Error('GitHub code exchange failed');
         }

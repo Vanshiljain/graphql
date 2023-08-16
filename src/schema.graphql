@@ -73,6 +73,7 @@ enum Role {
 
 type AccessTokenResponse {
   access_token: String
+  username: String
   token_type: String
   refresh_token: String
   expires_in: String

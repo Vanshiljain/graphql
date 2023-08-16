@@ -257,6 +257,9 @@ export class AccessTokenResponse{
     access_token?: string;
 
     @Field(()=> String, { nullable: true })
+    username?: string;
+    
+    @Field(()=> String, { nullable: true })
     token_type?: string;
 
     @Field(()=> String, { nullable: true })

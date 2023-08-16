@@ -158,6 +158,7 @@ export interface User {
 
 export interface AccessTokenResponse {
     access_token?: Nullable<string>;
+    username?: Nullable<string>;
     token_type?: Nullable<string>;
     refresh_token?: Nullable<string>;
     expires_in?: Nullable<string>;
