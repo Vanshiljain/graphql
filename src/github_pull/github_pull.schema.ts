@@ -54,5 +54,4 @@ export class GitHubPull extends Document {
     @Prop()
     state: string;
 }
-
 export const GitHubPullSchema = SchemaFactory.createForClass(GitHubPull);
