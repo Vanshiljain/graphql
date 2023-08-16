@@ -119,5 +119,13 @@ export class GithubPullService {
       throw new Error("Failed to fetch pull requests");
     }
   }
+
+  async getPullRequestFromDb(username: string): Promise<GitHubPull[]> {
+    const user = await this.githubLoginService.getGithubUserDetails(username);
+    const pullRequests = await this.GitHubPullModel.find({ user_id: user._id });
+    console.log('Pull Requests from DB:', pullRequests);
+    return pullRequests;
+  }
+  
 }
 
