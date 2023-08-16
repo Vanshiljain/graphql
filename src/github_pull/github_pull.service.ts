@@ -71,6 +71,8 @@ export class GithubPullService {
           github_pull_metadata: pullRequest,
           user_id: user._id,
           repo_id: repo_id,
+          repo_name: repo_name,
+          repo_owner: username,
         };
       });
 
