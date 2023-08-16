@@ -1,4 +1,3 @@
-// github_pull.resolver.ts
 import { Resolver, Query, Args } from "@nestjs/graphql";
 import { GitHubPull } from "./github_pull.schema";
 import { GithubPullService } from "./github_pull.service";
