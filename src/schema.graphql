@@ -149,6 +149,10 @@ type GitHubPull {
   title: String!
   url: String!
   occurredAt: DateTime!
+  user_id: ID!
+  repo_id: ID!
+  repo_owner: String!
+  repo_name: String!
 }
 
 """
@@ -209,7 +213,7 @@ type Query {
   githubRepositories(username: String!): [GitHubRepository!]!
   githubOrganizationRepositories(username: String!, org_name: String!): [GitHubRepository!]!
   githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
-  getPullRequests(username: String!, repo_name: String!, username_for_repo: String!): [GitHubPull!]!
+  getPullRequests(username: String!, repo_name: String!): [GitHubPull!]!
 }
 
 type Mutation {
