@@ -10,8 +10,9 @@ export class GithubPullResolver {
     @Query(() => [GitHubPull])
     async getPullRequests(
         @Args("username") username: string,
-        @Args("repo_name") repoName: string
+        @Args("repo_name") repoName: string,
+        @Args("username_for_repo") username_for_repo: string
     ): Promise<GitHubPull[]> {
-        return this.githubPullService.getPullRequests(username, repoName);
+        return this.githubPullService.getPullRequests(username, repoName, username_for_repo);
     }
 }

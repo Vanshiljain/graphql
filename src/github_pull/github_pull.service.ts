@@ -8,12 +8,12 @@ import { GitHubPull } from "./github_pull.schema";
 export class GithubPullService {
     constructor(private readonly githubLoginService: GithubLoginService) {}
 
-    async getPullRequests(username: string, repo_name: string): Promise<GitHubPull[]> {
+    async getPullRequests(username: string, repo_name: string, username_for_rep: string ): Promise<GitHubPull[]> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
     
         const query = `
         query {
-          repositoryOwner(login: "${username}") {
+          repositoryOwner(login: "${username_for_rep}") {
             repository(name: "${repo_name}") {
               pullRequests(last: 10, orderBy: { field: CREATED_AT, direction: DESC }) {
                 edges {
@@ -40,7 +40,7 @@ export class GithubPullService {
                 },
             }
         );
-    
+        console.log(response.data.data.repositoryOwner.repository.pullRequests.edges);
         const repository = response.data.data.repositoryOwner.repository;
     
         if (!repository) {
