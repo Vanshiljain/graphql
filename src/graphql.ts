@@ -222,11 +222,15 @@ export interface GitHubPull {
     github_pull_metadata?: Nullable<JSONObject>;
     title: string;
     url: string;
-    occurredAt: DateTime;
+    createdAt: DateTime;
+    mergedAt: DateTime;
+    closedAt: DateTime;
+    updatedAt: DateTime;
     user_id: string;
     repo_id: string;
     repo_owner: string;
     repo_name: string;
+    state: string;
 }
 
 export interface IQuery {

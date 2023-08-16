@@ -7,7 +7,7 @@ import mongoose, { Document } from "mongoose";
 @Schema()
 export class GitHubPull extends Document {
     @Field(() => GraphQLJSONObject, { nullable: true })
-    @Prop({ type: Object})
+    @Prop({ type: Object })
     github_pull_metadata: object;
 
     @Field(() => String)
@@ -20,7 +20,19 @@ export class GitHubPull extends Document {
 
     @Field(() => Date)
     @Prop()
-    occurredAt: Date;
+    createdAt: Date;
+    
+    @Field(() => Date)
+    @Prop()
+    mergedAt: Date;
+
+    @Field(() => Date)
+    @Prop()
+    closedAt: Date;
+
+    @Field(() => Date)
+    @Prop()
+    updatedAt: Date;
 
     @Field(() => ID)
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
@@ -32,11 +44,15 @@ export class GitHubPull extends Document {
 
     @Field(() => String)
     @Prop()
-    repo_owner : string;
+    repo_owner: string;
 
     @Field(() => String)
     @Prop()
-    repo_name : string;
+    repo_name: string;
+
+    @Field(() => String)
+    @Prop()
+    state: string;
 }
 
 export const GitHubPullSchema = SchemaFactory.createForClass(GitHubPull);
