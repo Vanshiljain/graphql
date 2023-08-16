@@ -112,9 +112,7 @@ export class GithubPullService {
         repo_name: repo_name,
         repo_owner: username,
       }));
-
       await this.GitHubPullModel.insertMany(pullRequestsToSave);
-
       return pullRequests;
     } catch (error) {
       console.error("GitHub API Request Error:", error);
