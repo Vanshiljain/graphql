@@ -1,7 +1,7 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { GraphQLJSONObject } from "graphql-type-json";
-import { Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 @ObjectType()
 @Schema()
@@ -11,13 +11,32 @@ export class GitHubPull extends Document {
     github_pull_metadata: object;
 
     @Field(() => String)
+    @Prop()
     title: string;
 
     @Field(() => String)
+    @Prop()
     url: string;
 
     @Field(() => Date)
+    @Prop()
     occurredAt: Date;
+
+    @Field(() => ID)
+    @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+    user_id: mongoose.Types.ObjectId;
+
+    @Field(() => ID)
+    @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+    repo_id: mongoose.Types.ObjectId;
+
+    @Field(() => String)
+    @Prop()
+    repo_owner : string;
+
+    @Field(() => String)
+    @Prop()
+    repo_name : string;
 }
 
 export const GitHubPullSchema = SchemaFactory.createForClass(GitHubPull);
