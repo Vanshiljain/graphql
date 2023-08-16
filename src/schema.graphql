@@ -148,11 +148,15 @@ type GitHubPull {
   github_pull_metadata: JSONObject
   title: String!
   url: String!
-  occurredAt: DateTime!
+  createdAt: DateTime!
+  mergedAt: DateTime!
+  closedAt: DateTime!
+  updatedAt: DateTime!
   user_id: ID!
   repo_id: ID!
   repo_owner: String!
   repo_name: String!
+  state: String!
 }
 
 """
