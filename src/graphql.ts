@@ -233,6 +233,7 @@ export interface GitHubPull {
     repo_owner: string;
     repo_name: string;
     state: string;
+    number: number;
 }
 
 export interface IQuery {

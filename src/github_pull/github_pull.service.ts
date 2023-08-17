@@ -31,6 +31,7 @@ export class GithubPullService {
         nameWithOwner
         pullRequests(first: 10, orderBy: { direction: DESC, field: CREATED_AT }) {
           nodes {
+            number
             additions
             author {
               avatarUrl
@@ -112,6 +113,7 @@ export class GithubPullService {
         author_id: user._id,
         repo_name: repo_name,
         repo_owner: username,
+        number: pullRequest.number
       }));
       await this.GitHubPullModel.insertMany(pullRequestsToSave);
       return pullRequests;
