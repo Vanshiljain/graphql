@@ -16,7 +16,7 @@ export class GithubPullService {
 
   async getPullRequests(username: string, repo_name: string): Promise<GitHubPull[]> {
     const user = await this.githubLoginService.getGithubUserDetails(username);
-    const repo_id = await this.githubRepositoryService.getRepoIdByName(repo_name);
+    const repo = await this.githubRepositoryService.getRepoIdByName(repo_name);
 
     const query = `
     query {
@@ -107,8 +107,9 @@ export class GithubPullService {
         mergedAt: pullRequest.mergedAt,
         state: pullRequest.state,
         github_pull_metadata: pullRequest,
-        user_id: user._id,
-        repo_id: repo_id,
+        user_id: repo.user_id,
+        repo_id: repo._id,
+        author_id: user._id,
         repo_name: repo_name,
         repo_owner: username,
       }));

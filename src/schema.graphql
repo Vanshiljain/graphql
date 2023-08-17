@@ -155,6 +155,7 @@ type GitHubPull {
   updatedAt: DateTime!
   user_id: ID!
   repo_id: ID!
+  author_id: ID!
   repo_owner: String!
   repo_name: String!
   state: String!

@@ -42,6 +42,10 @@ export class GitHubPull extends Document {
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
     repo_id: mongoose.Types.ObjectId;
 
+    @Field(() => ID)
+    @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+    author_id: mongoose.Types.ObjectId;
+    
     @Field(() => String)
     @Prop()
     repo_owner: string;

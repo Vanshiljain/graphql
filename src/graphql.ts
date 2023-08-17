@@ -229,6 +229,7 @@ export interface GitHubPull {
     updatedAt: DateTime;
     user_id: string;
     repo_id: string;
+    author_id: string;
     repo_owner: string;
     repo_name: string;
     state: string;

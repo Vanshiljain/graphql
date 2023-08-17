@@ -77,12 +77,13 @@ export class GithubRepositoryService {
         }
     }
 
-    async getRepoIdByName(repo_name: string): Promise<string> {
+    async getRepoIdByName(repo_name: string): Promise<GitHubRepository> {
         const repo = await this.GitHubRepositoryModel.findOne({ name: repo_name });
         if (!repo) {
             throw new Error('Repo not found');
         }
-        return repo._id;
+        return repo;
     }
+    
 
 }
