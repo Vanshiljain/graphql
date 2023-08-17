@@ -125,7 +125,7 @@ export class GithubPullService {
 
   async getPullRequestFromDb(username: string): Promise<GitHubPull[] > {
     const user = await this.githubLoginService.getGithubUserDetails(username);
-    const pullRequests = await this.GitHubPullModel.find({ user_id: user._id });
+    const pullRequests = await this.GitHubPullModel.find({ author_id: user._id });
     console.log('Pull Requests from DB:', pullRequests);
     return pullRequests;
   }
