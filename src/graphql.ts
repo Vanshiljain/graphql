@@ -221,19 +221,19 @@ export interface GitHubUserOrganization {
 
 export interface GitHubPull {
     github_pull_metadata?: Nullable<JSONObject>;
-    title: string;
-    url: string;
-    createdAt: DateTime;
-    mergedAt: DateTime;
-    closedAt: DateTime;
-    updatedAt: DateTime;
-    user_id: string;
-    repo_id: string;
-    author_id: string;
-    repo_owner: string;
-    repo_name: string;
-    state: string;
-    number: number;
+    title?: Nullable<string>;
+    url?: Nullable<string>;
+    createdAt?: Nullable<DateTime>;
+    mergedAt?: Nullable<DateTime>;
+    closedAt?: Nullable<DateTime>;
+    updatedAt?: Nullable<DateTime>;
+    user_id?: Nullable<string>;
+    repo_id?: Nullable<string>;
+    author_id?: Nullable<string>;
+    repo_owner?: Nullable<string>;
+    repo_name?: Nullable<string>;
+    state?: Nullable<string>;
+    number?: Nullable<number>;
 }
 
 export interface IQuery {
@@ -253,7 +253,7 @@ export interface IQuery {
     githubOrganizationRepositories(username: string, org_name: string): GitHubRepository[] | Promise<GitHubRepository[]>;
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
     getPullRequests(username: string, repo_name: string): GitHubPull[] | Promise<GitHubPull[]>;
-    getPullRequestFromDb(username: string): GitHubPull | Promise<GitHubPull>;
+    getPullRequestFromDb(username: string): GitHubPull[] | Promise<GitHubPull[]>;
 }
 
 export interface IMutation {

@@ -10,55 +10,55 @@ export class GitHubPull extends Document {
     @Prop({ type: Object })
     github_pull_metadata: object;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     @Prop()
     title: string;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     @Prop()
     url: string;
 
-    @Field(() => Date)
+    @Field(() => Date, { nullable: true })
     @Prop()
     createdAt: Date;
     
-    @Field(() => Date)
+    @Field(() => Date, { nullable: true })
     @Prop()
     mergedAt: Date;
 
-    @Field(() => Date)
+    @Field(() => Date, { nullable: true })
     @Prop()
     closedAt: Date;
 
-    @Field(() => Date)
+    @Field(() => Date, { nullable: true })
     @Prop()
     updatedAt: Date;
 
-    @Field(() => ID)
+    @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
     user_id: mongoose.Types.ObjectId;
 
-    @Field(() => ID)
+    @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
     repo_id: mongoose.Types.ObjectId;
 
-    @Field(() => ID)
+    @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
     author_id: mongoose.Types.ObjectId;
     
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     @Prop()
     repo_owner: string;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     @Prop()
     repo_name: string;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     @Prop()
     state: string;
 
-    @Field(() => Number)
+    @Field(() => Number, { nullable: true })
     @Prop()
     number : number;
 }

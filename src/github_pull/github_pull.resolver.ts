@@ -14,8 +14,8 @@ export class GithubPullResolver {
         return this.githubPullService.getPullRequests(username, repoName);
     }
 
-    @Query(() => GitHubPull)
-    async getPullRequestFromDb(@Args("username") username: string): Promise<GitHubPull[]> {
+    @Query(() => [GitHubPull])
+    async getPullRequestFromDb(@Args("username") username: string): Promise<GitHubPull[] | null> {
         return this.githubPullService.getPullRequestFromDb(username);
     }
         
