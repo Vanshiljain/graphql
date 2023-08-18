@@ -79,7 +79,6 @@ export class GithubPullService {
     }
   `;
   
-
     try {
       const response = await axios.post(
         "https://api.github.com/graphql",
@@ -129,6 +128,4 @@ export class GithubPullService {
     console.log('Pull Requests from DB:', pullRequests);
     return pullRequests;
   }
-  
 }
-
