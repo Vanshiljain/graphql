@@ -222,6 +222,7 @@ type Query {
   githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
   getPullRequests(username: String!, repo_name: String!): [GitHubPull!]!
   getPullRequestFromDb(username: String!): [GitHubPull!]!
+  searchPullRequests(username: String!, searchKeyword: String!): [GitHubPull!]!
 }
 
 type Mutation {
