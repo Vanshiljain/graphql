@@ -18,5 +18,12 @@ export class GithubPullResolver {
     async getPullRequestFromDb(@Args("username") username: string): Promise<GitHubPull[] | null> {
         return this.githubPullService.getPullRequestFromDb(username);
     }
-        
-}
+
+    @Query(() => [GitHubPull])
+    async searchPullRequests(
+      @Args('username') username: string,
+      @Args('searchKeyword') searchKeyword: string,
+    ): Promise<GitHubPull[]> {
+      return this.githubPullService.getFilteredPullRequests(username, searchKeyword);
+    }
+  }

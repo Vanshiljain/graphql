@@ -254,6 +254,7 @@ export interface IQuery {
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
     getPullRequests(username: string, repo_name: string): GitHubPull[] | Promise<GitHubPull[]>;
     getPullRequestFromDb(username: string): GitHubPull[] | Promise<GitHubPull[]>;
+    searchPullRequests(username: string, searchKeyword: string): GitHubPull[] | Promise<GitHubPull[]>;
 }
 
 export interface IMutation {

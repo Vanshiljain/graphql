@@ -78,7 +78,7 @@ export class GithubPullService {
       }
     }
   `;
-  
+
     try {
       const response = await axios.post(
         "https://api.github.com/graphql",
@@ -122,10 +122,34 @@ export class GithubPullService {
     }
   }
 
-  async getPullRequestFromDb(username: string): Promise<GitHubPull[] > {
+  async getPullRequestFromDb(username: string): Promise<GitHubPull[]> {
     const user = await this.githubLoginService.getGithubUserDetails(username);
     const pullRequests = await this.GitHubPullModel.find({ author_id: user._id });
     console.log('Pull Requests from DB:', pullRequests);
     return pullRequests;
   }
+
+  async getFilteredPullRequests(username: string, searchKeyword: string): Promise<GitHubPull[]> {
+    const user = await this.githubLoginService.getGithubUserDetails(username);
+  
+    const reg = searchKeyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, ' ');
+    console.log('reg >>>>>>>>>>>>>>>>>>>:', reg);
+    const aggregationPipeline = [
+      {
+        $match: {
+          author_id: user._id,
+          $or: [
+            { title: { $regex: reg, $options: 'i' } },
+            { baseRefName: { $regex: reg, $options: 'i' } },
+            { number: { $regex: reg, $options: 'i' } },
+          ],
+        },
+      },
+    ];
+  
+    const pullRequests = await this.GitHubPullModel.aggregate(aggregationPipeline);
+    console.log('Filtered Pull Requests from DB:', pullRequests);
+    return pullRequests;
+  }
+  
 }
