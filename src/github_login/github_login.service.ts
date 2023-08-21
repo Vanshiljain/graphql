@@ -113,7 +113,6 @@ export class GithubLoginService {
             throw new Error('GitHub code exchange failed');
         }
     }
-     
 
     //also implement this method in above code exchange method
     async getGithubUser(accessToken: string): Promise<GitHubUserDetails> {
