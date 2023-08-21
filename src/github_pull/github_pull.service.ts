@@ -150,6 +150,5 @@ export class GithubPullService {
     const pullRequests = await this.GitHubPullModel.aggregate(aggregationPipeline);
     console.log('Filtered Pull Requests from DB:', pullRequests);
     return pullRequests;
-  }
-  
+  } 
 }
