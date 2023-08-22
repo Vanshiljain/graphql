@@ -271,6 +271,10 @@ export interface IMutation {
     checkDate(date: string): string | Promise<string>;
 }
 
+export interface ISubscription {
+    newPullRequest(): GitHubPull[] | Promise<GitHubPull[]>;
+}
+
 export type JSONObject = any;
 export type DateTime = any;
 type Nullable<T> = T | null;

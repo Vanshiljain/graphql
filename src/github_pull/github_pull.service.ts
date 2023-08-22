@@ -98,24 +98,36 @@ export class GithubPullService {
         throw new Error("Failed to fetch pull requests");
       }
 
-      const pullRequestsToSave = pullRequests.map((pullRequest: any) => ({
-        title: pullRequest.title,
-        url: pullRequest.url,
-        createdAt: pullRequest.createdAt,
-        updatedAt: pullRequest.updatedAt,
-        closedAt: pullRequest.closedAt,
-        mergedAt: pullRequest.mergedAt,
-        state: pullRequest.state,
-        github_pull_metadata: pullRequest,
-        user_id: repo.user_id,
-        repo_id: repo._id,
-        author_id: user._id,
-        repo_name: repo_name,
-        repo_owner: username,
-        number: pullRequest.number
+      const data = pullRequests.map((pullRequest) => ({
+        updateOne: {
+          filter: {
+            number: pullRequest.number,
+            repo_id: repo._id,
+          },
+          update: {
+            $set: {
+              title: pullRequest.title,
+              url: pullRequest.url,
+              createdAt: pullRequest.createdAt,
+              updatedAt: pullRequest.updatedAt,
+              closedAt: pullRequest.closedAt,
+              mergedAt: pullRequest.mergedAt,
+              state: pullRequest.state,
+              github_pull_metadata: pullRequest,
+              user_id: repo.user_id,
+              repo_id: repo._id,
+              author_id: user._id,
+              repo_name: repo_name,
+              repo_owner: username,
+              number: pullRequest.number,
+            },
+          },
+          upsert: true,
+        },
       }));
-      await this.GitHubPullModel.insertMany(pullRequestsToSave);
-      return pullRequests;
+  
+      await this.GitHubPullModel.bulkWrite(data);
+      return data;
     } catch (error) {
       console.error("GitHub API Request Error:", error);
       throw new Error("Failed to fetch pull requests");
