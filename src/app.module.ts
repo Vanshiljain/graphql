@@ -28,11 +28,11 @@
   import { GithubPullModule } from './github_pull/github_pull.module';
   import { GitHubPullSchema } from './github_pull/github_pull.schema';
 
+
   @Module({
     imports: [
       GraphQLModule.forRoot({
         driver: ApolloDriver,
-        // playground: true,
         installSubscriptionHandlers: true,
         autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
         definitions: {
@@ -47,7 +47,10 @@
             'request.credentials': 'include',
           },
         },
-
+        cors: {
+          origin: '*',
+          credentials: true,
+        },
       }),
       MongooseModule.forRoot('mongodb://localhost:27017/mydb'),
       MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
