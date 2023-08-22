@@ -1,29 +1,44 @@
-import { Resolver, Query, Args } from "@nestjs/graphql";
+import { Resolver, Query, Args, Subscription } from "@nestjs/graphql";
 import { GitHubPull } from "./github_pull.schema";
 import { GithubPullService } from "./github_pull.service";
+import { PubSub } from 'graphql-subscriptions';
+
+const pubSub = new PubSub();
+const NEW_PULL_REQUEST_EVENT = 'newPullRequest';
+
 
 @Resolver(() => GitHubPull)
 export class GithubPullResolver {
-    constructor(private readonly githubPullService: GithubPullService) { }
+  constructor(private readonly githubPullService: GithubPullService) { }
 
-    @Query(() => [GitHubPull])
-    async getPullRequests(
-        @Args("username") username: string,
-        @Args("repo_name") repoName: string
-    ): Promise<GitHubPull[]> {
-        return this.githubPullService.getPullRequests(username, repoName);
-    }
-
-    @Query(() => [GitHubPull])
-    async getPullRequestFromDb(@Args("username") username: string): Promise<GitHubPull[] | null> {
-        return this.githubPullService.getPullRequestFromDb(username);
-    }
-
-    @Query(() => [GitHubPull])
-    async searchPullRequests(
-      @Args('username') username: string,
-      @Args('searchKeyword') searchKeyword: string,
-    ): Promise<GitHubPull[]> {
-      return this.githubPullService.getFilteredPullRequests(username, searchKeyword);
-    }
+  @Query(() => [GitHubPull])
+  async getPullRequests(
+    @Args("username") username: string,
+    @Args("repo_name") repoName: string
+  ): Promise<GitHubPull[]> {
+    const pullRequests = await this.githubPullService.getPullRequests(username, repoName);
+    await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: pullRequests });
+    return pullRequests;
   }
+
+  @Query(() => [GitHubPull])
+  async getPullRequestFromDb(@Args("username") username: string): Promise<GitHubPull[] | null> {
+      return this.githubPullService.getPullRequestFromDb(username);
+  }
+
+  @Query(() => [GitHubPull])
+  async searchPullRequests(
+    @Args('username') username: string,
+    @Args('searchKeyword') searchKeyword: string,
+  ): Promise<GitHubPull[]> {
+    return this.githubPullService.getFilteredPullRequests(username, searchKeyword);
+  }
+
+  @Subscription(() => [GitHubPull], {
+    resolve: (value) => value.newPullRequest,
+  })
+  newPullRequest() {
+    return pubSub.asyncIterator(NEW_PULL_REQUEST_EVENT);
+  }
+
+}
