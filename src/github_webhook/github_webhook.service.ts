@@ -42,6 +42,7 @@ export class GithubWebhookService {
                 state: data.state,
                 number: data.number,
                 id: data.id,
+                repository_type: data.repository.owner.type,
             });
             console.log('Updated pull request event:', existingWebhook);
         } else {
