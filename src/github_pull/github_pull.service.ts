@@ -5,6 +5,11 @@ import { GitHubPull } from "./github_pull.schema";
 import { GithubRepositoryService } from "src/github_repository/github_repository.service";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { PubSub } from 'graphql-subscriptions';
+import { Subscription } from "@nestjs/graphql";
+
+const pubSub = new PubSub();
+const NEW_PULL_REQUEST_EVENT = 'newPullRequest';
 
 @Injectable()
 export class GithubPullService {
@@ -126,7 +131,10 @@ export class GithubPullService {
           upsert: true,
         },
       }));
-  
+
+      const updatedPullRequests = await this.getPullRequestFromDb(username);
+      await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
+
       await this.GitHubPullModel.bulkWrite(data);
       return data;
     } catch (error) {
@@ -135,6 +143,9 @@ export class GithubPullService {
     }
   }
 
+  
+  
+  
   async getPullRequestFromDb(username: string): Promise<GitHubPull[]> {
     const user = await this.githubLoginService.getGithubUserDetails(username);
     const pullRequests = await this.GitHubPullModel.find({ author_id: user._id });
@@ -144,7 +155,7 @@ export class GithubPullService {
 
   async getFilteredPullRequests(username: string, searchKeyword: string): Promise<GitHubPull[]> {
     const user = await this.githubLoginService.getGithubUserDetails(username);
-  
+
     const reg = searchKeyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, ' ');
     console.log('reg >>>>>>>>>>>>>>>>>>>:', reg);
     const aggregationPipeline = [
@@ -159,9 +170,16 @@ export class GithubPullService {
         },
       },
     ];
-  
+
     const pullRequests = await this.GitHubPullModel.aggregate(aggregationPipeline);
     console.log('Filtered Pull Requests from DB:', pullRequests);
     return pullRequests;
-  } 
+  }
+  
+  @Subscription(() => [GitHubPull], {
+    resolve: (value) => value.newPullRequest,
+  })
+  newPullRequest() {
+    return pubSub.asyncIterator(NEW_PULL_REQUEST_EVENT);
+  }
 }
