@@ -16,8 +16,6 @@ export class GithubPullResolver {
     @Args("repo_name") repoName: string
   ): Promise<GitHubPull[]> {
     const pullRequests = await this.githubPullService.createPullRequests(username, repoName);
-
-    // Call getPullRequestFromDb to trigger the subscription
     const updatedPullRequests = await this.githubPullService.getPullRequestFromDb(username);
     await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
 
