@@ -14,7 +14,7 @@ export class GithubPullService {
     @InjectModel(GitHubPull.name) private readonly GitHubPullModel: Model<GitHubPull>
   ) { }
 
-  async getPullRequests(username: string, repo_name: string): Promise<GitHubPull[]> {
+  async createPullRequests(username: string, repo_name: string): Promise<GitHubPull[]> {
     const user = await this.githubLoginService.getGithubUserDetails(username);
     const repo = await this.githubRepositoryService.getRepoIdByName(repo_name);
 

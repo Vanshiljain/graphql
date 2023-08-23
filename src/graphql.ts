@@ -252,7 +252,6 @@ export interface IQuery {
     githubRepositories(username: string): GitHubRepository[] | Promise<GitHubRepository[]>;
     githubOrganizationRepositories(username: string, org_name: string): GitHubRepository[] | Promise<GitHubRepository[]>;
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
-    getPullRequests(username: string, repo_name: string): GitHubPull[] | Promise<GitHubPull[]>;
     getPullRequestFromDb(username: string): GitHubPull[] | Promise<GitHubPull[]>;
     searchPullRequests(username: string, searchKeyword: string): GitHubPull[] | Promise<GitHubPull[]>;
 }
@@ -269,6 +268,7 @@ export interface IMutation {
     login(email: string, password: string): string | Promise<string>;
     logout(email: string): string | Promise<string>;
     checkDate(date: string): string | Promise<string>;
+    createPullRequests(username: string, repo_name: string): GitHubPull[] | Promise<GitHubPull[]>;
 }
 
 export interface ISubscription {

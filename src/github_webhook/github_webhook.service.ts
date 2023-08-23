@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { GithubLoginService } from "../github_login/github_login.service";
 import { GithubRepositoryService } from "src/github_repository/github_repository.service";
+import { GithubPullService } from 'src/github_pull/github_pull.service';
 
 @Injectable()
 export class GithubWebhookService {
@@ -11,6 +12,7 @@ export class GithubWebhookService {
         @InjectModel(GithubWebhook.name) private GithubWebhookModel: Model<GithubWebhook>,
         private readonly githubLoginService: GithubLoginService,
         private readonly githubRepositoryService: GithubRepositoryService,
+        private readonly createPullRequestsService: GithubPullService,
     ) { }
 
     async handlePullRequestEvent(eventPayload: any) {
@@ -22,6 +24,7 @@ export class GithubWebhookService {
         const user = await this.githubLoginService.getGithubUserDetails(username);
 
         const existingWebhook = await this.GithubWebhookModel.findOne(filter);
+        this.createPullRequestsService.createPullRequests(username, repo_name);
 
         if (existingWebhook) {
             await this.GithubWebhookModel.findOneAndUpdate(filter, {
