@@ -108,7 +108,7 @@ export class GithubPullService {
           filter: {
             // number: pullRequest.number,
             // repo_name: repo_name,
-            repo_id: repo._id,
+            'github_pull_metadata.url': pullRequest.github_pull_metadata.url,
           },
           update: {
             $set: {
@@ -132,10 +132,10 @@ export class GithubPullService {
         },
       }));
 
-      
-      await this.GitHubPullModel.bulkWrite(data);
-      const updatedPullRequests = await this.getPullRequestFromDb(username);
-      await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
+      if(await this.GitHubPullModel.bulkWrite(data)){
+        const updatedPullRequests = await this.getPullRequestFromDb(username);
+        await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
+      }
       return data;
     } catch (error) {
       console.error("GitHub API Request Error:", error);
