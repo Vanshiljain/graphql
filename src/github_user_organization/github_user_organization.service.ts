@@ -43,4 +43,8 @@ export class GithubUserOrganizationService {
             throw new Error('Failed to fetch user organization');
         }
     }
+
+    getGitHubUserOrganization(username: string): Promise<GitHubUserOrganization[]> {
+        return this.GitHubUserOrganizationModel.find({ user_id: username }).exec();
+    }
 }
