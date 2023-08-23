@@ -76,6 +76,10 @@ export class GithubWebhook extends Document {
     @Field(() => String, { nullable: true })
     @Prop()
     id: string;
+
+    @Field(()=> RepositoryType)
+    @Prop({ enum: RepositoryType, default: RepositoryType.UserRepo })
+    repository_type: RepositoryType;
 }
 
 export const GithubWebhookSchema = SchemaFactory.createForClass(GithubWebhook);
