@@ -84,6 +84,4 @@ export class GithubRepositoryService {
         }
         return repo;
     }
-    
-
 }
