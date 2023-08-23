@@ -220,7 +220,6 @@ type Query {
   githubRepositories(username: String!): [GitHubRepository!]!
   githubOrganizationRepositories(username: String!, org_name: String!): [GitHubRepository!]!
   githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
-  getPullRequests(username: String!, repo_name: String!): [GitHubPull!]!
   getPullRequestFromDb(username: String!): [GitHubPull!]!
   searchPullRequests(username: String!, searchKeyword: String!): [GitHubPull!]!
 }
@@ -237,6 +236,7 @@ type Mutation {
   login(email: String!, password: String!): String!
   logout(email: String!): String!
   checkDate(date: String!): String!
+  createPullRequests(username: String!, repo_name: String!): [GitHubPull!]!
 }
 
 input UserInput {

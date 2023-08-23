@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Subscription } from "@nestjs/graphql";
+import { Resolver, Query, Args, Subscription, Mutation } from "@nestjs/graphql";
 import { GitHubPull } from "./github_pull.schema";
 import { GithubPullService } from "./github_pull.service";
 import { PubSub } from 'graphql-subscriptions';
@@ -6,24 +6,27 @@ import { PubSub } from 'graphql-subscriptions';
 const pubSub = new PubSub();
 const NEW_PULL_REQUEST_EVENT = 'newPullRequest';
 
-
 @Resolver(() => GitHubPull)
 export class GithubPullResolver {
   constructor(private readonly githubPullService: GithubPullService) { }
 
-  @Query(() => [GitHubPull])
-  async getPullRequests(
+  @Mutation(() => [GitHubPull])
+  async createPullRequests(
     @Args("username") username: string,
     @Args("repo_name") repoName: string
   ): Promise<GitHubPull[]> {
-    const pullRequests = await this.githubPullService.getPullRequests(username, repoName);
-    await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: pullRequests });
+    const pullRequests = await this.githubPullService.createPullRequests(username, repoName);
+
+    // Call getPullRequestFromDb to trigger the subscription
+    const updatedPullRequests = await this.githubPullService.getPullRequestFromDb(username);
+    await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
+
     return pullRequests;
   }
 
   @Query(() => [GitHubPull])
   async getPullRequestFromDb(@Args("username") username: string): Promise<GitHubPull[] | null> {
-      return this.githubPullService.getPullRequestFromDb(username);
+    return this.githubPullService.getPullRequestFromDb(username);
   }
 
   @Query(() => [GitHubPull])
@@ -40,5 +43,4 @@ export class GithubPullResolver {
   newPullRequest() {
     return pubSub.asyncIterator(NEW_PULL_REQUEST_EVENT);
   }
-
 }
