@@ -102,6 +102,7 @@ export class GithubPullService {
         updateOne: {
           filter: {
             number: pullRequest.number,
+            repo_name: repo_name,
             repo_id: repo._id,
           },
           update: {
