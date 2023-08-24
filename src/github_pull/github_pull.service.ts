@@ -132,7 +132,8 @@ export class GithubPullService {
         },
       }));
 
-      if (await this.GitHubPullModel.bulkWrite(data)) {
+      const savedata = await this.GitHubPullModel.bulkWrite(data);
+      if (savedata) {
         const updatedPullRequests = await this.getPullRequestFromDb(username);
         await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
       }
