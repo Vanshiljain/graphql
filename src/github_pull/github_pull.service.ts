@@ -107,8 +107,8 @@ export class GithubPullService {
         updateOne: {
           filter: {
             // number: pullRequest.number,
-            repo_name: repo_name,
-            // 'github_pull_metadata.url': pullRequest.github_pull_metadata.url,
+            // repo_name: repo_name,
+            url: pullRequest.url,
           },
           update: {
             $set: {
@@ -119,7 +119,7 @@ export class GithubPullService {
               closedAt: pullRequest.closedAt,
               mergedAt: pullRequest.mergedAt,
               state: pullRequest.state,
-              github_pull_metadata: pullRequest,
+              github_pull_metadata: pullRequest.github_pull_metadata,
               user_id: repo.user_id,
               repo_id: repo._id,
               author_id: user._id,
@@ -132,8 +132,7 @@ export class GithubPullService {
         },
       }));
 
-      if (
-        await this.GitHubPullModel.bulkWrite(data)) {
+      if (await this.GitHubPullModel.bulkWrite(data)) {
         const updatedPullRequests = await this.getPullRequestFromDb(username);
         await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
       }
