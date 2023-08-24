@@ -119,7 +119,7 @@ export class GithubPullService {
               closedAt: pullRequest.closedAt,
               mergedAt: pullRequest.mergedAt,
               state: pullRequest.state,
-              github_pull_metadata: pullRequest.github_pull_metadata,
+              github_pull_metadata: pullRequest,
               user_id: repo.user_id,
               repo_id: repo._id,
               author_id: user._id,
