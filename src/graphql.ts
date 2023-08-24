@@ -234,6 +234,7 @@ export interface GitHubPull {
     repo_name?: Nullable<string>;
     state?: Nullable<string>;
     number?: Nullable<number>;
+    commits?: Nullable<JSONObject>;
 }
 
 export interface IQuery {
@@ -254,6 +255,7 @@ export interface IQuery {
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
     getPullRequestFromDb(username: string): GitHubPull[] | Promise<GitHubPull[]>;
     searchPullRequests(username: string, searchKeyword: string): GitHubPull[] | Promise<GitHubPull[]>;
+    getCommitsForPullRequest(username: string, url: string): GitHubPull | Promise<GitHubPull>;
 }
 
 export interface IMutation {
@@ -273,6 +275,7 @@ export interface IMutation {
 
 export interface ISubscription {
     newPullRequest(): GitHubPull[] | Promise<GitHubPull[]>;
+    newCommit(): GitHubPull | Promise<GitHubPull>;
 }
 
 export type JSONObject = any;
