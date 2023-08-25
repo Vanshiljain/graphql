@@ -142,6 +142,7 @@ export class GithubPullService {
           const commits = await this.getCommitsForPullRequest(username, commitUrl, repo_name);
           if (commits) {
             await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commits });
+            
           }
         }
       }

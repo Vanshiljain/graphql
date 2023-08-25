@@ -72,17 +72,15 @@ export class GithubWebhookService {
         const username = eventPayload.repository.owner.login;
         const repo_name = eventPayload.repository.name;
 
-        console.log('Push Event Repo Name:', repo_name);
-        console.log('Push Event Username:', username);
+        // console.log('Push Event Repo Name:', repo_name);
+        // console.log('Push Event Username:', username);
 
         const pull = await this.createPullRequestsService.createPullRequests(username, repo_name);
-        console.log('Pull Request:..........................', pull);
 
-        if(pull){ 
+        if (pull) {
             const commitData = await this.createPullRequestsService.getCommitsForPullRequest(username, eventPayload.commits[0].url, repo_name);
-            console.log('Commit Data:..........................', commitData);
         }
-        else{
+        else {
             console.log('No pull request found');
         }
     }
