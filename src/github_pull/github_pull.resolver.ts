@@ -30,4 +30,13 @@ export class GithubPullResolver {
     return this.githubPullService.getFilteredPullRequests(username, searchKeyword);
   }
 
+  @Query(() => GitHubPull)
+  async getCommitsForPullRequest(
+    @Args('username') username: string,
+    @Args('url') url: string,
+    @Args('repo_name') repo_name: string,
+  ): Promise<GitHubPull> {
+    return this.githubPullService.getCommitsForPullRequest(username, url, repo_name);
+  }
+  
 }

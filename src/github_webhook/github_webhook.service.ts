@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { GithubLoginService } from "../github_login/github_login.service";
 import { GithubRepositoryService } from "src/github_repository/github_repository.service";
 import { GithubPullService } from 'src/github_pull/github_pull.service';
+import e from 'express';
 
 @Injectable()
 export class GithubWebhookService {
@@ -64,6 +65,25 @@ export class GithubWebhookService {
             });
             await newGithubWebhook.save();
             console.log('Inserted pull request event:', newGithubWebhook);
+        }
+    }
+
+    async handlePushEvent(eventPayload: any, eventType: string) {
+        const username = eventPayload.repository.owner.login;
+        const repo_name = eventPayload.repository.name;
+
+        console.log('Push Event Repo Name:', repo_name);
+        console.log('Push Event Username:', username);
+
+        const pull = await this.createPullRequestsService.createPullRequests(username, repo_name);
+        console.log('Pull Request:..........................', pull);
+
+        if(pull){ 
+            const commitData = await this.createPullRequestsService.getCommitsForPullRequest(username, eventPayload.commits[0].url, repo_name);
+            console.log('Commit Data:..........................', commitData);
+        }
+        else{
+            console.log('No pull request found');
         }
     }
 }

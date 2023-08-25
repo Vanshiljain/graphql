@@ -161,6 +161,7 @@ type GitHubPull {
   state: String
   number: Float
   commits: JSONObject
+  filterCommits: [JSONObject!]
 }
 
 """
@@ -223,7 +224,7 @@ type Query {
   githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
   getPullRequestFromDb(username: String!): [GitHubPull!]!
   searchPullRequests(username: String!, searchKeyword: String!): [GitHubPull!]!
-  getCommitsForPullRequest(username: String!, url: String!): GitHubPull!
+  getCommitsForPullRequest(username: String!, url: String!, repo_name: String!): GitHubPull!
 }
 
 type Mutation {

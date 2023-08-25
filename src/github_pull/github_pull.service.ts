@@ -10,6 +10,7 @@ import { Subscription } from "@nestjs/graphql";
 
 const pubSub = new PubSub();
 const NEW_PULL_REQUEST_EVENT = 'newPullRequest';
+const NEW_COMMIT_EVENT = 'newCommit';
 
 @Injectable()
 export class GithubPullService {
@@ -34,7 +35,7 @@ export class GithubPullService {
         isPrivate
         name
         nameWithOwner
-        pullRequests(first: 10, orderBy: { direction: DESC, field: CREATED_AT }) {
+        pullRequests(first: 25, orderBy: { direction: DESC, field: CREATED_AT }) {
           nodes {
             number
             additions
@@ -48,7 +49,7 @@ export class GithubPullService {
             bodyText
             changedFiles
             closed
-            commits(first: 10) {
+            commits(first: 50) {
               nodes {
                 resourcePath
                 commit {
@@ -94,8 +95,6 @@ export class GithubPullService {
           },
         }
       );
-      console.log('Full API Response:', JSON.stringify(response.data.data.repository.pullRequests.nodes));
-
       const pullRequests = response.data.data.repository.pullRequests.nodes;
 
       if (!pullRequests) {
@@ -126,6 +125,7 @@ export class GithubPullService {
               repo_name: repo_name,
               repo_owner: username,
               number: pullRequest.number,
+              commits: pullRequest.commits,
             },
           },
           upsert: true,
@@ -136,7 +136,16 @@ export class GithubPullService {
       if (savedata) {
         const updatedPullRequests = await this.getPullRequestFromDb(username);
         await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
+        if (updatedPullRequests) {
+          console.log('Updated pull requests:', updatedPullRequests);
+          const commitUrl = pullRequests[0].commits.nodes[0].url;
+          const commits = await this.getCommitsForPullRequest(username, commitUrl, repo_name);
+          if (commits) {
+            await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commits });
+          }
+        }
       }
+
       return data;
     } catch (error) {
       console.error("GitHub API Request Error:", error);
@@ -179,5 +188,57 @@ export class GithubPullService {
   })
   newPullRequest() {
     return pubSub.asyncIterator(NEW_PULL_REQUEST_EVENT);
+  }
+
+  @Subscription(() => GitHubPull, {
+    resolve: (value) => value.newCommit,
+  })
+  newCommit() {
+    return pubSub.asyncIterator(NEW_COMMIT_EVENT);
+  }
+
+
+  async getCommitsForPullRequest(username: string, url: string, repo_name: string): Promise<GitHubPull> {
+
+    const user = await this.githubLoginService.getGithubUserDetails(username);
+    const query = [
+      {
+        $match: {
+          user_id: user._id,
+          repo_name,
+        },
+      },
+      {
+        $project: {
+          user_id: 1,
+          repo_name: 1,
+          commits: 1,
+          filterCommits: {
+            $filter: {
+              input: "$commits.nodes",
+              as: "commit",
+              cond: { $eq: ["$$commit.url", url] },
+            },
+          },
+        },
+      },
+      {
+        $match: {
+          $expr: {
+            $gt: [{ $size: "$filterCommits" }, 0],
+          },
+        },
+      },
+      // {
+      //   $unwind: "$filterCommits",
+      // }
+    ];
+
+    const [commit] = await this.GitHubPullModel.aggregate(query);
+    if (commit) {
+      await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commit });
+    }
+    console.log('Filtered Pull Requests from DB:', commit);
+    return commit;
   }
 }

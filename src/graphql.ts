@@ -235,6 +235,7 @@ export interface GitHubPull {
     state?: Nullable<string>;
     number?: Nullable<number>;
     commits?: Nullable<JSONObject>;
+    filterCommits?: Nullable<JSONObject[]>;
 }
 
 export interface IQuery {
@@ -255,7 +256,7 @@ export interface IQuery {
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
     getPullRequestFromDb(username: string): GitHubPull[] | Promise<GitHubPull[]>;
     searchPullRequests(username: string, searchKeyword: string): GitHubPull[] | Promise<GitHubPull[]>;
-    getCommitsForPullRequest(username: string, url: string): GitHubPull | Promise<GitHubPull>;
+    getCommitsForPullRequest(username: string, url: string, repo_name: string): GitHubPull | Promise<GitHubPull>;
 }
 
 export interface IMutation {

@@ -21,7 +21,7 @@ export class GitHubPull extends Document {
     @Field(() => Date, { nullable: true })
     @Prop()
     createdAt: Date;
-    
+
     @Field(() => Date, { nullable: true })
     @Prop()
     mergedAt: Date;
@@ -45,7 +45,7 @@ export class GitHubPull extends Document {
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
     author_id: mongoose.Types.ObjectId;
-    
+
     @Field(() => String, { nullable: true })
     @Prop()
     repo_owner: string;
@@ -60,6 +60,14 @@ export class GitHubPull extends Document {
 
     @Field(() => Number, { nullable: true })
     @Prop()
-    number : number;
+    number: number;
+
+    @Field(() => GraphQLJSONObject, { nullable: true })
+    @Prop({ type: Object })
+    commits: object;
+
+    @Field(() => [GraphQLJSONObject], { nullable: true })
+    @Prop()
+    filterCommits: object[];
 }
 export const GitHubPullSchema = SchemaFactory.createForClass(GitHubPull);
