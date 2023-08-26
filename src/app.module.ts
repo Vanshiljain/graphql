@@ -30,6 +30,8 @@ import { GitHubPullSchema } from './github_pull/github_pull.schema';
 import { GithubWebhookModule } from './github_webhook/github_webhook.module';
 import { GithubWebhook, GithubWebhookSchema } from './github_webhook/github_webhook.schema';
 import { GithubWebhookService } from './github_webhook/github_webhook.service';
+import { GithubWorkflowModule } from './github_workflow/github_workflow.module';
+import { GitHubWorkflowRun, GitHubWorkflowRunSchema, GitHubWorkflowJob, GitHubWorkflowJobSchema } from './github_workflow/github_workflow.schema';
 
 
 @Module({
@@ -61,6 +63,8 @@ import { GithubWebhookService } from './github_webhook/github_webhook.service';
     MongooseModule.forFeature([{ name: 'GitHubUserOrganization', schema: GitHubUserOrganizationSchema }]),
     MongooseModule.forFeature([{ name: 'GitHubPull', schema: GitHubPullSchema }]),
     MongooseModule.forFeature([{ name: GithubWebhook.name, schema: GithubWebhookSchema }]),
+    MongooseModule.forFeature([{ name: GitHubWorkflowRun.name, schema: GitHubWorkflowRunSchema }]),
+    MongooseModule.forFeature([{ name: GitHubWorkflowJob.name, schema: GitHubWorkflowJobSchema }]),
     UserModule,
     BookModule,
     AuthModule,
@@ -76,6 +80,7 @@ import { GithubWebhookService } from './github_webhook/github_webhook.service';
     GithubUserOrganizationModule,
     GithubPullModule,
     GithubWebhookModule,
+    GithubWorkflowModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService, GithubLoginService, GithubLoginResolver, GithubWebhookService],

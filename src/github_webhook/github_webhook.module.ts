@@ -6,11 +6,12 @@ import { GithubWebhook, GithubWebhookSchema } from './github_webhook.schema';
 import { GithubRepositoryModule } from 'src/github_repository/github_repository.module';
 import { GithubLoginModule } from 'src/github_login/github_login.module';
 import { GithubPullModule } from 'src/github_pull/github_pull.module';
+import { GithubWorkflowModule } from 'src/github_workflow/github_workflow.module';
 
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: GithubWebhook.name, schema: GithubWebhookSchema }]),
-        GithubLoginModule, GithubRepositoryModule, GithubPullModule
+        GithubLoginModule, GithubRepositoryModule, GithubPullModule, GithubWorkflowModule
     ],
     controllers: [GithubWebhookController],
     providers: [GithubWebhookService],
