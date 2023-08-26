@@ -291,6 +291,8 @@ export interface IQuery {
     getPullRequestFromDb(username: string): GitHubPull[] | Promise<GitHubPull[]>;
     searchPullRequests(username: string, searchKeyword: string): GitHubPull[] | Promise<GitHubPull[]>;
     getCommitsForPullRequest(username: string, url: string, repo_name: string): GitHubPull | Promise<GitHubPull>;
+    getWorkflowJobFromDb(username: string): GitHubWorkflowJob[] | Promise<GitHubWorkflowJob[]>;
+    getWorkflowRunFromDb(username: string): GitHubWorkflowRun[] | Promise<GitHubWorkflowRun[]>;
 }
 
 export interface IMutation {

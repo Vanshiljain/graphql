@@ -97,4 +97,14 @@ export class GithubWorkflowService {
         return pubSub.asyncIterator(NEW_WORKFLOW_RUN_EVENT);
     }
 
+    async getWorkflowJobFromDb(username: string): Promise<any> {
+        const user = await this.githubLoginService.getGithubUserDetails(username);
+        return this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+    }
+
+    async getWorkflowRunFromDb(username: string): Promise<any> {
+        const user = await this.githubLoginService.getGithubUserDetails(username);
+        return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+    }
+    
 }

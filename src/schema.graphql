@@ -260,6 +260,8 @@ type Query {
   getPullRequestFromDb(username: String!): [GitHubPull!]!
   searchPullRequests(username: String!, searchKeyword: String!): [GitHubPull!]!
   getCommitsForPullRequest(username: String!, url: String!, repo_name: String!): GitHubPull!
+  getWorkflowJobFromDb(username: String!): [GitHubWorkflowJob!]!
+  getWorkflowRunFromDb(username: String!): [GitHubWorkflowRun!]!
 }
 
 type Mutation {
