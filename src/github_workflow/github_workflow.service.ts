@@ -4,6 +4,13 @@ import { Model } from 'mongoose';
 import { GitHubWorkflowJob, GitHubWorkflowRun } from './github_workflow.schema';
 import { GithubLoginService } from 'src/github_login/github_login.service';
 import { GithubRepositoryService } from 'src/github_repository/github_repository.service';
+import { PubSub } from 'graphql-subscriptions';
+import { Subscription } from "@nestjs/graphql";
+
+const pubSub = new PubSub();
+const NEW_WORKFLOW_JOB_EVENT = 'newWorkflowJob';
+const NEW_WORKFLOW_RUN_EVENT = 'newWorkflowRun';
+
 
 @Injectable()
 export class GithubWorkflowService {
@@ -39,6 +46,9 @@ export class GithubWorkflowService {
         const options = { upsert: true, new: true };
 
         const updatedJob = await this.GithubWorkflowJobModel.findOneAndUpdate(filter, update, options);
+        if (updatedJob) {
+            await pubSub.publish(NEW_WORKFLOW_JOB_EVENT, { newWorkflowJob: updatedJob });
+        }
 
         console.log('Updated or created job:', updatedJob);
         return updatedJob;
@@ -71,6 +81,20 @@ export class GithubWorkflowService {
         const updatedRun = await this.GithubWorkflowRunModel.findOneAndUpdate(filter, update, options);
 
         console.log('Updated or created run:', updatedRun);
+        if (updatedRun) {
+            await pubSub.publish(NEW_WORKFLOW_RUN_EVENT, { newWorkflowRun: updatedRun });
+        }
         return updatedRun;
     }
+
+    @Subscription(() => GitHubWorkflowJob)
+    newWorkflowJob() {
+        return pubSub.asyncIterator(NEW_WORKFLOW_JOB_EVENT);
+    }
+
+    @Subscription(() => GitHubWorkflowRun)
+    newWorkflowRun() {
+        return pubSub.asyncIterator(NEW_WORKFLOW_RUN_EVENT);
+    }
+
 }

@@ -24,6 +24,12 @@ export enum RepositoryType {
     OrganizationRepo = "OrganizationRepo"
 }
 
+export enum StatusRun {
+    in_progress = "in_progress",
+    queued = "queued",
+    completed = "completed"
+}
+
 export interface InputCourses {
     courseName?: Nullable<string>;
     courseStatus?: Nullable<string>;
@@ -238,6 +244,34 @@ export interface GitHubPull {
     filterCommits?: Nullable<JSONObject[]>;
 }
 
+export interface GitHubWorkflowJob {
+    GitHubWorkflowJob?: Nullable<JSONObject>;
+    title?: Nullable<string>;
+    url?: Nullable<string>;
+    createdAt?: Nullable<DateTime>;
+    user_id?: Nullable<string>;
+    repo_id?: Nullable<string>;
+    author_id?: Nullable<string>;
+    repo_owner?: Nullable<string>;
+    repo_name?: Nullable<string>;
+    id?: Nullable<string>;
+    Status: StatusRun;
+}
+
+export interface GitHubWorkflowRun {
+    GitHubWorkflowJob?: Nullable<JSONObject>;
+    title?: Nullable<string>;
+    url?: Nullable<string>;
+    createdAt?: Nullable<DateTime>;
+    user_id?: Nullable<string>;
+    repo_id?: Nullable<string>;
+    author_id?: Nullable<string>;
+    repo_owner?: Nullable<string>;
+    repo_name?: Nullable<string>;
+    id?: Nullable<string>;
+    Status: StatusRun;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     findAllUser(role: string, minAge: number, maxAge: number): User[] | Promise<User[]>;
@@ -277,6 +311,8 @@ export interface IMutation {
 export interface ISubscription {
     newPullRequest(): GitHubPull[] | Promise<GitHubPull[]>;
     newCommit(): GitHubPull | Promise<GitHubPull>;
+    newWorkflowJob(): GitHubWorkflowJob | Promise<GitHubWorkflowJob>;
+    newWorkflowRun(): GitHubWorkflowRun | Promise<GitHubWorkflowRun>;
 }
 
 export type JSONObject = any;
