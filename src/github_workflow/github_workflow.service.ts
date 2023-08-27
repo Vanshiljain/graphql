@@ -117,5 +117,4 @@ export class GithubWorkflowService {
         const user = await this.githubLoginService.getGithubUserDetails(username);
         return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 });
     }
-    
 }
