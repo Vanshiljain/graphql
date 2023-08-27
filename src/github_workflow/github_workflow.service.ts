@@ -110,11 +110,11 @@ export class GithubWorkflowService {
 
     async getWorkflowJobFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        return this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+        return this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 }).limit(5);
     }
 
     async getWorkflowRunFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+        return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 }).limit(5);
     }
 }
