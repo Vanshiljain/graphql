@@ -46,7 +46,14 @@ export class GithubWorkflowService {
         const options = { upsert: true, new: true };
 
         const updatedJob = await this.GithubWorkflowJobModel.findOneAndUpdate(filter, update, options);
-       
+        if (updatedJob) {
+            const data = await this.getWorkflowJobFromDb(eventPayload.sender.login);
+            if (data) {
+                await pubSub.publish(NEW_WORKFLOW_JOB_EVENT, { newWorkflowJob: data });
+            }
+        }
+
+        console.log('Updated or created job:', updatedJob);
         return updatedJob;
     }
 
@@ -77,36 +84,38 @@ export class GithubWorkflowService {
         const updatedRun = await this.GithubWorkflowRunModel.findOneAndUpdate(filter, update, options);
 
         console.log('Updated or created run:', updatedRun);
-        
+        if (updatedRun) {
+            const data = await this.getWorkflowRunFromDb(eventPayload.sender.login);
+            if (data) {
+                await pubSub.publish(NEW_WORKFLOW_RUN_EVENT, { newWorkflowRun: data });
+            }
+        }
         return updatedRun;
     }
 
-    @Subscription(() => GitHubWorkflowJob)
+    @Subscription(() => [GitHubWorkflowJob], {
+        resolve: (value) => value.newWorkflowJob,
+    })
     newWorkflowJob() {
         return pubSub.asyncIterator(NEW_WORKFLOW_JOB_EVENT);
     }
 
-    @Subscription(() => GitHubWorkflowRun)
+    @Subscription(() => [GitHubWorkflowRun], {
+        resolve: (value) => value.newWorkflowRun,
+    })
     newWorkflowRun() {
         return pubSub.asyncIterator(NEW_WORKFLOW_RUN_EVENT);
     }
 
+
     async getWorkflowJobFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        const data = this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 });
-        if(data){
-            pubSub.publish(NEW_WORKFLOW_JOB_EVENT, { newWorkflowJob: data });
-        }
-        return data;
+        return this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 });
     }
 
     async getWorkflowRunFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        const data = this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 });
-        if(data){
-            pubSub.publish(NEW_WORKFLOW_RUN_EVENT, { newWorkflowRun: data });
-        }
-        return data;
+        return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 });
     }
     
 }

@@ -321,6 +321,6 @@ input AuthorInput {
 type Subscription {
   newPullRequest: [GitHubPull!]!
   newCommit: GitHubPull!
-  newWorkflowJob: GitHubWorkflowJob!
-  newWorkflowRun: GitHubWorkflowRun!
+  newWorkflowJob: [GitHubWorkflowJob!]!
+  newWorkflowRun: [GitHubWorkflowRun!]!
 }

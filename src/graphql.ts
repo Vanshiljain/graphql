@@ -313,8 +313,8 @@ export interface IMutation {
 export interface ISubscription {
     newPullRequest(): GitHubPull[] | Promise<GitHubPull[]>;
     newCommit(): GitHubPull | Promise<GitHubPull>;
-    newWorkflowJob(): GitHubWorkflowJob | Promise<GitHubWorkflowJob>;
-    newWorkflowRun(): GitHubWorkflowRun | Promise<GitHubWorkflowRun>;
+    newWorkflowJob(): GitHubWorkflowJob[] | Promise<GitHubWorkflowJob[]>;
+    newWorkflowRun(): GitHubWorkflowRun[] | Promise<GitHubWorkflowRun[]>;
 }
 
 export type JSONObject = any;
