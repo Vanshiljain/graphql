@@ -46,11 +46,7 @@ export class GithubWorkflowService {
         const options = { upsert: true, new: true };
 
         const updatedJob = await this.GithubWorkflowJobModel.findOneAndUpdate(filter, update, options);
-        if (updatedJob) {
-            await pubSub.publish(NEW_WORKFLOW_JOB_EVENT, { newWorkflowJob: updatedJob });
-        }
-
-        console.log('Updated or created job:', updatedJob);
+       
         return updatedJob;
     }
 
@@ -81,9 +77,7 @@ export class GithubWorkflowService {
         const updatedRun = await this.GithubWorkflowRunModel.findOneAndUpdate(filter, update, options);
 
         console.log('Updated or created run:', updatedRun);
-        if (updatedRun) {
-            await pubSub.publish(NEW_WORKFLOW_RUN_EVENT, { newWorkflowRun: updatedRun });
-        }
+        
         return updatedRun;
     }
 
@@ -99,12 +93,20 @@ export class GithubWorkflowService {
 
     async getWorkflowJobFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        return this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+        const data = this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+        if(data){
+            pubSub.publish(NEW_WORKFLOW_JOB_EVENT, { newWorkflowJob: data });
+        }
+        return data;
     }
 
     async getWorkflowRunFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+        const data = this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 });
+        if(data){
+            pubSub.publish(NEW_WORKFLOW_RUN_EVENT, { newWorkflowRun: data });
+        }
+        return data;
     }
     
 }
