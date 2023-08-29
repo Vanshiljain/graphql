@@ -73,6 +73,14 @@ export class GitHubWorkflowJob {
     @Field(()=> StatusRun)
     @Prop({ enum: StatusRun, default: StatusRun.queued })
     Status: StatusRun;
+
+    @Field(() => ID, { nullable: true })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
+    org_id: mongoose.Types.ObjectId;
+
+    @Field(() => String, { nullable: true })
+    @Prop({ required: false })
+    org_name: string;
 }
 
 export const GitHubWorkflowJobSchema = SchemaFactory.createForClass(GitHubWorkflowJob);
@@ -124,6 +132,14 @@ export class GitHubWorkflowRun {
     @Field(()=> StatusRun)
     @Prop({ enum: StatusRun, default: StatusRun.queued })
     Status: StatusRun;
+
+    @Field(() => ID, { nullable: true })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
+    orgId?: mongoose.Types.ObjectId;
+
+    @Field(() => String, { nullable: true })
+    @Prop({ required: false })
+    orgName?: string;
 }
 
 export const GitHubWorkflowRunSchema = SchemaFactory.createForClass(GitHubWorkflowRun);

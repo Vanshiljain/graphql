@@ -6,6 +6,7 @@ import { GithubLoginService } from 'src/github_login/github_login.service';
 import { GithubRepositoryService } from 'src/github_repository/github_repository.service';
 import { PubSub } from 'graphql-subscriptions';
 import { Subscription } from "@nestjs/graphql";
+import { GithubUserOrganizationService } from 'src/github_user_organization/github_user_organization.service';
 
 const pubSub = new PubSub();
 const NEW_WORKFLOW_JOB_EVENT = 'newWorkflowJob';
@@ -18,43 +19,50 @@ export class GithubWorkflowService {
         @InjectModel(GitHubWorkflowJob.name) private GithubWorkflowJobModel: Model<GitHubWorkflowJob>,
         @InjectModel(GitHubWorkflowRun.name) private GithubWorkflowRunModel: Model<GitHubWorkflowRun>,
         private readonly githubLoginService: GithubLoginService,
-        private readonly githubRepositoryService: GithubRepositoryService
-    ) {}
+        private readonly githubRepositoryService: GithubRepositoryService,
+        private readonly githubUserOrganizationService: GithubUserOrganizationService,
+    ) { }
 
     async CreateJob(eventPayload): Promise<GitHubWorkflowJob> {
         const jobId = eventPayload.workflow_job.id;
         const repo = await this.githubRepositoryService.getRepoIdByName(eventPayload.repository.name);
         const user = await this.githubLoginService.getGithubUserDetails(eventPayload.sender.login);
-
-
-        const filter = { id: jobId };
-        const update = {
-            $set: {
-                id: jobId,
-                repo_name: eventPayload.repository.name,
-                repo_owner: eventPayload.repository.owner.login,
-                repo_id: repo._id,
-                user_id:user._id,
-                name: eventPayload.workflow_job.name,
-                GitHubWorkflowJob: eventPayload,
-                url: eventPayload.workflow_job.url,
-                createdAt: eventPayload.workflow_job.created_at,
-                Status: eventPayload.workflow_job.status,
-                title: eventPayload.workflow_job.name,
-            },
+        const payload = {
+            id: jobId,
+            repo_name: eventPayload.repository.name,
+            repo_owner: eventPayload.repository.owner.login,
+            repo_id: repo._id,
+            user_id: user._id,
+            name: eventPayload.workflow_job.name,
+            GitHubWorkflowJob: eventPayload,
+            url: eventPayload.workflow_job.url,
+            createdAt: eventPayload.workflow_job.created_at,
+            Status: eventPayload.workflow_job.status,
+            title: eventPayload.workflow_job.name,
         };
-        const options = { upsert: true, new: true };
-
-        const updatedJob = await this.GithubWorkflowJobModel.findOneAndUpdate(filter, update, options);
-        if (updatedJob) {
-            const data = await this.getWorkflowJobFromDb(eventPayload.sender.login);
-            if (data) {
-                await pubSub.publish(NEW_WORKFLOW_JOB_EVENT, { newWorkflowJob: data });
-            }
+        if (eventPayload.sender.type === 'Organization') {
+            const org = await this.githubUserOrganizationService.getOrganizationIdByName(eventPayload.sender.login);
+            payload["orgId"] = org._id;
+            payload["orgName"] = org.org_name;
         }
+        const filter = { id: jobId };
+        const update = { $set: payload };
+        const options = { upsert: true, new: true };
+        try {
+            const updatedJob = await this.GithubWorkflowJobModel.findOneAndUpdate(filter, update, options);
 
-        console.log('Updated or created job:', updatedJob);
-        return updatedJob;
+            if (updatedJob) {
+                const data = await this.getWorkflowJobFromDb(eventPayload.sender.login);
+                if (data) {
+                    await pubSub.publish(NEW_WORKFLOW_JOB_EVENT, { newWorkflowJob: data });
+                }
+            }
+            console.log('Updated or created job:', updatedJob);
+            return updatedJob;
+        } catch (error) {
+            console.error('Error creating or updating job:', error);
+            throw new Error('Failed to create or update job.');
+        }
     }
 
     async CreateRun(eventPayload): Promise<GitHubWorkflowRun> {
@@ -70,7 +78,7 @@ export class GithubWorkflowService {
                 repo_name: eventPayload.repository.name,
                 repo_owner: eventPayload.repository.owner.login,
                 repo_id: repo._id,
-                user_id:user._id,
+                user_id: user._id,
                 name: eventPayload.workflow_run.name,
                 GitHubWorkflowJob: eventPayload,
                 url: eventPayload.workflow_run.url,
@@ -110,11 +118,11 @@ export class GithubWorkflowService {
 
     async getWorkflowJobFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        return this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 }).limit(5);
+        return this.GithubWorkflowJobModel.find({ user_id: user._id }).sort({ createdAt: -1 }).limit(10);
     }
 
     async getWorkflowRunFromDb(username: string): Promise<any> {
         const user = await this.githubLoginService.getGithubUserDetails(username);
-        return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 }).limit(5);
+        return this.GithubWorkflowRunModel.find({ user_id: user._id }).sort({ createdAt: -1 }).limit(10);
     }
 }

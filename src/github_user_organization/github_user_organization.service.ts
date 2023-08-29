@@ -47,4 +47,8 @@ export class GithubUserOrganizationService {
     getGitHubUserOrganization(username: string): Promise<GitHubUserOrganization[]> {
         return this.GitHubUserOrganizationModel.find({ user_id: username }).exec();
     }
+
+    async getOrganizationIdByName(org_name: string): Promise<GitHubUserOrganization> {
+        return this.GitHubUserOrganizationModel.findOne({ org_name: org_name }).exec();
+    }
 }

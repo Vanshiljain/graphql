@@ -35,7 +35,7 @@ export class GithubPullService {
         isPrivate
         name
         nameWithOwner
-        pullRequests(first: 25, orderBy: { direction: DESC, field: CREATED_AT }) {
+        pullRequests(first: 50, orderBy: { direction: DESC, field: CREATED_AT }) {
           nodes {
             number
             additions
@@ -125,7 +125,7 @@ export class GithubPullService {
               repo_name: repo_name,
               repo_owner: username,
               number: pullRequest.number,
-              commits: pullRequest.commits,
+              commits: pullRequest.commits
             },
           },
           upsert: true,
@@ -142,7 +142,7 @@ export class GithubPullService {
           const commits = await this.getCommitsForPullRequest(username, commitUrl, repo_name);
           if (commits) {
             await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commits });
-    
+
           }
         }
       }

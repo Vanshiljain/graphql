@@ -181,6 +181,8 @@ type GitHubWorkflowJob {
   repo_name: String
   id: String
   Status: StatusRun!
+  org_id: ID
+  org_name: String
 }
 
 """Status of the workflow"""
@@ -202,6 +204,8 @@ type GitHubWorkflowRun {
   repo_name: String
   id: String
   Status: StatusRun!
+  orgId: ID
+  orgName: String
 }
 
 input InputCourses {

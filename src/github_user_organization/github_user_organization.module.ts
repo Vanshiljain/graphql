@@ -13,5 +13,6 @@ import { GithubLoginModule } from 'src/github_login/github_login.module';
     GithubLoginModule,
   ],
   providers: [GithubUserOrganizationService, GithubUserOrganizationResolver],
+  exports: [GithubUserOrganizationService],
 })
 export class GithubUserOrganizationModule {}

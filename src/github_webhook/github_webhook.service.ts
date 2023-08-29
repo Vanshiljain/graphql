@@ -20,7 +20,7 @@ export class GithubWebhookService {
     async handlePullRequestEvent(eventPayload: any) {
         const filter = { number: eventPayload.number, repo_name: eventPayload.repository.name };
         const data = eventPayload;
-        const username = eventPayload.repository.owner.login;
+        const username = eventPayload.pull_request.user.login;
         const repo_name = eventPayload.repository.name;
         const repo = await this.githubRepositoryService.getRepoIdByName(repo_name);
         const user = await this.githubLoginService.getGithubUserDetails(username);

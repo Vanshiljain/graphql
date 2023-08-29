@@ -256,6 +256,8 @@ export interface GitHubWorkflowJob {
     repo_name?: Nullable<string>;
     id?: Nullable<string>;
     Status: StatusRun;
+    org_id?: Nullable<string>;
+    org_name?: Nullable<string>;
 }
 
 export interface GitHubWorkflowRun {
@@ -270,6 +272,8 @@ export interface GitHubWorkflowRun {
     repo_name?: Nullable<string>;
     id?: Nullable<string>;
     Status: StatusRun;
+    orgId?: Nullable<string>;
+    orgName?: Nullable<string>;
 }
 
 export interface IQuery {
