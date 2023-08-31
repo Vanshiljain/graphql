@@ -117,7 +117,7 @@ export class GithubPullService {
               mergedAt: pullRequest.mergedAt,
               state: pullRequest.state,
               githubPullMetadata: pullRequest,
-              userId: user._id,
+              userId: repo.userId,
               repoId: repo._id,
               authorId: user._id,
               repoName: repoName,
