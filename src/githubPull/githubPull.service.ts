@@ -101,7 +101,6 @@ export class GithubPullService {
         console.error("Pull requests data not found in API response");
         throw new Error("Failed to fetch pull requests");
       }
-
       const data = pullRequests.map((pullRequest) => ({
         updateOne: {
           filter: {
@@ -129,7 +128,6 @@ export class GithubPullService {
           upsert: true,
         },
       }));
-
       const savedata = await this.GitHubPullModel.bulkWrite(data);
       if (savedata) {
         const updatedPullRequests = await this.getPullRequestFromDb(userName);
@@ -224,9 +222,7 @@ export class GithubPullService {
           },
         },
       ];
-  
       const [commit] = await this.GitHubPullModel.aggregate(query);
-  
       if (commit) {
         await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commit });
         console.log('Filtered Pull Requests from DB:', commit);
@@ -240,5 +236,4 @@ export class GithubPullService {
       throw error;
     }
   }
-  
 }
