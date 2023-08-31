@@ -6,7 +6,6 @@ import { jwtConstants } from './constants';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from 'src/user/user.modul';
-import { TokenService } from 'src/token/token.service';
 import { TokenModule } from 'src/token/token.module';
 
 @Module({
@@ -22,4 +21,5 @@ import { TokenModule } from 'src/token/token.module';
   providers: [AuthResolver, AuthService, JwtStrategy],
   exports: [AuthService],
 })
-export class AuthModule {}
+
+export class AuthModule { }

@@ -8,7 +8,7 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class GithubLoginService {
-    constructor( @InjectModel('GitHubUser') private readonly GitHubUserDetails: Model<GitHubUserDetails> ) { }
+    constructor(@InjectModel('GitHubUser') private readonly GitHubUserDetails: Model<GitHubUserDetails>) { }
     async githubLogin(): Promise<{ githubAuthUrl: string }> {
         const params = new URLSearchParams();
         params.append('client_id', process.env.GITHUB_CLIENT_ID);
@@ -18,59 +18,12 @@ export class GithubLoginService {
         return { githubAuthUrl };
     }
 
-    // async githubLogin(): Promise<{ githubAuthUrl: string }> {
-    //   const params = new URLSearchParams();
-    //   params.append('client_id', process.env.GITHUB_CLIENT_ID);
-    //   params.append('scope', 'read:user user:email');
-    //   const githubAuthUrl = `
-    //   https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}
-    // `;
-    //   try {
-    //     const response = await axios.post(githubAuthUrl, null, {
-    //       headers: {
-    //         "Content-Type": 'application/json',
-    //       },
-    //     });
-    //     return response.data;
-    //   } catch (error) {
-    //     console.error('Error:', error);
-    //     throw error;
-    //   }
-
-    // }
-
-
-    // async githubCodeExchange(code: string): Promise<AccessTokenResponse> {
-    //   const params = new URLSearchParams();
-    //   params.append('client_id', process.env.GITHUB_CLIENT_ID);
-    //   params.append('client_secret', process.env.GITHUB_CLIENT_SECRET);
-    //   params.append('code', code);
-
-    //   try {
-    //     const response = await axios.post(
-    //       `https://github.com/login/oauth/access_token`,
-    //       params,
-    //       {
-    //         headers: {
-    //           Accept: 'application/json',
-    //         },
-    //       }
-    //     );
-
-    //     console.log('GitHub Access Token Response:', response.data);
-    //     return response.data;
-    //   } catch (error) {
-    //     console.error('GitHub Code Exchange Failed:', error);
-    //     throw new Error('GitHub code exchange failed');
-    //   }
-    // }  
-
     async githubCodeExchange(code: string): Promise<AccessTokenResponse> {
         try {
             const clientId = process.env.GITHUB_CLIENT_ID;
             const clientSecret = process.env.GITHUB_CLIENT_SECRET;
             const redirectUri = process.env.REDIRECT_URI;
-    
+
             const response = await axios.post(`https://github.com/login/oauth/access_token`, null, {
                 params: {
                     client_id: clientId,
@@ -83,7 +36,6 @@ export class GithubLoginService {
                 },
             });
             console.log('GitHub Access Token Response:', response.data);
-    
             const userResponse = await axios.get('https://api.github.com/user', {
                 headers: {
                     Authorization: `Bearer ${response.data.access_token}`,
@@ -91,30 +43,28 @@ export class GithubLoginService {
             });
             console.log('GitHub User Response:', userResponse.data);
             const githubUser = new this.GitHubUserDetails({
-                username: userResponse.data.login,
+                userName: userResponse.data.login,
                 login: userResponse.data.login,
-                node_id: userResponse.data.node_id,
+                nodeId: userResponse.data.node_id,
                 email: userResponse.data.email,
                 name: userResponse.data.name,
                 githubUserMetadata: userResponse.data,
-                access_token: response.data.access_token,
-                token_type: response.data.token_type,
-                refresh_token: response.data.refresh_token,
-                expires_in: Date.now() + (response.data.expires_in * 1000)
+                accessToken: response.data.access_token,
+                tokenType: response.data.token_type,
+                refreshToken: response.data.refresh_token,
+                expiresIn: Date.now() + (response.data.expires_in * 1000)
             });
             await githubUser.save();
-            const responseDataWithUsername = {
+            const responseDataWithuserName = {
                 ...response.data,
-                username: userResponse.data.login,
-              };
-          
-              return responseDataWithUsername;
+                userName: userResponse.data.login,
+            };
+            return responseDataWithuserName;
         } catch (error) {
             throw new Error('GitHub code exchange failed');
         }
     }
 
-    //also implement this method in above code exchange method
     async getGithubUser(accessToken: string): Promise<GitHubUserDetails> {
         const userResponse = await axios.get('https://api.github.com/user', {
             headers: {
@@ -122,20 +72,18 @@ export class GithubLoginService {
             },
         });
         const githubUser = new this.GitHubUserDetails({
-            username: userResponse.data.login,
-            node_id: userResponse.data.node_id,
+            userName: userResponse.data.login,
+            nodeId: userResponse.data.node_id,
             email: userResponse.data.email,
             name: userResponse.data.name,
             githubUserMetadata: userResponse.data,
         });
-        
         console.log('GitHub User Response:', userResponse.data);
         return await githubUser.save();
     }
 
-    async getGithubUserDetails(username: string): Promise<GitHubUserDetails> {
-        const githubUser = await this.GitHubUserDetails.findOne({ username: username });
+    async getGithubUserDetails(userName: string): Promise<GitHubUserDetails> {
+        const githubUser = await this.GitHubUserDetails.findOne({ userName: userName });
         return githubUser;
     }
-    
 }

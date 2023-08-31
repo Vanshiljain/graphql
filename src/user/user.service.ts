@@ -7,32 +7,22 @@ import * as bcrypt from 'bcryptjs';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-
-
-
-
 @Injectable()
 export class UserService {
   findById(userId: string) {
     throw new Error('Method not implemented.');
   }
 
-
-
   constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
   async createUser(userInput: UserInput): Promise<User> {
-
     const nodemailer = require("nodemailer");
-
     const transporter = nodemailer.createTransport({
-
       service: 'gmail',
       auth: {
         user: process.env.USER,
         pass: process.env.PASS,
       }
     });
-
 
     const aggregation = new this.userModel({ ...userInput, password: await bcrypt.hash(userInput.password, 10) });
     aggregation.product.map((p: Product) => {
@@ -45,9 +35,9 @@ export class UserService {
     aggregation.totalSumPrice = totalSumPrice;
     const result = JSON.stringify(aggregation);
     const info = await transporter.sendMail({
-      from: "niharkushwahcomputer@gmail.com", // sender address
-      to: "nihark@linkites.com", // list of receivers
-      subject: "Hello ✔", // Subject line
+      from: "niharkushwahcomputer@gmail.com",
+      to: "nihark@linkites.com",
+      subject: "Hello ✔",
       text: "User registered successfully!",
       html: `
       <h1>User registered successfully!</h1>
@@ -55,28 +45,24 @@ export class UserService {
       <tr>
           <th>Name</th>
           <th>email</th>
-          <th>Username</th>
+          <th>userName</th>
           <th>age</th>
           <th>mobile number</th>
           <th>Address</th>
-          
         </tr>
         <tr>
           <td>${aggregation.name}</td>
           <td>${aggregation.email}</td>
-          <td>${aggregation.username}</td>
+          <td>${aggregation.userName}</td>
           <td>${aggregation.age}</td>
           <td>${aggregation.mobileNumber}</td>
           <td>${aggregation.address.mainAddress}, ${aggregation.address.city}, ${aggregation.address.pincode}</td>
           </tr>
           </table>
-
       `,
     });
-
     console.log("Message sent: %s", info.messageId);
     return aggregation.save();
-
   }
 
   async findAllUser() {
@@ -104,10 +90,9 @@ export class UserService {
         $project: {
           courses: 1,
           name: 1,
-          username: 1,
+          userName: 1,
           email: 1,
           password: 1,
-          
           completedCourses: {
             $filter: {
               input: "$courses",
@@ -140,13 +125,12 @@ export class UserService {
     ]).exec();
   }
 
-
   async findUserByQty(quantity: number) {
     return this.userModel.aggregate([
       {
         $project: {
           name: "$name",
-          username: "$username",
+          userName: "$userName",
           role: "$role",
           email: "$email",
           password: "$password",
@@ -194,7 +178,7 @@ export class UserService {
     return result[0].totalSumPrice;
   }
 
-  
+
   async getAllCourses() {
     return this.userModel.aggregate([
       {
@@ -244,6 +228,4 @@ export class UserService {
   async findEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email: email });
   }
-
-
 }

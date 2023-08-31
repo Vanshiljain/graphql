@@ -9,12 +9,12 @@ export class GithubWorkflowResolver {
     ) {}
 
     @Query(returns => [GitHubWorkflowJob])
-    async getWorkflowJobFromDb(@Args('username') username: string): Promise<GitHubWorkflowJob[]> {
-        return this.githubWorkflowService.getWorkflowJobFromDb(username);
+    async getWorkflowJobFromDb(@Args('userName') userName: string): Promise<GitHubWorkflowJob[]> {
+        return this.githubWorkflowService.getWorkflowJobFromDb(userName);
     }
 
     @Query(returns => [GitHubWorkflowRun])
-    async getWorkflowRunFromDb(@Args('username') username: string): Promise<GitHubWorkflowRun[]> {
-        return this.githubWorkflowService.getWorkflowRunFromDb(username);
+    async getWorkflowRunFromDb(@Args('userName') userName: string): Promise<GitHubWorkflowRun[]> {
+        return this.githubWorkflowService.getWorkflowRunFromDb(userName);
     }
 }

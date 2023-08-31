@@ -7,12 +7,9 @@ import { GithubLoginModule } from 'src/github_login/github_login.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: 'GitHubUserOrganization', schema: GitHubUserOrganizationSchema },
-    ]),
-    GithubLoginModule,
-  ],
+    MongooseModule.forFeature([{ name: 'GitHubUserOrganization', schema: GitHubUserOrganizationSchema }]), GithubLoginModule],
   providers: [GithubUserOrganizationService, GithubUserOrganizationResolver],
   exports: [GithubUserOrganizationService],
 })
-export class GithubUserOrganizationModule {}
+
+export class GithubUserOrganizationModule { }

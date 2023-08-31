@@ -11,7 +11,7 @@ export class GitHubUserDetails extends Document {
 
   @Field(() => String, { nullable: true })
   @Prop()
-  username: string;
+  userName: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
@@ -27,19 +27,19 @@ export class GitHubUserDetails extends Document {
 
   @Field(() => String, { nullable: true })
   @Prop()
-  access_token: string;
+  accessToken: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
-  token_type: string;
+  tokenType: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
-  refresh_token: string;
+  refreshToken: string;
 
   @Field(() => Number, { nullable: true })
   @Prop()
-  expires_in: Number;
+  expiresIn: Number;
 }
 
 export const GitHubUserDetailsSchema = SchemaFactory.createForClass(GitHubUserDetails);

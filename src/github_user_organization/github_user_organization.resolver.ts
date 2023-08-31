@@ -7,7 +7,7 @@ export class GithubUserOrganizationResolver {
     constructor(private readonly githubUserOrganizationService: GithubUserOrganizationService) {}
 
     @Query(returns => [GitHubUserOrganization])
-    async githubUserOrganizations(@Args('username') username: string): Promise<GitHubUserOrganization[]> {
-        return this.githubUserOrganizationService.getUserOrganization(username);
+    async githubUserOrganizations(@Args('userName') userName: string): Promise<GitHubUserOrganization[]> {
+        return this.githubUserOrganizationService.getUserOrganization(userName);
     }
 }

@@ -69,7 +69,7 @@ export interface InputBook {
 
 export interface UserInput {
     name?: Nullable<string>;
-    username?: Nullable<string>;
+    userName?: Nullable<string>;
     email?: Nullable<string>;
     password?: Nullable<string>;
     gender?: Nullable<Gender>;
@@ -140,7 +140,7 @@ export interface Product {
 export interface User {
     _id?: Nullable<string>;
     name?: Nullable<string>;
-    username?: Nullable<string>;
+    userName?: Nullable<string>;
     email?: Nullable<string>;
     password?: Nullable<string>;
     gender?: Nullable<Gender>;
@@ -163,11 +163,11 @@ export interface User {
 }
 
 export interface AccessTokenResponse {
-    access_token?: Nullable<string>;
-    username?: Nullable<string>;
-    token_type?: Nullable<string>;
-    refresh_token?: Nullable<string>;
-    expires_in?: Nullable<string>;
+    accessToken?: Nullable<string>;
+    userName?: Nullable<string>;
+    tokenType?: Nullable<string>;
+    refreshToken?: Nullable<string>;
+    expiresIn?: Nullable<string>;
 }
 
 export interface GithubAuthResponse {
@@ -194,19 +194,19 @@ export interface Book {
 
 export interface GitHubUserDetails {
     _id: string;
-    username?: Nullable<string>;
+    userName?: Nullable<string>;
     email?: Nullable<string>;
     name?: Nullable<string>;
     githubUserMetadata?: Nullable<JSONObject>;
-    access_token?: Nullable<string>;
-    token_type?: Nullable<string>;
-    refresh_token?: Nullable<string>;
-    expires_in?: Nullable<number>;
+    accessToken?: Nullable<string>;
+    tokenType?: Nullable<string>;
+    refreshToken?: Nullable<string>;
+    expiresIn?: Nullable<number>;
 }
 
 export interface GitHubRepository {
-    user_id: string;
-    repository_type: RepositoryType;
+    userId: string;
+    repositoryType: RepositoryType;
     id?: Nullable<string>;
     name?: Nullable<string>;
     description?: Nullable<string>;
@@ -216,28 +216,28 @@ export interface GitHubRepository {
 
 export interface GitHubUserOrganization {
     id?: Nullable<number>;
-    user_id: string;
-    org_name?: Nullable<string>;
-    node_id?: Nullable<string>;
+    userId: string;
+    orgName?: Nullable<string>;
+    nodeId?: Nullable<string>;
     url?: Nullable<string>;
-    repos_url?: Nullable<string>;
-    members_url?: Nullable<string>;
+    reposUrl?: Nullable<string>;
+    membersUrl?: Nullable<string>;
     githubOrganizationMetadata?: Nullable<JSONObject>;
 }
 
 export interface GitHubPull {
-    github_pull_metadata?: Nullable<JSONObject>;
+    githubPullMetadata?: Nullable<JSONObject>;
     title?: Nullable<string>;
     url?: Nullable<string>;
     createdAt?: Nullable<DateTime>;
     mergedAt?: Nullable<DateTime>;
     closedAt?: Nullable<DateTime>;
     updatedAt?: Nullable<DateTime>;
-    user_id?: Nullable<string>;
-    repo_id?: Nullable<string>;
-    author_id?: Nullable<string>;
-    repo_owner?: Nullable<string>;
-    repo_name?: Nullable<string>;
+    userId?: Nullable<string>;
+    repoId?: Nullable<string>;
+    authorId?: Nullable<string>;
+    repoOwner?: Nullable<string>;
+    repoName?: Nullable<string>;
     state?: Nullable<string>;
     number?: Nullable<number>;
     commits?: Nullable<JSONObject>;
@@ -249,15 +249,15 @@ export interface GitHubWorkflowJob {
     title?: Nullable<string>;
     url?: Nullable<string>;
     createdAt?: Nullable<DateTime>;
-    user_id?: Nullable<string>;
-    repo_id?: Nullable<string>;
-    author_id?: Nullable<string>;
-    repo_owner?: Nullable<string>;
-    repo_name?: Nullable<string>;
+    userId?: Nullable<string>;
+    repoId?: Nullable<string>;
+    authorId?: Nullable<string>;
+    repoOwner?: Nullable<string>;
+    repoName?: Nullable<string>;
     id?: Nullable<string>;
     Status: StatusRun;
-    org_id?: Nullable<string>;
-    org_name?: Nullable<string>;
+    orgId?: Nullable<string>;
+    orgName?: Nullable<string>;
 }
 
 export interface GitHubWorkflowRun {
@@ -265,11 +265,11 @@ export interface GitHubWorkflowRun {
     title?: Nullable<string>;
     url?: Nullable<string>;
     createdAt?: Nullable<DateTime>;
-    user_id?: Nullable<string>;
-    repo_id?: Nullable<string>;
-    author_id?: Nullable<string>;
-    repo_owner?: Nullable<string>;
-    repo_name?: Nullable<string>;
+    userId?: Nullable<string>;
+    repoId?: Nullable<string>;
+    authorId?: Nullable<string>;
+    repoOwner?: Nullable<string>;
+    repoName?: Nullable<string>;
     id?: Nullable<string>;
     Status: StatusRun;
     orgId?: Nullable<string>;
@@ -286,17 +286,17 @@ export interface IQuery {
     getAllCourses(): User[] | Promise<User[]>;
     findOne(email: string): User | Promise<User>;
     findEmail(email: string): User | Promise<User>;
-    getGithubUserDetails(username: string): GitHubUserDetails | Promise<GitHubUserDetails>;
+    getGithubUserDetails(userName: string): GitHubUserDetails | Promise<GitHubUserDetails>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
-    githubRepositories(username: string): GitHubRepository[] | Promise<GitHubRepository[]>;
-    githubOrganizationRepositories(username: string, org_name: string): GitHubRepository[] | Promise<GitHubRepository[]>;
-    githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
-    getPullRequestFromDb(username: string): GitHubPull[] | Promise<GitHubPull[]>;
-    searchPullRequests(username: string, searchKeyword: string): GitHubPull[] | Promise<GitHubPull[]>;
-    getCommitsForPullRequest(username: string, url: string, repo_name: string): GitHubPull | Promise<GitHubPull>;
-    getWorkflowJobFromDb(username: string): GitHubWorkflowJob[] | Promise<GitHubWorkflowJob[]>;
-    getWorkflowRunFromDb(username: string): GitHubWorkflowRun[] | Promise<GitHubWorkflowRun[]>;
+    githubRepositories(userName: string): GitHubRepository[] | Promise<GitHubRepository[]>;
+    githubOrganizationRepositories(userName: string, orgName: string): GitHubRepository[] | Promise<GitHubRepository[]>;
+    githubUserOrganizations(userName: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
+    getPullRequestFromDb(userName: string): GitHubPull[] | Promise<GitHubPull[]>;
+    searchPullRequests(userName: string, searchKeyword: string): GitHubPull[] | Promise<GitHubPull[]>;
+    getCommitsForPullRequest(userName: string, url: string, repoName: string): GitHubPull | Promise<GitHubPull>;
+    getWorkflowJobFromDb(userName: string): GitHubWorkflowJob[] | Promise<GitHubWorkflowJob[]>;
+    getWorkflowRunFromDb(userName: string): GitHubWorkflowRun[] | Promise<GitHubWorkflowRun[]>;
 }
 
 export interface IMutation {
@@ -311,7 +311,7 @@ export interface IMutation {
     login(email: string, password: string): string | Promise<string>;
     logout(email: string): string | Promise<string>;
     checkDate(date: string): string | Promise<string>;
-    createPullRequests(username: string, repo_name: string): GitHubPull[] | Promise<GitHubPull[]>;
+    createPullRequests(userName: string, repoName: string): GitHubPull[] | Promise<GitHubPull[]>;
 }
 
 export interface ISubscription {

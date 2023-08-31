@@ -19,7 +19,7 @@ registerEnumType(RepositoryType, {
 export class GithubWebhook extends Document {
     @Field(() => GraphQLJSONObject, { nullable: true })
     @Prop({ type: Object })
-    github_weebhook_metadata: object;
+    githubWebhookMetadata: object;
 
     @Field(() => String, { nullable: true })
     @Prop()
@@ -47,23 +47,23 @@ export class GithubWebhook extends Document {
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    user_id: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    repo_id: mongoose.Types.ObjectId;
+    repoId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    author_id: mongoose.Types.ObjectId;
+    authorId: mongoose.Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ required: false })
-    repo_owner: string;
+    repoOwner: string;
 
     @Field(() => String, { nullable: true })
     @Prop()
-    repo_name: string;
+    repoName: string;
 
     @Field(() => String, { nullable: true })
     @Prop()
@@ -79,7 +79,7 @@ export class GithubWebhook extends Document {
 
     @Field(()=> RepositoryType)
     @Prop({ enum: RepositoryType, default: RepositoryType.UserRepo })
-    repository_type: RepositoryType;
+    repositoryType: RepositoryType;
 }
 
 export const GithubWebhookSchema = SchemaFactory.createForClass(GithubWebhook);

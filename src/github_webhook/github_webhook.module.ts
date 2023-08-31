@@ -10,11 +10,9 @@ import { GithubWorkflowModule } from 'src/github_workflow/github_workflow.module
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: GithubWebhook.name, schema: GithubWebhookSchema }]),
-        GithubLoginModule, GithubRepositoryModule, GithubPullModule, GithubWorkflowModule
-    ],
+        MongooseModule.forFeature([{ name: GithubWebhook.name, schema: GithubWebhookSchema }]), GithubLoginModule, GithubRepositoryModule, GithubPullModule, GithubWorkflowModule],
     controllers: [GithubWebhookController],
     providers: [GithubWebhookService],
     exports: [GithubWebhookService]
 })
-export class GithubWebhookModule {}
+export class GithubWebhookModule { }

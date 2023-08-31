@@ -8,25 +8,25 @@ import { Query } from '@nestjs/graphql';
 export class GithubLoginResolver {
   constructor(private readonly GithubLoginService: GithubLoginService) { }
 
-    @Mutation(() => GithubAuthResponse)
-    async githubLogin(): Promise<{ githubAuthUrl: string }> {
-      return await this.GithubLoginService.githubLogin();
-    }
-  
-    @Mutation(() => AccessTokenResponse)
-    async githubCodeExchange(@Args('code') code: string): Promise<AccessTokenResponse> {
-      const accessTokenResponse = await this.GithubLoginService.githubCodeExchange(code);
-      return accessTokenResponse;
-    }
-  
-    @Mutation(() => GitHubUserDetails)
-    async getGithubUser(@Args('accessToken') accessToken: string): Promise<GitHubUserDetails> {
-      const githubUser = await this.GithubLoginService.getGithubUser(accessToken);
-      return githubUser;
-    }
+  @Mutation(() => GithubAuthResponse)
+  async githubLogin(): Promise<{ githubAuthUrl: string }> {
+    return await this.GithubLoginService.githubLogin();
+  }
 
-    @Query(() => GitHubUserDetails)
-    async getGithubUserDetails(@Args('username') username: string): Promise<GitHubUserDetails> {
-        return this.GithubLoginService.getGithubUserDetails(username);
-    }  
+  @Mutation(() => AccessTokenResponse)
+  async githubCodeExchange(@Args('code') code: string): Promise<AccessTokenResponse> {
+    const accessTokenResponse = await this.GithubLoginService.githubCodeExchange(code);
+    return accessTokenResponse;
+  }
+
+  @Mutation(() => GitHubUserDetails)
+  async getGithubUser(@Args('accessToken') accessToken: string): Promise<GitHubUserDetails> {
+    const githubUser = await this.GithubLoginService.getGithubUser(accessToken);
+    return githubUser;
+  }
+
+  @Query(() => GitHubUserDetails)
+  async getGithubUserDetails(@Args('userName') userName: string): Promise<GitHubUserDetails> {
+    return this.GithubLoginService.getGithubUserDetails(userName);
+  }
 }

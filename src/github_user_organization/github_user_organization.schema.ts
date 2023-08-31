@@ -12,15 +12,15 @@ export class GitHubUserOrganization extends Document {
     
     @Field(() => ID)
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-    user_id: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
     
     @Field({ nullable: true })
     @Prop({ required: true })
-    org_name: string;
+    orgName: string;
 
     @Field({ nullable: true })
     @Prop({ required: true })
-    node_id: string;
+    nodeId: string;
 
     @Field({ nullable: true })
     @Prop({ required: true })
@@ -28,11 +28,11 @@ export class GitHubUserOrganization extends Document {
 
     @Field({ nullable: true })
     @Prop({ required: true })
-    repos_url: string;
+    reposUrl: string;
 
     @Field({ nullable: true })
     @Prop({ required: true })
-    members_url: string;
+    membersUrl: string;
 
     @Field(() => GraphQLJSONObject, { nullable: true })
     @Prop({ type: Object })

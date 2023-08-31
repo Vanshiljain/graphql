@@ -8,7 +8,7 @@ import mongoose, { Document } from "mongoose";
 export class GitHubPull extends Document {
     @Field(() => GraphQLJSONObject, { nullable: true })
     @Prop({ type: Object })
-    github_pull_metadata: object;
+    githubPullMetadata: object;
 
     @Field(() => String, { nullable: true })
     @Prop()
@@ -36,23 +36,23 @@ export class GitHubPull extends Document {
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-    user_id: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-    repo_id: mongoose.Types.ObjectId;
+    repoId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-    author_id: mongoose.Types.ObjectId;
+    authorId: mongoose.Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop()
-    repo_owner: string;
+    repoOwner: string;
 
     @Field(() => String, { nullable: true })
     @Prop()
-    repo_name: string;
+    repoName: string;
 
     @Field(() => String, { nullable: true })
     @Prop()

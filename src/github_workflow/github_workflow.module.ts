@@ -11,10 +11,10 @@ import { GithubUserOrganizationModule } from 'src/github_user_organization/githu
   imports: [GithubLoginModule,
     MongooseModule.forFeature([{ name: GitHubWorkflowRun.name, schema: GitHubWorkflowRunSchema }]),
     MongooseModule.forFeature([{ name: GitHubWorkflowJob.name, schema: GitHubWorkflowJobSchema }]),
-    GithubRepositoryModule,
-    GithubUserOrganizationModule,
+    GithubRepositoryModule, GithubUserOrganizationModule
   ],
   providers: [GithubWorkflowService, GithubWorkflowResolver],
   exports: [GithubWorkflowService]
 })
+
 export class GithubWorkflowModule {}

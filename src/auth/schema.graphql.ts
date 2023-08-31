@@ -9,7 +9,7 @@ const typeDefs = `
 
   type User {
     id: ID!
-    username: String!
+    userName: String!
   }
 `;
 

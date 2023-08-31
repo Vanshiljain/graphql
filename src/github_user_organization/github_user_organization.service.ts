@@ -10,33 +10,27 @@ export class GithubUserOrganizationService {
     constructor(@InjectModel('GitHubUserOrganization') private readonly GitHubUserOrganizationModel: Model<GitHubUserOrganization>,
     private readonly githubLoginService: GithubLoginService,
     ) {}
-
     
-    async getUserOrganization(username: string): Promise<GitHubUserOrganization[]> {
-        const user = await this.githubLoginService.getGithubUserDetails(username);
-        // console.log('GitHub User:', user);
-    
+    async getUserOrganization(userName: string): Promise<GitHubUserOrganization[]> {
+        const user = await this.githubLoginService.getGithubUserDetails(userName);
         try {
             const response = await axios.get('https://api.github.com/user/orgs', {
                 headers: {
-                    Authorization: `Bearer ${user.access_token}`,
+                    Authorization: `Bearer ${user.accessToken}`,
                 },
             });
-
             const organization = response.data.map(org => ({
-                user_id: user._id,
-                org_name: org.login,
+                userId: user._id,
+                orgName: org.login,
                 id: org.id,
-                node_id: org.node_id,
+                nodeId: org.nodeId,
                 url: org.url,
-                repos_url: org.repos_url,
-                members_url: org.members_url,
+                reposUrl: org.reposUrl,
+                membersUrl: org.membersUrl,
                 githubOrganizationMetadata: response.data,
             }));
-
             const organizationInstance = organization.map(repoData => new this.GitHubUserOrganizationModel(repoData));
             await this.GitHubUserOrganizationModel.insertMany(organizationInstance);
-
             return organization;
         } catch (error) {
             console.error('GitHub API Request Error:', error);
@@ -44,11 +38,11 @@ export class GithubUserOrganizationService {
         }
     }
 
-    getGitHubUserOrganization(username: string): Promise<GitHubUserOrganization[]> {
-        return this.GitHubUserOrganizationModel.find({ user_id: username }).exec();
+    getGitHubUserOrganization(userName: string): Promise<GitHubUserOrganization[]> {
+        return this.GitHubUserOrganizationModel.find({ userId: userName }).exec();
     }
 
-    async getOrganizationIdByName(org_name: string): Promise<GitHubUserOrganization> {
-        return this.GitHubUserOrganizationModel.findOne({ org_name: org_name }).exec();
+    async getOrganizationIdByName(orgName: string): Promise<GitHubUserOrganization> {
+        return this.GitHubUserOrganizationModel.findOne({ orgName: orgName }).exec();
     }
 }

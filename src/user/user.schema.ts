@@ -120,7 +120,7 @@ export class User extends Document {
 
     @Field(() => String, { nullable: true })
     @Prop()
-    username: string;
+    userName: string;
 
     @Field(() => String, { nullable: true })
     @Prop({ unique: true })
@@ -202,7 +202,7 @@ export class UserInput {
     name?: string;
 
     @Field(()=> String, { nullable: true })
-    username?: string;
+    userName?: string;
 
     @Field(()=> String, { nullable: true })
     email?: string;
@@ -254,19 +254,19 @@ export const UserSchema = SchemaFactory.createForClass(User);
 @ObjectType()
 export class AccessTokenResponse{
     @Field(()=> String, { nullable: true })
-    access_token?: string;
+    accessToken?: string;
 
     @Field(()=> String, { nullable: true })
-    username?: string;
+    userName?: string;
     
     @Field(()=> String, { nullable: true })
-    token_type?: string;
+    tokenType?: string;
 
     @Field(()=> String, { nullable: true })
-    refresh_token?: string;
+    refreshToken?: string;
 
     @Field(()=> String, { nullable: true })
-    expires_in?: string;
+    expiresIn?: string;
 }
 
 @ObjectType()
@@ -274,4 +274,3 @@ export class GithubAuthResponse{
     @Field(()=> String, { nullable: true })
     githubAuthUrl?: string;
 }
-

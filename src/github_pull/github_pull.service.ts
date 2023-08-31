@@ -20,13 +20,13 @@ export class GithubPullService {
     @InjectModel(GitHubPull.name) private readonly GitHubPullModel: Model<GitHubPull>
   ) { }
 
-  async createPullRequests(username: string, repo_name: string): Promise<GitHubPull[]> {
-    const user = await this.githubLoginService.getGithubUserDetails(username);
-    const repo = await this.githubRepositoryService.getRepoIdByName(repo_name);
+  async createPullRequests(userName: string, repoName: string): Promise<GitHubPull[]> {
+    const user = await this.githubLoginService.getGithubUserDetails(userName);
+    const repo = await this.githubRepositoryService.getRepoIdByName(repoName);
 
     const query = `
     query {
-      repository(owner: "${username}", name: "${repo_name}") {
+      repository(owner: "${userName}", name: "${repoName}") {
         defaultBranchRef {
           name
         }
@@ -91,7 +91,7 @@ export class GithubPullService {
         { query },
         {
           headers: {
-            Authorization: `Bearer ${user.access_token}`,
+            Authorization: `Bearer ${user.accessToken}`,
           },
         }
       );
@@ -105,8 +105,6 @@ export class GithubPullService {
       const data = pullRequests.map((pullRequest) => ({
         updateOne: {
           filter: {
-            // number: pullRequest.number,
-            // repo_name: repo_name,
             url: pullRequest.url,
           },
           update: {
@@ -118,12 +116,12 @@ export class GithubPullService {
               closedAt: pullRequest.closedAt,
               mergedAt: pullRequest.mergedAt,
               state: pullRequest.state,
-              github_pull_metadata: pullRequest,
-              user_id: repo.user_id,
-              repo_id: repo._id,
-              author_id: user._id,
-              repo_name: repo_name,
-              repo_owner: username,
+              githubPullMetadata: pullRequest,
+              userId: user._id,
+              repoId: repo._id,
+              authorId: user._id,
+              repoName: repoName,
+              repoOwner: userName,
               number: pullRequest.number,
               commits: pullRequest.commits
             },
@@ -134,19 +132,17 @@ export class GithubPullService {
 
       const savedata = await this.GitHubPullModel.bulkWrite(data);
       if (savedata) {
-        const updatedPullRequests = await this.getPullRequestFromDb(username);
+        const updatedPullRequests = await this.getPullRequestFromDb(userName);
         await pubSub.publish(NEW_PULL_REQUEST_EVENT, { newPullRequest: updatedPullRequests });
         if (updatedPullRequests) {
           console.log('Updated pull requests:', updatedPullRequests);
           const commitUrl = pullRequests[0].commits.nodes[0].url;
-          const commits = await this.getCommitsForPullRequest(username, commitUrl, repo_name);
+          const commits = await this.getCommitsForPullRequest(userName, commitUrl, repoName);
           if (commits) {
             await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commits });
-
           }
         }
       }
-
       return data;
     } catch (error) {
       console.error("GitHub API Request Error:", error);
@@ -154,22 +150,21 @@ export class GithubPullService {
     }
   }
 
-  async getPullRequestFromDb(username: string): Promise<GitHubPull[]> {
-    const user = await this.githubLoginService.getGithubUserDetails(username);
-    const pullRequests = await this.GitHubPullModel.find({ author_id: user._id }).sort({ createdAt: -1 });;
+  async getPullRequestFromDb(userName: string): Promise<GitHubPull[]> {
+    const user = await this.githubLoginService.getGithubUserDetails(userName);
+    const pullRequests = await this.GitHubPullModel.find({ authorId: user._id }).sort({ createdAt: -1 });;
     console.log('Pull Requests from DB:', pullRequests);
     return pullRequests;
   }
 
-  async getFilteredPullRequests(username: string, searchKeyword: string): Promise<GitHubPull[]> {
-    const user = await this.githubLoginService.getGithubUserDetails(username);
-
+  async getFilteredPullRequests(userName: string, searchKeyword: string): Promise<GitHubPull[]> {
+    const user = await this.githubLoginService.getGithubUserDetails(userName);
     const reg = searchKeyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, ' ');
     console.log('reg >>>>>>>>>>>>>>>>>>>:', reg);
     const aggregationPipeline = [
       {
         $match: {
-          author_id: user._id,
+          authorId: user._id,
           $or: [
             { title: { $regex: reg, $options: 'i' } },
             { baseRefName: { $regex: reg, $options: 'i' } },
@@ -178,7 +173,6 @@ export class GithubPullService {
         },
       },
     ];
-
     const pullRequests = await this.GitHubPullModel.aggregate(aggregationPipeline);
     console.log('Filtered Pull Requests from DB:', pullRequests);
     return pullRequests;
@@ -198,48 +192,53 @@ export class GithubPullService {
     return pubSub.asyncIterator(NEW_COMMIT_EVENT);
   }
 
-
-  async getCommitsForPullRequest(username: string, url: string, repo_name: string): Promise<GitHubPull> {
-
-    const user = await this.githubLoginService.getGithubUserDetails(username);
-    const query = [
-      {
-        $match: {
-          user_id: user._id,
-          repo_name,
+  async getCommitsForPullRequest(userName: string, url: string, repoName: string): Promise<GitHubPull> {
+    try {
+      const user = await this.githubLoginService.getGithubUserDetails(userName);
+      const query = [
+        {
+          $match: {
+            userId: user._id,
+            repoName,
+          },
         },
-      },
-      {
-        $project: {
-          user_id: 1,
-          repo_name: 1,
-          commits: 1,
-          filterCommits: {
-            $filter: {
-              input: "$commits.nodes",
-              as: "commit",
-              cond: { $eq: ["$$commit.url", url] },
+        {
+          $project: {
+            userId: 1,
+            repoName: 1,
+            commits: 1,
+            filterCommits: {
+              $filter: {
+                input: "$commits.nodes",
+                as: "commit",
+                cond: { $eq: ["$$commit.url", url] },
+              },
             },
           },
         },
-      },
-      {
-        $match: {
-          $expr: {
-            $gt: [{ $size: "$filterCommits" }, 0],
+        {
+          $match: {
+            $expr: {
+              $gt: [{ $size: "$filterCommits" }, 0],
+            },
           },
         },
-      },
-      // {
-      //   $unwind: "$filterCommits",
-      // }
-    ];
-
-    const [commit] = await this.GitHubPullModel.aggregate(query);
-    if (commit) {
-      await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commit });
+      ];
+  
+      const [commit] = await this.GitHubPullModel.aggregate(query);
+  
+      if (commit) {
+        await pubSub.publish(NEW_COMMIT_EVENT, { newCommit: commit });
+        console.log('Filtered Pull Requests from DB:', commit);
+        return commit;
+      } else {
+        console.log('No matching commit found.');
+        return null;
+      }
+    } catch (error) {
+      console.log('Error in getCommitsForPullRequest:', error);
+      throw error;
     }
-    console.log('Filtered Pull Requests from DB:', commit);
-    return commit;
   }
+  
 }

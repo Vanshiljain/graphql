@@ -36,7 +36,7 @@ type Product {
 type User {
   _id: ID
   name: String
-  username: String
+  userName: String
   email: String
   password: String
   gender: Gender
@@ -72,11 +72,11 @@ enum Role {
 }
 
 type AccessTokenResponse {
-  access_token: String
-  username: String
-  token_type: String
-  refresh_token: String
-  expires_in: String
+  accessToken: String
+  userName: String
+  tokenType: String
+  refreshToken: String
+  expiresIn: String
 }
 
 type GithubAuthResponse {
@@ -103,14 +103,14 @@ type Book {
 
 type GitHubUserDetails {
   _id: ID!
-  username: String
+  userName: String
   email: String
   name: String
   githubUserMetadata: JSONObject
-  access_token: String
-  token_type: String
-  refresh_token: String
-  expires_in: Float
+  accessToken: String
+  tokenType: String
+  refreshToken: String
+  expiresIn: Float
 }
 
 """
@@ -119,8 +119,8 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 scalar JSONObject
 
 type GitHubRepository {
-  user_id: ID!
-  repository_type: RepositoryType!
+  userId: ID!
+  repositoryType: RepositoryType!
   id: String
   name: String
   description: String
@@ -136,28 +136,28 @@ enum RepositoryType {
 
 type GitHubUserOrganization {
   id: Float
-  user_id: ID!
-  org_name: String
-  node_id: String
+  userId: ID!
+  orgName: String
+  nodeId: String
   url: String
-  repos_url: String
-  members_url: String
+  reposUrl: String
+  membersUrl: String
   githubOrganizationMetadata: JSONObject
 }
 
 type GitHubPull {
-  github_pull_metadata: JSONObject
+  githubPullMetadata: JSONObject
   title: String
   url: String
   createdAt: DateTime
   mergedAt: DateTime
   closedAt: DateTime
   updatedAt: DateTime
-  user_id: ID
-  repo_id: ID
-  author_id: ID
-  repo_owner: String
-  repo_name: String
+  userId: ID
+  repoId: ID
+  authorId: ID
+  repoOwner: String
+  repoName: String
   state: String
   number: Float
   commits: JSONObject
@@ -174,15 +174,15 @@ type GitHubWorkflowJob {
   title: String
   url: String
   createdAt: DateTime
-  user_id: ID
-  repo_id: ID
-  author_id: ID
-  repo_owner: String
-  repo_name: String
+  userId: ID
+  repoId: ID
+  authorId: ID
+  repoOwner: String
+  repoName: String
   id: String
   Status: StatusRun!
-  org_id: ID
-  org_name: String
+  orgId: ID
+  orgName: String
 }
 
 """Status of the workflow"""
@@ -197,11 +197,11 @@ type GitHubWorkflowRun {
   title: String
   url: String
   createdAt: DateTime
-  user_id: ID
-  repo_id: ID
-  author_id: ID
-  repo_owner: String
-  repo_name: String
+  userId: ID
+  repoId: ID
+  authorId: ID
+  repoOwner: String
+  repoName: String
   id: String
   Status: StatusRun!
   orgId: ID
@@ -255,17 +255,17 @@ type Query {
   getAllCourses: [User!]!
   findOne(email: String!): User!
   findEmail(email: String!): User!
-  getGithubUserDetails(username: String!): GitHubUserDetails!
+  getGithubUserDetails(userName: String!): GitHubUserDetails!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
-  githubRepositories(username: String!): [GitHubRepository!]!
-  githubOrganizationRepositories(username: String!, org_name: String!): [GitHubRepository!]!
-  githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
-  getPullRequestFromDb(username: String!): [GitHubPull!]!
-  searchPullRequests(username: String!, searchKeyword: String!): [GitHubPull!]!
-  getCommitsForPullRequest(username: String!, url: String!, repo_name: String!): GitHubPull!
-  getWorkflowJobFromDb(username: String!): [GitHubWorkflowJob!]!
-  getWorkflowRunFromDb(username: String!): [GitHubWorkflowRun!]!
+  githubRepositories(userName: String!): [GitHubRepository!]!
+  githubOrganizationRepositories(userName: String!, orgName: String!): [GitHubRepository!]!
+  githubUserOrganizations(userName: String!): [GitHubUserOrganization!]!
+  getPullRequestFromDb(userName: String!): [GitHubPull!]!
+  searchPullRequests(userName: String!, searchKeyword: String!): [GitHubPull!]!
+  getCommitsForPullRequest(userName: String!, url: String!, repoName: String!): GitHubPull!
+  getWorkflowJobFromDb(userName: String!): [GitHubWorkflowJob!]!
+  getWorkflowRunFromDb(userName: String!): [GitHubWorkflowRun!]!
 }
 
 type Mutation {
@@ -280,12 +280,12 @@ type Mutation {
   login(email: String!, password: String!): String!
   logout(email: String!): String!
   checkDate(date: String!): String!
-  createPullRequests(username: String!, repo_name: String!): [GitHubPull!]!
+  createPullRequests(userName: String!, repoName: String!): [GitHubPull!]!
 }
 
 input UserInput {
   name: String
-  username: String
+  userName: String
   email: String
   password: String
   gender: Gender

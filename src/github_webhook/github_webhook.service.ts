@@ -18,48 +18,46 @@ export class GithubWebhookService {
     ) { }
 
     async handlePullRequestEvent(eventPayload: any) {
-        const filter = { number: eventPayload.number, repo_name: eventPayload.repository.name };
+        const filter = { number: eventPayload.number, repoName: eventPayload.repository.name };
         const data = eventPayload;
-        const username = eventPayload.pull_request.user.login;
-        const repo_name = eventPayload.repository.name;
-        const repo = await this.githubRepositoryService.getRepoIdByName(repo_name);
-        const user = await this.githubLoginService.getGithubUserDetails(username);
-
+        const userName = eventPayload.pull_request.user.login;
+        const repoName = eventPayload.repository.name;
+        const repo = await this.githubRepositoryService.getRepoIdByName(repoName);
+        const user = await this.githubLoginService.getGithubUserDetails(userName);
         const existingWebhook = await this.GithubWebhookModel.findOne(filter);
-        this.createPullRequestsService.createPullRequests(username, repo_name);
-
+        this.createPullRequestsService.createPullRequests(userName, repoName);
         if (existingWebhook) {
             await this.GithubWebhookModel.findOneAndUpdate(filter, {
-                github_weebhook_metadata: data,
+                githubWebhookMetadata: data,
                 title: data.title,
                 url: data.url,
                 createdAt: data.created_at,
                 mergedAt: data.merged_at,
                 closedAt: data.closed_at,
                 updatedAt: data.updated_at,
-                repo_id: repo._id,
-                user_id: user._id,
-                repo_owner: username,
-                repo_name: repo_name,
+                repoId: repo._id,
+                userId: user._id,
+                repoOwner: userName,
+                repoName: repoName,
                 state: data.state,
                 number: data.number,
                 id: data.id,
-                repository_type: data.repository.owner.type,
+                repositoryType: data.repository.owner.type,
             });
             console.log('Updated pull request event:', existingWebhook);
         } else {
             const newGithubWebhook = new this.GithubWebhookModel({
-                github_weebhook_metadata: data,
+                githubWebhookMetadata: data,
                 title: data.title,
                 url: data.url,
                 createdAt: data.created_at,
                 mergedAt: data.merged_at,
                 closedAt: data.closed_at,
                 updatedAt: data.updated_at,
-                repo_id: repo._id,
-                user_id: user._id,
-                repo_owner: username,
-                repo_name: repo_name,
+                repoId: repo._id,
+                userId: user._id,
+                repoOwner: userName,
+                repoName: repoName,
                 state: data.state,
                 number: data.number,
                 id: data.id,
@@ -70,16 +68,11 @@ export class GithubWebhookService {
     }
 
     async handlePushEvent(eventPayload: any, eventType: string) {
-        const username = eventPayload.repository.owner.login;
-        const repo_name = eventPayload.repository.name;
-
-        // console.log('Push Event Repo Name:', repo_name);
-        // console.log('Push Event Username:', username);
-
-        const pull = await this.createPullRequestsService.createPullRequests(username, repo_name);
-
+        const userName = eventPayload.repository.owner.login;
+        const repoName = eventPayload.repository.name;
+        const pull = await this.createPullRequestsService.createPullRequests(userName, repoName);
         if (pull) {
-            const commitData = await this.createPullRequestsService.getCommitsForPullRequest(username, eventPayload.commits[0].url, repo_name);
+            const commitData = await this.createPullRequestsService.getCommitsForPullRequest(userName, eventPayload.commits[0].url, repoName);
         }
         else {
             console.log('No pull request found');

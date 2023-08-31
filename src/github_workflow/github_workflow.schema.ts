@@ -3,7 +3,6 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { GraphQLJSONObject } from "graphql-type-json";
 import mongoose from "mongoose";
 
-
 export enum StatusRun {
     in_progress = 'in_progress',
     queued = 'queued',
@@ -48,23 +47,23 @@ export class GitHubWorkflowJob {
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    user_id: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    repo_id: mongoose.Types.ObjectId;
+    repoId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    author_id: mongoose.Types.ObjectId;
+    authorId: mongoose.Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ required: false })
-    repo_owner: string;
+    repoOwner: string;
 
     @Field(() => String, { nullable: true })
     @Prop()
-    repo_name: string;
+    repoName: string;
 
     @Field(() => String, { nullable: true })
     @Prop()
@@ -76,11 +75,11 @@ export class GitHubWorkflowJob {
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    org_id: mongoose.Types.ObjectId;
+    orgId?: mongoose.Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ required: false })
-    org_name: string;
+    orgName?: string;
 }
 
 export const GitHubWorkflowJobSchema = SchemaFactory.createForClass(GitHubWorkflowJob);
@@ -107,23 +106,23 @@ export class GitHubWorkflowRun {
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    user_id: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    repo_id: mongoose.Types.ObjectId;
+    repoId: mongoose.Types.ObjectId;
 
     @Field(() => ID, { nullable: true })
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-    author_id: mongoose.Types.ObjectId;
+    authorId: mongoose.Types.ObjectId;
 
     @Field(() => String, { nullable: true })
     @Prop({ required: false })
-    repo_owner: string;
+    repoOwner: string;
 
     @Field(() => String, { nullable: true })
     @Prop()
-    repo_name: string;
+    repoName: string;
 
     @Field(() => String, { nullable: true })
     @Prop()

@@ -12,20 +12,14 @@ export class UserResolver {
   constructor(private readonly userService: UserService) { }
 
   @Mutation(() => User)
-  async createUser(
-    @Args('payload') payload: UserInput,
-  ): Promise<User> {
+  async createUser(@Args('payload') payload: UserInput): Promise<User> {
     const salt = await bcrypt.genSalt(6);
     payload.privateKey = salt;
     return await this.userService.createUser(payload);
   }
 
   @Query(() => [User])
-  async findAllUser(
-    @Args('role') role: Role,
-    @Args('minAge') minAge: number,
-    @Args('maxAge') maxAge: number,
-  ): Promise<User[]> {
+  async findAllUser(@Args('role') role: Role, @Args('minAge') minAge: number, @Args('maxAge') maxAge: number): Promise<User[]> {
     const allUsers = this.userService.findAllUser();
     const filteredUsers = (await allUsers).filter((user) => {
       return user.role === role && user.age >= minAge && user.age <= maxAge;
@@ -66,10 +60,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async updateUser(
-    @Args('email') email: string,
-    @Args('payload') payload: UserInput,
-  ): Promise<User> {
+  async updateUser(@Args('email') email: string, @Args('payload') payload: UserInput): Promise<User> {
     return await this.userService.updateUser(email, payload);
   }
 
@@ -82,5 +73,4 @@ export class UserResolver {
   async findEmail(@Args('email') email: string): Promise<User> {
     return await this.userService.findOne(email);
   }
-
 }
