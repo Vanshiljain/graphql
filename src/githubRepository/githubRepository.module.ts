@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { GithubRepositoryService } from './github_repository.service';
-import { GithubRepositoryResolver } from './github_repository.resolver';
+import { GithubRepositoryService } from './githubRepository.service';
+import { GithubRepositoryResolver } from './githubRepository.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
-import { GitHubRepositorySchema } from './github_repository.schema';
-import { GithubLoginModule } from 'src/github_login/github_login.module';
+import { GitHubRepositorySchema } from './githubRepository.schema';
+import { GithubLoginModule } from 'src/githubLogin/githubLogin.module';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'GitHubRepository', schema: GitHubRepositorySchema }]), GithubLoginModule],

@@ -17,21 +17,21 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
 import { TokenModule } from './token/token.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { IsoDateModule } from './iso-date/iso-date.module';
-import { GithubLoginService } from './github_login/github_login.service';
-import { GithubLoginResolver } from './github_login/github_login.resolver';
-import { GithubLoginModule } from './github_login/github_login.module';
-import { GitHubUserDetailsSchema } from './github_login/github_login.schema';
-import { GithubRepositoryModule } from './github_repository/github_repository.module';
-import { GithubUserOrganizationModule } from './github_user_organization/github_user_organization.module';
-import { GitHubUserOrganizationSchema } from './github_user_organization/github_user_organization.schema';
-import { GithubPullModule } from './github_pull/github_pull.module';
-import { GitHubPullSchema } from './github_pull/github_pull.schema';
-import { GithubWebhookModule } from './github_webhook/github_webhook.module';
-import { GithubWebhook, GithubWebhookSchema } from './github_webhook/github_webhook.schema';
-import { GithubWebhookService } from './github_webhook/github_webhook.service';
-import { GithubWorkflowModule } from './github_workflow/github_workflow.module';
-import { GitHubWorkflowRun, GitHubWorkflowRunSchema, GitHubWorkflowJob, GitHubWorkflowJobSchema } from './github_workflow/github_workflow.schema';
+import { IsoDateModule } from './isoDate/iso_date.module';
+import { GithubLoginService } from './githubLogin/githubLogin.service';
+import { GithubLoginResolver } from './githubLogin/githubLogin.resolver';
+import { GithubLoginModule } from './githubLogin/githubLogin.module';
+import { GitHubUserDetailsSchema } from './githubLogin/githubLogin.schema';
+import { GithubRepositoryModule } from './githubRepository/githubRepository.module';
+import { GithubUserOrganizationModule } from './githubUserOrganization/githubUserOrganization.module';
+import { GitHubUserOrganizationSchema } from './githubUserOrganization/githubUserOrganization.schema';
+import { GithubPullModule } from './githubPull/githubPull.module';
+import { GitHubPullSchema } from './githubPull/githubPull.schema';
+import { GithubWebhookModule } from './githubWebhook/githubWebhook.module';
+import { GithubWebhook, GithubWebhookSchema } from './githubWebhook/githubWebhook.schema';
+import { GithubWebhookService } from './githubWebhook/githubWebhook.service';
+import { GithubWorkflowModule } from './githubWorkflow/githubWorkflow.module';
+import { GitHubWorkflowRun, GitHubWorkflowRunSchema, GitHubWorkflowJob, GitHubWorkflowJobSchema } from './githubWorkflow/githubWorkflow.schema';
 
 
 @Module({

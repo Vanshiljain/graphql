@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { GithubLoginService } from "../github_login/github_login.service";
+import { GithubLoginService } from "../githubLogin/githubLogin.service";
 import axios from "axios";
-import { GitHubPull } from "./github_pull.schema";
-import { GithubRepositoryService } from "src/github_repository/github_repository.service";
+import { GitHubPull } from "./githubPull.schema";
+import { GithubRepositoryService } from "src/githubRepository/githubRepository.service";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { PubSub } from 'graphql-subscriptions';

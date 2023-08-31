@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { GithubLoginService } from './github_login.service';
-import { GithubLoginResolver } from './github_login.resolver';
+import { GithubLoginService } from './githubLogin.service';
+import { GithubLoginResolver } from './githubLogin.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
-import { GitHubUserDetailsSchema } from './github_login.schema';
+import { GitHubUserDetailsSchema } from './githubLogin.schema';
 
 @Module({
     imports: [

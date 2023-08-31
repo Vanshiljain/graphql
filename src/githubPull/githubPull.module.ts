@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { GithubPullService } from './github_pull.service';
-import { GithubPullResolver } from './github_pull.resolver';
-import { GitHubPullSchema } from './github_pull.schema';
+import { GithubPullService } from './githubPull.service';
+import { GithubPullResolver } from './githubPull.resolver';
+import { GitHubPullSchema } from './githubPull.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { GithubLoginModule } from 'src/github_login/github_login.module';
-import { GithubRepositoryModule } from 'src/github_repository/github_repository.module';
+import { GithubLoginModule } from 'src/githubLogin/githubLogin.module';
+import { GithubRepositoryModule } from 'src/githubRepository/githubRepository.module';
 
 @Module({
   imports: [

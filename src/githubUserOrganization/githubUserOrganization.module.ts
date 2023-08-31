@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { GitHubUserOrganization, GitHubUserOrganizationSchema } from './github_user_organization.schema';
-import { GithubUserOrganizationService } from './github_user_organization.service';
-import { GithubUserOrganizationResolver } from './github_user_organization.resolver';
-import { GithubLoginModule } from 'src/github_login/github_login.module';
+import { GitHubUserOrganization, GitHubUserOrganizationSchema } from './githubUserOrganization.schema';
+import { GithubUserOrganizationService } from './githubUserOrganization.service';
+import { GithubUserOrganizationResolver } from './githubUserRrganization.resolver';
+import { GithubLoginModule } from 'src/githubLogin/githubLogin.module';
 
 @Module({
   imports: [

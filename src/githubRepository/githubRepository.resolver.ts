@@ -1,6 +1,6 @@
 import { Resolver, Args, Query } from '@nestjs/graphql';
-import { GitHubRepository } from './github_repository.schema';
-import { GithubRepositoryService } from './github_repository.service';
+import { GitHubRepository } from './githubRepository.schema';
+import { GithubRepositoryService } from './githubRepository.service';
 
 @Resolver(() => GitHubRepository)
 export class GithubRepositoryResolver {

@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Headers } from '@nestjs/common';
-import { GithubWebhookService } from './github_webhook.service';
+import { GithubWebhookService } from './githubWebhook.service';
 
 @Controller('github-webhook')
 export class GithubWebhookController {

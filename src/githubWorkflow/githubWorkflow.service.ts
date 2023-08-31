@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GitHubWorkflowJob, GitHubWorkflowRun } from './github_workflow.schema';
-import { GithubLoginService } from 'src/github_login/github_login.service';
-import { GithubRepositoryService } from 'src/github_repository/github_repository.service';
+import { GitHubWorkflowJob, GitHubWorkflowRun } from './githubWorkflow.schema';
+import { GithubLoginService } from 'src/githubLogin/githubLogin.service';
+import { GithubRepositoryService } from 'src/githubRepository/githubRepository.service';
 import { PubSub } from 'graphql-subscriptions';
 import { Subscription } from "@nestjs/graphql";
-import { GithubUserOrganizationService } from 'src/github_user_organization/github_user_organization.service';
+import { GithubUserOrganizationService } from 'src/githubUserOrganization/githubUserOrganization.service';
 
 const pubSub = new PubSub();
 const NEW_WORKFLOW_JOB_EVENT = 'newWorkflowJob';

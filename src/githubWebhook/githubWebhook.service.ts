@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { GithubWebhook } from './github_webhook.schema';
+import { GithubWebhook } from './githubWebhook.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { GithubLoginService } from "../github_login/github_login.service";
-import { GithubRepositoryService } from "src/github_repository/github_repository.service";
-import { GithubPullService } from 'src/github_pull/github_pull.service';
-import { GithubWorkflowService } from 'src/github_workflow/github_workflow.service';
+import { GithubLoginService } from "../githubLogin/githubLogin.service";
+import { GithubRepositoryService } from "src/githubRepository/githubRepository.service";
+import { GithubPullService } from 'src/githubPull/githubPull.service';
+import { GithubWorkflowService } from 'src/githubWorkflow/githubWorkflow.service';
 
 @Injectable()
 export class GithubWebhookService {
