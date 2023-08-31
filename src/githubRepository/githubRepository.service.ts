@@ -1,9 +1,9 @@
 import mongoose, { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { GitHubRepository, RepositoryType } from './github_repository.schema';
+import { GitHubRepository, RepositoryType } from './githubRepository.schema';
 import axios from 'axios';
-import { GithubLoginService } from 'src/github_login/github_login.service';
+import { GithubLoginService } from 'src/githubLogin/githubLogin.service';
 
 @Injectable()
 export class GithubRepositoryService {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { AccessTokenResponse } from 'src/user/user.schema';
-import { GitHubUserDetails } from './github_login.schema';
+import { GitHubUserDetails } from './githubLogin.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 

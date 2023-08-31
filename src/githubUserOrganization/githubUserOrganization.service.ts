@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { GitHubUserOrganization } from './github_user_organization.schema';
-import { GithubLoginService } from 'src/github_login/github_login.service';
+import { GitHubUserOrganization } from './githubUserOrganization.schema';
+import { GithubLoginService } from 'src/githubLogin/githubLogin.service';
 import axios from 'axios';
 
 @Injectable()

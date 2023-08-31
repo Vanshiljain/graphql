@@ -1,6 +1,6 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { GithubWorkflowService } from './github_workflow.service';
-import { GitHubWorkflowJob, GitHubWorkflowRun } from './github_workflow.schema';
+import { GithubWorkflowService } from './githubWorkflow.service';
+import { GitHubWorkflowJob, GitHubWorkflowRun } from './githubWorkflow.schema';
 
 @Resolver()
 export class GithubWorkflowResolver {

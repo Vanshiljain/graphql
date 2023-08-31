@@ -1,6 +1,6 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { GitHubUserOrganization } from './github_user_organization.schema';
-import { GithubUserOrganizationService } from './github_user_organization.service';
+import { GitHubUserOrganization } from './githubUserOrganization.schema';
+import { GithubUserOrganizationService } from './githubUserOrganization.service';
 
 @Resolver()
 export class GithubUserOrganizationResolver {

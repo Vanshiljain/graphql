@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
-import { IsoDateService } from './iso-date.service';
+import { IsoDateService } from './iso_date.service';
 
 @Resolver()
 export class IsoDateResolver {
