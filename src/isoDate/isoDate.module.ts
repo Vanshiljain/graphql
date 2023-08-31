@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { IsoDateResolver } from './iso_date.resolver';
-import { IsoDateService } from './iso_date.service';
+import { IsoDateResolver } from './isoDate.resolver';
+import { IsoDateService } from './isoDate.service';
 
 @Module({
   providers: [IsoDateResolver, IsoDateService],

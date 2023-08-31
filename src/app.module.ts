@@ -17,7 +17,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
 import { TokenModule } from './token/token.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { IsoDateModule } from './isoDate/iso_date.module';
+import { IsoDateModule } from './isoDate/isoDate.module';
 import { GithubLoginService } from './githubLogin/githubLogin.service';
 import { GithubLoginResolver } from './githubLogin/githubLogin.resolver';
 import { GithubLoginModule } from './githubLogin/githubLogin.module';
