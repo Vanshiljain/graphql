@@ -312,6 +312,7 @@ export interface IMutation {
     logout(email: string): string | Promise<string>;
     checkDate(date: string): string | Promise<string>;
     createPullRequests(userName: string, repoName: string): GitHubPull[] | Promise<GitHubPull[]>;
+    onetimeplan(productId: string): string | Promise<string>;
 }
 
 export interface ISubscription {

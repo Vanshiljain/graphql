@@ -32,6 +32,7 @@ import { GithubWebhook, GithubWebhookSchema } from './githubWebhook/githubWebhoo
 import { GithubWebhookService } from './githubWebhook/githubWebhook.service';
 import { GithubWorkflowModule } from './githubWorkflow/githubWorkflow.module';
 import { GitHubWorkflowRun, GitHubWorkflowRunSchema, GitHubWorkflowJob, GitHubWorkflowJobSchema } from './githubWorkflow/githubWorkflow.schema';
+import { StripeModule } from './stripe/stripe.module';
 
 
 @Module({
@@ -81,6 +82,7 @@ import { GitHubWorkflowRun, GitHubWorkflowRunSchema, GitHubWorkflowJob, GitHubWo
     GithubPullModule,
     GithubWebhookModule,
     GithubWorkflowModule,
+    StripeModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService, GithubLoginService, GithubLoginResolver, GithubWebhookService],
