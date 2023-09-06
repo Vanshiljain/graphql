@@ -14,12 +14,20 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) { }
 
-
   async login(email: string, password: string): Promise<string> {
     const user = await this.userService.findOne(email);
+<<<<<<< HEAD
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials - User not found');
+=======
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new UnauthorizedException('Invalid credentials');
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -36,7 +44,11 @@ export class AuthService {
     // Do not update the token in the user document here.
     return token;
   }
+<<<<<<< HEAD
 
+=======
+   
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
   async logout(email: string): Promise<string> {
     const user = await this.userService.findOne(email);
     if (!user) {

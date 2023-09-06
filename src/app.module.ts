@@ -94,6 +94,7 @@ import { UserResolver } from './user/user.resolver';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { TokenModule } from './token/token.module';
+<<<<<<< HEAD
 import { BookModule } from './book/bookmodule.module';
 import { GitHubUserDetails, GitHubUserDetailsSchema } from './githubUser/github.schema';
 import { GitHubUserOrganizationSchema } from './organizations/organization.schema';
@@ -109,13 +110,31 @@ import { AppWebhook, gitHubAppWebhookSchema} from './webhook/webhook.dto';
 // import { AppWebhook, appWebhookSchema} from './webhook/webhook.dto';
 
 import { StripewebModule } from './stripeweb/stripeweb.module';
+=======
+import { ScheduleModule } from '@nestjs/schedule';
+import { IsoDateModule } from './isoDate/isoDate.module';
+import { GithubLoginService } from './githubLogin/githubLogin.service';
+import { GithubLoginResolver } from './githubLogin/githubLogin.resolver';
+import { GithubLoginModule } from './githubLogin/githubLogin.module';
+import { GitHubUserDetailsSchema } from './githubLogin/githubLogin.schema';
+import { GithubRepositoryModule } from './githubRepository/githubRepository.module';
+import { GithubUserOrganizationModule } from './githubUserOrganization/githubUserOrganization.module';
+import { GitHubUserOrganizationSchema } from './githubUserOrganization/githubUserOrganization.schema';
+import { GithubPullModule } from './githubPull/githubPull.module';
+import { GitHubPullSchema } from './githubPull/githubPull.schema';
+import { GithubWebhookModule } from './githubWebhook/githubWebhook.module';
+import { GithubWebhook, GithubWebhookSchema } from './githubWebhook/githubWebhook.schema';
+import { GithubWebhookService } from './githubWebhook/githubWebhook.service';
+import { GithubWorkflowModule } from './githubWorkflow/githubWorkflow.module';
+import { GitHubWorkflowRun, GitHubWorkflowRunSchema, GitHubWorkflowJob, GitHubWorkflowJobSchema } from './githubWorkflow/githubWorkflow.schema';
+import { StripeModule } from './stripe/stripe.module';
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      playground: true,
       installSubscriptionHandlers: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
       definitions: {
@@ -125,11 +144,24 @@ import { StripewebModule } from './stripeweb/stripeweb.module';
         'graphql-ws': true,
         'subscriptions-transport-ws': true,
       },
+<<<<<<< HEAD
+=======
+      playground: {
+        settings: {
+          'request.credentials': 'include',
+        },
+      },
+      cors: {
+        origin: '*',
+        credentials: true,
+      },
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
     }),
 
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/mydb'),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+<<<<<<< HEAD
     MongooseModule.forFeature([{ name: GitHubUserDetails.name, schema: GitHubUserDetailsSchema }]),
     MongooseModule.forFeature([{ name: AppWebhook.name, schema: gitHubAppWebhookSchema }]),
 
@@ -137,6 +169,14 @@ import { StripewebModule } from './stripeweb/stripeweb.module';
       { name: 'GitHubUserOrganization', schema: GitHubUserOrganizationSchema },
     ]),
 
+=======
+    MongooseModule.forFeature([{ name: 'GitHubUser', schema: GitHubUserDetailsSchema }]),
+    MongooseModule.forFeature([{ name: 'GitHubUserOrganization', schema: GitHubUserOrganizationSchema }]),
+    MongooseModule.forFeature([{ name: 'GitHubPull', schema: GitHubPullSchema }]),
+    MongooseModule.forFeature([{ name: GithubWebhook.name, schema: GithubWebhookSchema }]),
+    MongooseModule.forFeature([{ name: GitHubWorkflowRun.name, schema: GitHubWorkflowRunSchema }]),
+    MongooseModule.forFeature([{ name: GitHubWorkflowJob.name, schema: GitHubWorkflowJobSchema }]),
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
     UserModule,
     BookModule,
     AuthModule,
@@ -147,6 +187,7 @@ import { StripewebModule } from './stripeweb/stripeweb.module';
     }),
     TokenModule,
     ScheduleModule.forRoot(),
+<<<<<<< HEAD
     GithubLoginModule,
     WebhookModule,
     GithubUserOrganizationModule,
@@ -155,5 +196,18 @@ import { StripewebModule } from './stripeweb/stripeweb.module';
   ],
   controllers: [AppController, WebhookController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService, WebhookEventService,PubSub],
+=======
+    IsoDateModule,
+    GithubLoginModule,
+    GithubRepositoryModule,
+    GithubUserOrganizationModule,
+    GithubPullModule,
+    GithubWebhookModule,
+    GithubWorkflowModule,
+    StripeModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService, AppResolver, UserResolver, UserService, AuthService, GithubLoginService, GithubLoginResolver, GithubWebhookService],
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 })
 export class AppModule {}

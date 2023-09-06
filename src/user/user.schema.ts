@@ -120,7 +120,7 @@ export class User extends Document {
 
     @Field(() => String, { nullable: true })
     @Prop()
-    username: string;
+    userName: string;
 
     @Field(() => String, { nullable: true })
     @Prop({ unique: true })
@@ -186,6 +186,7 @@ export class User extends Document {
     @Prop()
     public privateKey?: string;
 
+<<<<<<< HEAD
     @Field(() => String, { nullable: true }) 
     @Prop() // Adding the 'code' field
     code?: string;
@@ -193,6 +194,19 @@ export class User extends Document {
     
 
     
+=======
+    @Field(()=> String, { nullable: true })
+    @Prop()
+    public countryCode?: string;
+
+    @Field(()=> Number, { nullable: true })
+    @Prop()
+    public mobileNumber?: number;
+
+    @Field(()=> String, { nullable: true })
+    @Prop()
+    githubId?: string;
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 
 }
 
@@ -202,8 +216,13 @@ export class UserInput {
     @Field(() => String, { nullable: true })
     name?: string;
 
+<<<<<<< HEAD
     @Field(() => String, { nullable: true })
     username?: string;
+=======
+    @Field(()=> String, { nullable: true })
+    userName?: string;
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 
     @Field(() => String, { nullable: true })
     email?: string;
@@ -245,6 +264,7 @@ export class UserInput {
     @Field(() => String, { nullable: true })
     privateKey?: string;
 
+<<<<<<< HEAD
     @Field(() => String, { nullable: true }) 
     
     code?: string;
@@ -274,3 +294,39 @@ export class GithubAuthResponse{
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+=======
+    @Field(()=> String, { nullable: true })
+    countryCode?: string;
+
+    @Field(()=> Number, { nullable: true })
+    mobileNumber?: number;
+
+    @Field(()=> String, { nullable: true })
+    githubId?: string;
+}
+export const UserSchema = SchemaFactory.createForClass(User);
+
+@ObjectType()
+export class AccessTokenResponse{
+    @Field(()=> String, { nullable: true })
+    accessToken?: string;
+
+    @Field(()=> String, { nullable: true })
+    userName?: string;
+    
+    @Field(()=> String, { nullable: true })
+    tokenType?: string;
+
+    @Field(()=> String, { nullable: true })
+    refreshToken?: string;
+
+    @Field(()=> String, { nullable: true })
+    expiresIn?: string;
+}
+
+@ObjectType()
+export class GithubAuthResponse{
+    @Field(()=> String, { nullable: true })
+    githubAuthUrl?: string;
+}
+>>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
