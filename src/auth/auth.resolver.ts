@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 
 @Resolver()
@@ -14,4 +14,5 @@ export class AuthResolver {
   async logout(@Args('email') email: string) {
     return this.authService.logout(email);
   }
+ 
 }

@@ -20,7 +20,9 @@ export class BookResolver {
 
   @Query(() => [Book])
   async findAllBookUser(): Promise<Book[]> {
-    return await this.bookService.findUserById();
+    const books = await this.bookService.findAllBookUser();
+    console.log(books); // Check the output to see if data is retrieved correctly
+    return books;
   }
 
   @Mutation(() => Book)

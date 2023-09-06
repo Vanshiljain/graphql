@@ -21,7 +21,7 @@ export class BookService {
     return book.save();
   }
 
-  async findUserById(): Promise<Book[]> {
+  async findAllBookUser(): Promise<Book[]> {
     const result = await this.bookModel.aggregate([
       {
         $lookup: {
@@ -32,12 +32,15 @@ export class BookService {
         },
       },
       {
-        $unwind: '$userCollection',
+        $unwind: {
+          path: '$userCollection',
+          preserveNullAndEmptyArrays: true, // Handle cases where there is no user information
+        },
       },
       {
         $lookup: {
           from: 'authors',
-          localField: 'authorId',
+          localField: 'author',
           foreignField: '_id',
           as: 'authorCollection',
         },
@@ -50,14 +53,22 @@ export class BookService {
           title: 1,
           price: 1,
           year: 1,
-          userCollection: 1,
-          authorCollection: 1,
+          userCollection: {
+            _id: 1,
+            name: 1,
+            email: 1,
+          },
+          authorCollection: {
+            _id: 1,
+            authorName: '$authorCollection.name', // Assuming 'name' is the field in your Author schema for author's name
+            // Add other fields from the Author schema as needed
+          },
         },
       },
     ]).exec();
-    console.log(result);
     return result;
   }
+
 
   async createAutor(NewAuthors): Promise<Author> {
     const author = new this.NewAuthorsModel(NewAuthors[0]);

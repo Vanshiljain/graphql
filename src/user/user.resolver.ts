@@ -19,21 +19,27 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  async findAllUser(
+async findAllUser(
+  @Args('role') role: Role,
+  @Args('minAge') minAge: number,
+  @Args('maxAge') maxAge: number,
+): Promise<User[]> {
+  console.log('Received role:', role);
+  console.log('Received minAge:', minAge);
+  console.log('Received maxAge:', maxAge);
+
+  return await this.userService.findAllUser(role, minAge, maxAge);
+}
+
+
+  @Query(() => [User])
+  async findUserAll(
     @Args('role') role: Role,
     @Args('minAge') minAge: number,
     @Args('maxAge') maxAge: number,
   ): Promise<User[]> {
-    const allUsers = this.userService.findAllUser();
-    const filteredUsers = (await allUsers).filter((user) => {
-      return user.role === role && user.age >= minAge && user.age <= maxAge;
-    });
-    return filteredUsers;
-  }
-
-  @Query(() => [User])
-  async findUserAll(): Promise<User[]> {
-    return await this.userService.findAllUser();
+    // Pass the arguments to the userService.findAllUser function
+    return this.userService.findAllUser(role, minAge, maxAge);
   }
 
   @Query(() => [User])
@@ -62,4 +68,39 @@ export class UserResolver {
   async findOne(@Args('email') email: String): Promise<User> {
     return await this.userService.findOne(email);
   }
+  @Mutation(() => User)
+  async updateUser(@Args('email') email: string, @Args('payload') payload: UserInput): Promise<User> {
+    try {
+      const updatedUser = await this.userService.updateUser(email, payload);
+      if (!updatedUser) {
+        throw new Error('User not found'); // Or any appropriate error message
+      }
+      return updatedUser;
+    } catch (error) {
+      // Handle the error and throw an appropriate exception
+      throw new Error('Failed to update user: ' + error.message);
+    }
+  }
+
+
+  @Mutation(() => User)
+  async deleteUser(@Args('id') id: string): Promise<User> {
+    return this.userService.deleteUser(id);
+  }
+  @Mutation(() => Boolean)
+  async checkUserExists(@Args('email') email: string): Promise<boolean> {
+    try {
+
+      const userExists = await this.userService.checkUserExists(email);
+      return userExists;
+    } catch (error) {
+     
+      console.error('Error checking user existence:', error);
+      throw new Error('Failed to check user existence');
+    }
+
+    
+  }
+  
+  
 }

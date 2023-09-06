@@ -51,8 +51,10 @@ type User {
   totalSumPrice: Float
   OveralltotalSumPrice: Float
   allCourses: [Courses!]
+  mobileNumber: String
   token: String
   privateKey: String
+  code: String
 }
 
 """This denote user gender"""
@@ -66,6 +68,17 @@ enum Role {
   admin
   user
   superadmin
+}
+
+type AccessTokenResponse {
+  access_token: String
+  token_type: String
+  refresh_token: String
+  expires_in: String
+}
+
+type GithubAuthResponse {
+  githubAuthUrl: String
 }
 
 type Author {
@@ -84,6 +97,65 @@ type Book {
   userCollection: User
   authorCollection: Author
   authorId: ID
+}
+
+type GitHubUserDetails {
+  _id: ID!
+  username: String
+  email: String
+  name: String
+  githubUserMetadata: JSONObject
+  access_token: String
+  token_type: String
+  refresh_token: String
+  expires_in: Float
+  stripeCustomerId: String!
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+type GitHubUserOrganization {
+  _id: ID!
+  user_id: ID!
+  org_name: String
+  node_id: String
+  url: String
+  repos_url: String
+  members_url: String
+  githubOrganizationMetadata: JSONObject
+}
+
+type Products {
+  id: String!
+  name: String!
+  metadata: JSONObject
+  description: String!
+  currency: String!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type StripeInvoice {
+  invoiceId: String
+  customerId: String
+  productId: String
+  status: String
+  createdAt: DateTime!
+  subscriptionId: String
+  product: JSONObject
+  plan: String
+  invoice_pdf: String
+  receipt_url: String!
+  customerName: String
+  metadata: JSONObject
+  userId: ID!
 }
 
 input InputCourses {
@@ -126,7 +198,7 @@ input InputBook {
 type Query {
   index: String!
   findAllUser(role: String!, minAge: Float!, maxAge: Float!): [User!]!
-  findUserAll: [User!]!
+  findUserAll(role: String!, minAge: Float!, maxAge: Float!): [User!]!
   findUserByMatch(role: String!): [User!]!
   findUserByQty(quantity: Float!): [User!]!
   totalSumPrice: Float!
@@ -134,14 +206,32 @@ type Query {
   findOne(email: String!): User!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
+  getGithubUserDetails(username: String!): GitHubUserDetails!
+  productsFromStripe: [Products!]!
+  isProductSubscribed(productId: String!): Boolean!
+  githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
+  getOrganizationMongoId(organizationId: String!): String
+  getOrganizationIdsByUsername(username: String!): [String!]!
+  organizationByOrgName(orgName: String!): GitHubUserOrganization
+  fetchInvoices: [StripeInvoice!]!
 }
 
 type Mutation {
   createUser(payload: UserInput!): User!
+  updateUser(email: String!, payload: UserInput!): User!
+  deleteUser(id: String!): User!
+  checkUserExists(email: String!): Boolean!
   createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
   updateBook(bookInput: BookInput!, _id: String!): Book!
   login(email: String!, password: String!): String!
   logout(email: String!): String!
+  githubLogin: GithubAuthResponse!
+  githubCodeExchange(code: String!): AccessTokenResponse!
+  getGithubUser(accessToken: String!): GitHubUserDetails!
+  createGitHubUser(input: CreateGitHubUserInput!): GitHubUserDetails!
+  subscribeProduct(productId: String!): Boolean!
+  recurringplan(productId: String!): String!
+  onetimeplan(productId: String!): String!
 }
 
 input UserInput {
@@ -157,8 +247,10 @@ input UserInput {
   lastCourse: InputCourses
   completedCourses: [InputCourses!]
   product: [InputProduct!]
+  mobileNumber: String
   token: String
   privateKey: String
+  code: String
 }
 
 input BookInput {
@@ -178,4 +270,13 @@ input AuthorInput {
   firstName: String
   lastName: String
   age: Int
+}
+
+input CreateGitHubUserInput {
+  accessToken: String!
+  email: String!
+}
+
+type Subscription {
+  invoiceCreated: [StripeInvoice!]!
 }

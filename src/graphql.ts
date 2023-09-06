@@ -69,8 +69,10 @@ export interface UserInput {
     lastCourse?: Nullable<InputCourses>;
     completedCourses?: Nullable<InputCourses[]>;
     product?: Nullable<InputProduct[]>;
+    mobileNumber?: Nullable<string>;
     token?: Nullable<string>;
     privateKey?: Nullable<string>;
+    code?: Nullable<string>;
 }
 
 export interface BookInput {
@@ -90,6 +92,11 @@ export interface AuthorInput {
     firstName?: Nullable<string>;
     lastName?: Nullable<string>;
     age?: Nullable<number>;
+}
+
+export interface CreateGitHubUserInput {
+    accessToken: string;
+    email: string;
 }
 
 export interface Courses {
@@ -141,8 +148,21 @@ export interface User {
     totalSumPrice?: Nullable<number>;
     OveralltotalSumPrice?: Nullable<number>;
     allCourses?: Nullable<Courses[]>;
+    mobileNumber?: Nullable<string>;
     token?: Nullable<string>;
     privateKey?: Nullable<string>;
+    code?: Nullable<string>;
+}
+
+export interface AccessTokenResponse {
+    access_token?: Nullable<string>;
+    token_type?: Nullable<string>;
+    refresh_token?: Nullable<string>;
+    expires_in?: Nullable<string>;
+}
+
+export interface GithubAuthResponse {
+    githubAuthUrl?: Nullable<string>;
 }
 
 export interface Author {
@@ -163,10 +183,59 @@ export interface Book {
     authorId?: Nullable<string>;
 }
 
+export interface GitHubUserDetails {
+    _id: string;
+    username?: Nullable<string>;
+    email?: Nullable<string>;
+    name?: Nullable<string>;
+    githubUserMetadata?: Nullable<JSONObject>;
+    access_token?: Nullable<string>;
+    token_type?: Nullable<string>;
+    refresh_token?: Nullable<string>;
+    expires_in?: Nullable<number>;
+    stripeCustomerId: string;
+}
+
+export interface GitHubUserOrganization {
+    _id: string;
+    user_id: string;
+    org_name?: Nullable<string>;
+    node_id?: Nullable<string>;
+    url?: Nullable<string>;
+    repos_url?: Nullable<string>;
+    members_url?: Nullable<string>;
+    githubOrganizationMetadata?: Nullable<JSONObject>;
+}
+
+export interface Products {
+    id: string;
+    name: string;
+    metadata?: Nullable<JSONObject>;
+    description: string;
+    currency: string;
+    createdAt: DateTime;
+}
+
+export interface StripeInvoice {
+    invoiceId?: Nullable<string>;
+    customerId?: Nullable<string>;
+    productId?: Nullable<string>;
+    status?: Nullable<string>;
+    createdAt: DateTime;
+    subscriptionId?: Nullable<string>;
+    product?: Nullable<JSONObject>;
+    plan?: Nullable<string>;
+    invoice_pdf?: Nullable<string>;
+    receipt_url: string;
+    customerName?: Nullable<string>;
+    metadata?: Nullable<JSONObject>;
+    userId: string;
+}
+
 export interface IQuery {
     index(): string | Promise<string>;
     findAllUser(role: string, minAge: number, maxAge: number): User[] | Promise<User[]>;
-    findUserAll(): User[] | Promise<User[]>;
+    findUserAll(role: string, minAge: number, maxAge: number): User[] | Promise<User[]>;
     findUserByMatch(role: string): User[] | Promise<User[]>;
     findUserByQty(quantity: number): User[] | Promise<User[]>;
     totalSumPrice(): number | Promise<number>;
@@ -174,14 +243,38 @@ export interface IQuery {
     findOne(email: string): User | Promise<User>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
+    getGithubUserDetails(username: string): GitHubUserDetails | Promise<GitHubUserDetails>;
+    productsFromStripe(): Products[] | Promise<Products[]>;
+    isProductSubscribed(productId: string): boolean | Promise<boolean>;
+    githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
+    getOrganizationMongoId(organizationId: string): Nullable<string> | Promise<Nullable<string>>;
+    getOrganizationIdsByUsername(username: string): string[] | Promise<string[]>;
+    organizationByOrgName(orgName: string): Nullable<GitHubUserOrganization> | Promise<Nullable<GitHubUserOrganization>>;
+    fetchInvoices(): StripeInvoice[] | Promise<StripeInvoice[]>;
 }
 
 export interface IMutation {
     createUser(payload: UserInput): User | Promise<User>;
+    updateUser(email: string, payload: UserInput): User | Promise<User>;
+    deleteUser(id: string): User | Promise<User>;
+    checkUserExists(email: string): boolean | Promise<boolean>;
     createBook(title: string, author: InputBook[], price: number, year: number, userId: string): Book | Promise<Book>;
     updateBook(bookInput: BookInput, _id: string): Book | Promise<Book>;
     login(email: string, password: string): string | Promise<string>;
     logout(email: string): string | Promise<string>;
+    githubLogin(): GithubAuthResponse | Promise<GithubAuthResponse>;
+    githubCodeExchange(code: string): AccessTokenResponse | Promise<AccessTokenResponse>;
+    getGithubUser(accessToken: string): GitHubUserDetails | Promise<GitHubUserDetails>;
+    createGitHubUser(input: CreateGitHubUserInput): GitHubUserDetails | Promise<GitHubUserDetails>;
+    subscribeProduct(productId: string): boolean | Promise<boolean>;
+    recurringplan(productId: string): string | Promise<string>;
+    onetimeplan(productId: string): string | Promise<string>;
 }
 
+export interface ISubscription {
+    invoiceCreated(): StripeInvoice[] | Promise<StripeInvoice[]>;
+}
+
+export type JSONObject = any;
+export type DateTime = any;
 type Nullable<T> = T | null;
