@@ -172,11 +172,6 @@ export class User extends Document {
 
     @Field(() => [Courses], { nullable: true })
     public allCourses: Courses[];
-    
-    @Field(() => String, { nullable: true })
-    @Prop()
-    mobileNumber?: string;
-
 
     @Field(()=> String, { nullable: true })
     @Prop()
@@ -186,15 +181,6 @@ export class User extends Document {
     @Prop()
     public privateKey?: string;
 
-<<<<<<< HEAD
-    @Field(() => String, { nullable: true }) 
-    @Prop() // Adding the 'code' field
-    code?: string;
-
-    
-
-    
-=======
     @Field(()=> String, { nullable: true })
     @Prop()
     public countryCode?: string;
@@ -206,28 +192,22 @@ export class User extends Document {
     @Field(()=> String, { nullable: true })
     @Prop()
     githubId?: string;
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 
 }
 
 @InputType()
 export class UserInput {
 
-    @Field(() => String, { nullable: true })
+    @Field(()=> String, { nullable: true })
     name?: string;
 
-<<<<<<< HEAD
-    @Field(() => String, { nullable: true })
-    username?: string;
-=======
     @Field(()=> String, { nullable: true })
     userName?: string;
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 
-    @Field(() => String, { nullable: true })
+    @Field(()=> String, { nullable: true })
     email?: string;
 
-    @Field(() => String, { nullable: true })
+    @Field(()=> String, { nullable: true })
     password?: string;
 
     @Field(() => Gender, { nullable: true })
@@ -254,47 +234,12 @@ export class UserInput {
     @Field(() => [Product], { nullable: true })
     product?: Product[];
 
-    // Add mobileNumber and countryCode fields here
-    @Field(() => String, { nullable: true })
-    mobileNumber?: string;
-
-    @Field(() => String, { nullable: true })
+    @Field(()=> String, { nullable: true })
     token?: string;
 
-    @Field(() => String, { nullable: true })
+    @Field(()=> String, { nullable: true })
     privateKey?: string;
 
-<<<<<<< HEAD
-    @Field(() => String, { nullable: true }) 
-    
-    code?: string;
-}
-
-
-
-@ObjectType()
-export class AccessTokenResponse{
-    @Field(()=> String, { nullable: true })
-    access_token?: string;
-
-    @Field(()=> String, { nullable: true })
-    token_type?: string;
-
-    @Field(()=> String, { nullable: true })
-    refresh_token?: string;
-
-    @Field(()=> String, { nullable: true })
-    expires_in?: string;
-}
-
-@ObjectType()
-export class GithubAuthResponse{
-    @Field(()=> String, { nullable: true })
-    githubAuthUrl?: string;
-}
-
-export const UserSchema = SchemaFactory.createForClass(User);
-=======
     @Field(()=> String, { nullable: true })
     countryCode?: string;
 
@@ -329,4 +274,3 @@ export class GithubAuthResponse{
     @Field(()=> String, { nullable: true })
     githubAuthUrl?: string;
 }
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7

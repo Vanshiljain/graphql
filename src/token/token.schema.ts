@@ -1,29 +1,18 @@
 import { Field, ID, InputType, ObjectType } from "@nestjs/graphql";
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import { Document} from "mongoose";
-
+import { Document } from "mongoose";
 
 @ObjectType()
-<<<<<<< HEAD
-@Schema({ timestamps: true })
-
-=======
 @Schema( { timestamps: true } )
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 export class Token extends Document {
-  @Prop()
-  token: string;
 
-  @Prop()
-  email: string;
+    @Field(() => ID, { nullable: true })
+    _id?: string;
 
-  @Prop()
-  refreshToken: string;
+    @Field(() => String, { nullable: true })
+    @Prop()
+    token: string;
 
-<<<<<<< HEAD
-//   @Prop({ expires: 60 }) // Expiration time set to 1 minute (60 seconds)
-//   createdAt: Date;
-=======
     @Field(() => String, { nullable: true })
     @Prop()
     email: string;
@@ -31,7 +20,6 @@ export class Token extends Document {
     @Field(() => String, { nullable: true })
     @Prop()
     refreshToken: string;
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 @InputType()
@@ -46,8 +34,4 @@ export class TokenInput {
     refreshToken: string;
 }
 export const TokenSchema = SchemaFactory.createForClass(Token);
-<<<<<<< HEAD
-TokenSchema.index({ createdAt: 1 }, { expires: 20})
-=======
 TokenSchema.index({ createdAt: 1 }, { expires: 20 });
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7

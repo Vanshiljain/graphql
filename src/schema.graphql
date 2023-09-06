@@ -51,16 +51,11 @@ type User {
   totalSumPrice: Float
   OveralltotalSumPrice: Float
   allCourses: [Courses!]
-  mobileNumber: String
   token: String
   privateKey: String
-<<<<<<< HEAD
-  code: String
-=======
   countryCode: String
   mobileNumber: Float
   githubId: String
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 """This denote user gender"""
@@ -77,18 +72,11 @@ enum Role {
 }
 
 type AccessTokenResponse {
-<<<<<<< HEAD
-  access_token: String
-  token_type: String
-  refresh_token: String
-  expires_in: String
-=======
   accessToken: String
   userName: String
   tokenType: String
   refreshToken: String
   expiresIn: String
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 type GithubAuthResponse {
@@ -115,7 +103,6 @@ type Book {
 
 type GitHubUserDetails {
   _id: ID!
-<<<<<<< HEAD
   username: String
   email: String
   name: String
@@ -125,16 +112,6 @@ type GitHubUserDetails {
   refresh_token: String
   expires_in: Float
   stripeCustomerId: String!
-=======
-  userName: String
-  email: String
-  name: String
-  githubUserMetadata: JSONObject
-  accessToken: String
-  tokenType: String
-  refreshToken: String
-  expiresIn: Float
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 """
@@ -142,7 +119,6 @@ The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](
 """
 scalar JSONObject
 
-<<<<<<< HEAD
 type GitHubUserOrganization {
   _id: ID!
   user_id: ID!
@@ -161,52 +137,6 @@ type Products {
   description: String!
   currency: String!
   createdAt: DateTime!
-=======
-type GitHubRepository {
-  userId: ID!
-  repositoryType: RepositoryType!
-  id: String
-  name: String
-  description: String
-  url: String
-  githubRepositoryMetadata: JSONObject
-}
-
-"""This denote repository type"""
-enum RepositoryType {
-  UserRepo
-  OrganizationRepo
-}
-
-type GitHubUserOrganization {
-  id: Float
-  userId: ID!
-  orgName: String
-  nodeId: String
-  url: String
-  reposUrl: String
-  membersUrl: String
-  githubOrganizationMetadata: JSONObject
-}
-
-type GitHubPull {
-  githubPullMetadata: JSONObject
-  title: String
-  url: String
-  createdAt: DateTime
-  mergedAt: DateTime
-  closedAt: DateTime
-  updatedAt: DateTime
-  userId: ID
-  repoId: ID
-  authorId: ID
-  repoOwner: String
-  repoName: String
-  state: String
-  number: Float
-  commits: JSONObject
-  filterCommits: [JSONObject!]
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 """
@@ -214,7 +144,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-<<<<<<< HEAD
 type StripeInvoice {
   invoiceId: String
   customerId: String
@@ -229,45 +158,6 @@ type StripeInvoice {
   customerName: String
   metadata: JSONObject
   userId: ID!
-=======
-type GitHubWorkflowJob {
-  GitHubWorkflowJob: JSONObject
-  title: String
-  url: String
-  createdAt: DateTime
-  userId: ID
-  repoId: ID
-  authorId: ID
-  repoOwner: String
-  repoName: String
-  id: String
-  Status: StatusRun!
-  orgId: ID
-  orgName: String
-}
-
-"""Status of the workflow"""
-enum StatusRun {
-  in_progress
-  queued
-  completed
-}
-
-type GitHubWorkflowRun {
-  GitHubWorkflowJob: JSONObject
-  title: String
-  url: String
-  createdAt: DateTime
-  userId: ID
-  repoId: ID
-  authorId: ID
-  repoOwner: String
-  repoName: String
-  id: String
-  Status: StatusRun!
-  orgId: ID
-  orgName: String
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 input InputCourses {
@@ -310,17 +200,15 @@ input InputBook {
 type Query {
   index: String!
   findAllUser(role: String!, minAge: Float!, maxAge: Float!): [User!]!
-  findUserAll(role: String!, minAge: Float!, maxAge: Float!): [User!]!
+  findUserAll: [User!]!
   findUserByMatch(role: String!): [User!]!
   findUserByQty(quantity: Float!): [User!]!
   totalSumPrice: Float!
   getAllCourses: [User!]!
   findOne(email: String!): User!
   findEmail(email: String!): User!
-  getGithubUserDetails(userName: String!): GitHubUserDetails!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
-<<<<<<< HEAD
   getGithubUserDetails(username: String!): GitHubUserDetails!
   productsFromStripe: [Products!]!
   isProductSubscribed(productId: String!): Boolean!
@@ -329,44 +217,22 @@ type Query {
   getOrganizationIdsByUsername(username: String!): [String!]!
   organizationByOrgName(orgName: String!): GitHubUserOrganization
   fetchInvoices: [StripeInvoice!]!
-=======
-  githubRepositories(userName: String!): [GitHubRepository!]!
-  githubOrganizationRepositories(userName: String!, orgName: String!): [GitHubRepository!]!
-  githubUserOrganizations(userName: String!): [GitHubUserOrganization!]!
-  getPullRequestFromDb(userName: String!): [GitHubPull!]!
-  searchPullRequests(userName: String!, searchKeyword: String!): [GitHubPull!]!
-  getCommitsForPullRequest(userName: String!, url: String!, repoName: String!): GitHubPull!
-  getWorkflowJobFromDb(userName: String!): [GitHubWorkflowJob!]!
-  getWorkflowRunFromDb(userName: String!): [GitHubWorkflowRun!]!
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 type Mutation {
   createUser(payload: UserInput!): User!
   updateUser(email: String!, payload: UserInput!): User!
   deleteUser(id: String!): User!
-<<<<<<< HEAD
-  checkUserExists(email: String!): Boolean!
-=======
-  githubLogin: GithubAuthResponse!
-  githubCodeExchange(code: String!): AccessTokenResponse!
-  getGithubUser(accessToken: String!): GitHubUserDetails!
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
   createBook(title: String!, author: [InputBook!]!, price: Float!, year: Float!, userId: String!): Book!
   updateBook(bookInput: BookInput!, _id: String!): Book!
   login(email: String!, password: String!): String!
   logout(email: String!): String!
-<<<<<<< HEAD
   githubLogin: GithubAuthResponse!
   githubCodeExchange(code: String!): AccessTokenResponse!
   getGithubUser(accessToken: String!): GitHubUserDetails!
   createGitHubUser(input: CreateGitHubUserInput!): GitHubUserDetails!
   subscribeProduct(productId: String!): Boolean!
   recurringplan(productId: String!): String!
-=======
-  checkDate(date: String!): String!
-  createPullRequests(userName: String!, repoName: String!): [GitHubPull!]!
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
   onetimeplan(productId: String!): String!
 }
 
@@ -383,16 +249,11 @@ input UserInput {
   lastCourse: InputCourses
   completedCourses: [InputCourses!]
   product: [InputProduct!]
-  mobileNumber: String
   token: String
   privateKey: String
-<<<<<<< HEAD
-  code: String
-=======
   countryCode: String
   mobileNumber: Float
   githubId: String
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
 
 input BookInput {
@@ -414,7 +275,6 @@ input AuthorInput {
   age: Int
 }
 
-<<<<<<< HEAD
 input CreateGitHubUserInput {
   accessToken: String!
   email: String!
@@ -422,11 +282,4 @@ input CreateGitHubUserInput {
 
 type Subscription {
   invoiceCreated: [StripeInvoice!]!
-=======
-type Subscription {
-  newPullRequest: [GitHubPull!]!
-  newCommit: GitHubPull!
-  newWorkflowJob: [GitHubWorkflowJob!]!
-  newWorkflowRun: [GitHubWorkflowRun!]!
->>>>>>> a0bf9a60f07ecabae155be9b3392a5b9c871e8c7
 }
