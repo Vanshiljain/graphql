@@ -270,6 +270,7 @@ export interface IMutation {
     getGithubUser(accessToken: string): GitHubUserDetails | Promise<GitHubUserDetails>;
     createGitHubUser(input: CreateGitHubUserInput): GitHubUserDetails | Promise<GitHubUserDetails>;
     subscribeProduct(productId: string): boolean | Promise<boolean>;
+    recurringplan(productId: string): string | Promise<string>;
     onetimeplan(productId: string): string | Promise<string>;
 }
 
