@@ -10,16 +10,16 @@ export class stripewebResolver {
     
     ) { }
 
-    @Mutation(() => String)
-    async recurringplan(@Args('productId') productId: string): Promise<string> {
-      try {
-        const sessionUrl = await this.webhooksService.recurringplan(productId);
-        return sessionUrl;
-      } catch (error) {
+    // @Mutation(() => String)
+    // async recurringplan(@Args('productId') productId: string): Promise<string> {
+    //   try {
+    //     const sessionUrl = await this.webhooksService.recurringplan(productId);
+    //     return sessionUrl;
+    //   } catch (error) {
        
-        throw new Error('Failed to create Stripe session');
-      }
-    }
+    //     throw new Error('Failed to create Stripe session');
+    //   }
+    // }
  
   @Mutation(() => String)
   async onetimeplan(@Args('productId') productId: string): Promise<string> {

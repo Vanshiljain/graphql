@@ -232,7 +232,6 @@ type Mutation {
   getGithubUser(accessToken: String!): GitHubUserDetails!
   createGitHubUser(input: CreateGitHubUserInput!): GitHubUserDetails!
   subscribeProduct(productId: String!): Boolean!
-  recurringplan(productId: String!): String!
   onetimeplan(productId: String!): String!
 }
 

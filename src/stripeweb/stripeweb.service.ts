@@ -161,52 +161,52 @@ export class WebhooksService {
    
   
 
-  async recurringplan(productId: string): Promise<string> {
+//   async recurringplan(productId: string): Promise<string> {
         
-       const product = await this.stripe.products.retrieve(productId);
-    const prices = await this.stripe.prices.list({ product: productId });
-    const selectedPrice = prices.data[0];
-      try {
+//        const product = await this.stripe.products.retrieve(productId);
+//     const prices = await this.stripe.prices.list({ product: productId });
+//     const selectedPrice = prices.data[0];
+//       try {
            
-      const { id: productId, name: productName, metadata: productMetadata,default_price :price } = product;
-      ;
+//       const { id: productId, name: productName, metadata: productMetadata,default_price :price } = product;
+//       ;
     
        
-       console.log("product-------->",product)
+//        console.log("product-------->",product)
        
 
       
-        const session = await this.stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [
-                {
-                    price: selectedPrice.id ,
-                    quantity: 1,
-                },
-            ],
-            metadata: {
-                product_id:  productId,
-                productName: productName,
-                product_metadata: JSON.stringify(productMetadata),
-                type:'recurring'
+//         const session = await this.stripe.checkout.sessions.create({
+//             payment_method_types: ['card'],
+//             line_items: [
+//                 {
+//                     price: selectedPrice.id ,
+//                     quantity: 1,
+//                 },
+//             ],
+//             metadata: {
+//                 product_id:  productId,
+//                 productName: productName,
+//                 product_metadata: JSON.stringify(productMetadata),
+//                 type:'recurring'
 
-            },
+//             },
 
-            mode: 'subscription',
+//             mode: 'subscription',
            
-            success_url: 'http://localhost:5173/product-list',
-            cancel_url: 'http://your-website.com/cancel',
-        });
-        console.log("product metadata-------->", session.metadata)
+//             success_url: 'http://localhost:5173/product-list',
+//             cancel_url: 'http://your-website.com/cancel',
+//         });
+//         console.log("product metadata-------->", session.metadata)
        
-        return session.url;
-    } catch (error) {
+//         return session.url;
+//     } catch (error) {
        
-        console.error('Error creating checkout session:', error);
-        throw error;
-    }
+//         console.error('Error creating checkout session:', error);
+//         throw error;
+//     }
     
-}
+// }
 async onetimeplan(productId: string): Promise<string> {
   const product = await this.stripe.products.retrieve(productId);
   const prices = await this.stripe.prices.list({ product: productId });
