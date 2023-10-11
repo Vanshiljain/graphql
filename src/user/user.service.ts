@@ -15,14 +15,14 @@ export class UserService {
 
   constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
   async createUser(userInput: UserInput): Promise<User> {
-    const nodemailer = require("nodemailer");
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.USER,
-        pass: process.env.PASS,
-      }
-    });
+    // const nodemailer = require("nodemailer");
+    // const transporter = nodemailer.createTransport({
+    //   service: 'gmail',
+    //   auth: {
+    //     user: process.env.USER,
+    //     pass: process.env.PASS,
+    //   }
+    // });
 
     const aggregation = new this.userModel({ ...userInput, password: await bcrypt.hash(userInput.password, 10) });
     aggregation.product.map((p: Product) => {
@@ -34,34 +34,34 @@ export class UserService {
     }, 0);
     aggregation.totalSumPrice = totalSumPrice;
     const result = JSON.stringify(aggregation);
-    const info = await transporter.sendMail({
-      from: "niharkushwahcomputer@gmail.com",
-      to: "nihark@linkites.com",
-      subject: "Hello ✔",
-      text: "User registered successfully!",
-      html: `
-      <h1>User registered successfully!</h1>
-      <table border="1">
-      <tr>
-          <th>Name</th>
-          <th>email</th>
-          <th>userName</th>
-          <th>age</th>
-          <th>mobile number</th>
-          <th>Address</th>
-        </tr>
-        <tr>
-          <td>${aggregation.name}</td>
-          <td>${aggregation.email}</td>
-          <td>${aggregation.userName}</td>
-          <td>${aggregation.age}</td>
-          <td>${aggregation.mobileNumber}</td>
-          <td>${aggregation.address.mainAddress}, ${aggregation.address.city}, ${aggregation.address.pincode}</td>
-          </tr>
-          </table>
-      `,
-    });
-    console.log("Message sent: %s", info.messageId);
+    // const info = await transporter.sendMail({
+    //   from: "niharkushwahcomputer@gmail.com",
+    //   to: "nihark@linkites.com",
+    //   subject: "Hello ✔",
+    //   text: "User registered successfully!",
+    //   html: `
+    //   <h1>User registered successfully!</h1>
+    //   <table border="1">
+    //   <tr>
+    //       <th>Name</th>
+    //       <th>email</th>
+    //       <th>userName</th>
+    //       <th>age</th>
+    //       <th>mobile number</th>
+    //       <th>Address</th>
+    //     </tr>
+    //     <tr>
+    //       <td>${aggregation.name}</td>
+    //       <td>${aggregation.email}</td>
+    //       <td>${aggregation.userName}</td>
+    //       <td>${aggregation.age}</td>
+    //       <td>${aggregation.mobileNumber}</td>
+    //       <td>${aggregation.address.mainAddress}, ${aggregation.address.city}, ${aggregation.address.pincode}</td>
+    //       </tr>
+    //       </table>
+    //   `,
+    // });
+    // console.log("Message sent: %s", info.messageId);
     return aggregation.save();
   }
 
@@ -228,4 +228,5 @@ export class UserService {
   async findEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email: email });
   }
+  
 }
