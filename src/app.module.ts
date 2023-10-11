@@ -99,4 +99,5 @@ import { GithubLoginResolver } from './githubUser/githubUser.resolver';
   controllers: [AppController],
   providers: [AppService, AppResolver, UserResolver, UserService, AuthService],
 })
+
 export class AppModule {}
