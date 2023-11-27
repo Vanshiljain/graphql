@@ -26,7 +26,7 @@ export class GitHubUserDetails extends Document {
   githubUserMetadata: object;
 
   @Field(() => String, { nullable: true })
-  @Prop()
+  @Prop() 
   access_token: string;
 
   @Field(() => String, { nullable: true })

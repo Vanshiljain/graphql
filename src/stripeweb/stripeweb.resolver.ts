@@ -1,9 +1,8 @@
 import { Resolver, Query,Mutation, Args } from '@nestjs/graphql';
 import { GithubLoginService } from 'src/githubUser/githubUser.service';
 import { WebhooksService } from './stripeweb.service';
-import { StripeInvoice } from './stripe-invoice.schema';
-
-@Resolver()
+import { StripeInvoice } from './stripe-invoice.schema'; 
+@Resolver() 
 export class stripewebResolver {
   constructor(private readonly GithubLoginService: GithubLoginService,
     private readonly webhooksService: WebhooksService,
@@ -11,28 +10,37 @@ export class stripewebResolver {
     ) { }
 
     @Mutation(() => String)
-    async recurringplan(@Args('productId') productId: string): Promise<string> {
+    async recurringplan(
+      @Args('productId') productId: string,
+   
+      @Args('couponCode', { nullable: true }) couponCode: string,
+    ): Promise<string> {
       try {
-        const sessionUrl = await this.webhooksService.recurringplan(productId);
+        const sessionUrl = await this.webhooksService.recurringplan(productId, couponCode);
         return sessionUrl;
       } catch (error) {
-       
         throw new Error('Failed to create Stripe session');
       }
     }
  
-  @Mutation(() => String)
-  async onetimeplan(@Args('productId') productId: string): Promise<string> {
-    try {
+    @Mutation(() => String)
+    async onetimeplan(
+      @Args('productId') productId: string,
+      @Args('couponCode', { nullable: true }) couponCode: string,
+      
+    ): Promise<string> {
+      try {
+        
         const sessionUrl = await this.webhooksService.onetimeplan(productId);
         return sessionUrl;
-    } catch (error) {
+     
+      } catch (error) {
+        
         console.error('Failed to create Stripe session:', error);
         throw new Error('Failed to create Stripe session');
+      }
+      
     }
-
- 
-  }
   @Query(() => [StripeInvoice])
   async fetchInvoices(): Promise<StripeInvoice[]> {
     try {
@@ -44,9 +52,6 @@ export class stripewebResolver {
     }
   }
   
-
-
-
 }
   
   

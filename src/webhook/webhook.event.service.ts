@@ -206,7 +206,7 @@ export class WebhookEventService {
         res
       );
 
-      console.log(`${action} event saved or updated in the database.`);
+      console.log(`${action} event savedd or updated in the database.`);
     } catch (error) {
       console.error(`Error handling ${action} event:`, error);
       const successMessage = 'An error occurred while processing the webhook request.';
