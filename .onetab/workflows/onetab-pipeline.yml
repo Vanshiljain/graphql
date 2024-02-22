@@ -4,7 +4,7 @@ repoFullName: Vanshiljain-Vanshiljain/graphql
 on:
   push:
     branches: [ main ]
-
+ 
    
 jobs:
   test:
