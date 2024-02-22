@@ -1,4 +1,5 @@
 name: NestJS and GraphQL CI
+repoFullName: Vanshiljain-Vanshiljain/graphql
 
 on:
   push:
@@ -8,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     defaults:
       run:
         working-directory:  ${{env.workDir}}
