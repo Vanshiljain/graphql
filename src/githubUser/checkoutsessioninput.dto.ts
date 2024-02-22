@@ -1,4 +1,4 @@
-// src/subscriptions/dto/create-checkout-session.input.ts
+
 import { InputType, Field } from '@nestjs/graphql';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 

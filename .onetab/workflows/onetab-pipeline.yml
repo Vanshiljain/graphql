@@ -1,0 +1,33 @@
+name: NestJS and GraphQL CI
+repoFullName: Vanshiljain-Vanshiljain/graphql
+
+on:
+  push:
+    branches: [ main ]
+ 
+   
+jobs: 
+  test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory:  ${{env.workDir}}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.16.0
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Run tests
+      run: npm run test

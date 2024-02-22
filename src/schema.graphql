@@ -130,20 +130,6 @@ type GitHubUserOrganization {
   githubOrganizationMetadata: JSONObject
 }
 
-type Products {
-  id: String!
-  name: String!
-  metadata: JSONObject
-  description: String!
-  currency: String!
-  createdAt: DateTime!
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type StripeInvoice {
   invoiceId: String
   customerId: String
@@ -159,6 +145,11 @@ type StripeInvoice {
   metadata: JSONObject
   userId: ID!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 input InputCourses {
   courseName: String
@@ -209,8 +200,7 @@ type Query {
   findEmail(email: String!): User!
   findAllBookUser: [Book!]!
   findAllAuhtor: [Book!]!
-  getGithubUserDetails(username: String!): GitHubUserDetails!
-  productsFromStripe: [Products!]!
+  getGithubUserDetails(userName: String!): GitHubUserDetails!
   isProductSubscribed(productId: String!): Boolean!
   githubUserOrganizations(username: String!): [GitHubUserOrganization!]!
   getOrganizationMongoId(organizationId: String!): String
@@ -230,10 +220,9 @@ type Mutation {
   githubLogin: GithubAuthResponse!
   githubCodeExchange(code: String!): AccessTokenResponse!
   getGithubUser(accessToken: String!): GitHubUserDetails!
-  createGitHubUser(input: CreateGitHubUserInput!): GitHubUserDetails!
   subscribeProduct(productId: String!): Boolean!
-  recurringplan(productId: String!): String!
-  onetimeplan(productId: String!): String!
+  recurringplan(productId: String!, couponCode: String): String!
+  onetimeplan(productId: String!, couponCode: String): String!
 }
 
 input UserInput {
@@ -273,11 +262,6 @@ input AuthorInput {
   firstName: String
   lastName: String
   age: Int
-}
-
-input CreateGitHubUserInput {
-  accessToken: String!
-  email: String!
 }
 
 type Subscription {

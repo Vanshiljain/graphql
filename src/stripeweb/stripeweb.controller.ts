@@ -3,7 +3,7 @@ import { WebhooksService } from './stripeweb.service';
 import { StripeWebhookEventDto } from './webhook-event.dto';
 import { Response } from 'express'; 
 
-@Controller('api')
+@Controller()
 export class WebhooksController {
   constructor(private readonly webhooksService: WebhooksService) {}
 
@@ -11,7 +11,7 @@ export class WebhooksController {
   @Post('stripe')
   handleStripeWebhook(@Body() payload: StripeWebhookEventDto,@Res() res: Response) {
     console.log('Received Stripe Webhook:', payload);
-    this.webhooksService.processStripeWebhook(payload,res);
+    this.webhooksService.processStripeWebhook(payload);
   }
 
 

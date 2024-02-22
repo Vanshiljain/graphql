@@ -95,11 +95,6 @@ export interface AuthorInput {
     age?: Nullable<number>;
 }
 
-export interface CreateGitHubUserInput {
-    accessToken: string;
-    email: string;
-}
-
 export interface Courses {
     courseName?: Nullable<string>;
     courseStatus?: Nullable<string>;
@@ -210,15 +205,6 @@ export interface GitHubUserOrganization {
     githubOrganizationMetadata?: Nullable<JSONObject>;
 }
 
-export interface Products {
-    id: string;
-    name: string;
-    metadata?: Nullable<JSONObject>;
-    description: string;
-    currency: string;
-    createdAt: DateTime;
-}
-
 export interface StripeInvoice {
     invoiceId?: Nullable<string>;
     customerId?: Nullable<string>;
@@ -247,8 +233,7 @@ export interface IQuery {
     findEmail(email: string): User | Promise<User>;
     findAllBookUser(): Book[] | Promise<Book[]>;
     findAllAuhtor(): Book[] | Promise<Book[]>;
-    getGithubUserDetails(username: string): GitHubUserDetails | Promise<GitHubUserDetails>;
-    productsFromStripe(): Products[] | Promise<Products[]>;
+    getGithubUserDetails(userName: string): GitHubUserDetails | Promise<GitHubUserDetails>;
     isProductSubscribed(productId: string): boolean | Promise<boolean>;
     githubUserOrganizations(username: string): GitHubUserOrganization[] | Promise<GitHubUserOrganization[]>;
     getOrganizationMongoId(organizationId: string): Nullable<string> | Promise<Nullable<string>>;
@@ -268,10 +253,9 @@ export interface IMutation {
     githubLogin(): GithubAuthResponse | Promise<GithubAuthResponse>;
     githubCodeExchange(code: string): AccessTokenResponse | Promise<AccessTokenResponse>;
     getGithubUser(accessToken: string): GitHubUserDetails | Promise<GitHubUserDetails>;
-    createGitHubUser(input: CreateGitHubUserInput): GitHubUserDetails | Promise<GitHubUserDetails>;
     subscribeProduct(productId: string): boolean | Promise<boolean>;
-    recurringplan(productId: string): string | Promise<string>;
-    onetimeplan(productId: string): string | Promise<string>;
+    recurringplan(productId: string, couponCode?: Nullable<string>): string | Promise<string>;
+    onetimeplan(productId: string, couponCode?: Nullable<string>): string | Promise<string>;
 }
 
 export interface ISubscription {

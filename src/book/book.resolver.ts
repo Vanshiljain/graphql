@@ -7,7 +7,7 @@ import { Types } from 'mongoose';
 export class BookResolver {
   constructor(private readonly bookService: BookService) { }
 
-  @Mutation(() => Book)
+  @Mutation(() => Book) 
   async createBook(
     @Args('title') title: string,
     @Args({ name: 'author', type: () => [Author] }) author: Author[],
