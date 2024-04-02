@@ -8,7 +8,7 @@ export class WebhookController {
   constructor(private readonly webhookService: WebhookEventService) {}
 
   @Post('github')
-  @Post('webhook')
+  @Post('webhooks')
   async handleWebhook(@Body() payload: any, @Headers('x-hub-signature-256') signature: string, @Req() req: Request, @Res() res: Response): Promise<void> {
     await this.webhookService.handleWebhookEvent(payload, signature, req, res);
 }

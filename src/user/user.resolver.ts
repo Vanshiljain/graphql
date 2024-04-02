@@ -6,7 +6,6 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import * as bcrypt from 'bcrypt';
 import { ID } from 'graphql-ws';
 
-
 @Resolver()
 export class UserResolver {
   constructor(private readonly userService: UserService) { }
@@ -55,22 +54,22 @@ export class UserResolver {
   }
 
   @Query(() => User)
-  async findOne(@Args('email') email: String): Promise<User> {
+  async findOne(@Args('email') email: String): Promise<User>{
     return await this.userService.findOne(email);
   }
 
   @Mutation(() => User)
-  async updateUser(@Args('email') email: string, @Args('payload') payload: UserInput): Promise<User> {
+  async updateUser(@Args('email') email: string, @Args('payload') payload: UserInput): Promise<User>{
     return await this.userService.updateUser(email, payload);
   }
 
   @Mutation(() => User)
-  async deleteUser(@Args('id') _id: ID): Promise<User> {
+  async deleteUser(@Args('id') _id: ID): Promise<User>{
     return await this.userService.deleteUser(_id);
   }
 
   @Query(() => User)
-  async findEmail(@Args('email') email: string): Promise<User> {
+  async findEmail(@Args('email') email: string): Promise<User>{
     return await this.userService.findOne(email);
   }
 }
